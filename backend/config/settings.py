@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',  # Required by allauth
     # Third-party apps
     'rest_framework',  # Django REST Framework
+    'rest_framework_simplejwt.token_blacklist',  # JWT token blacklist support
     'corsheaders',  # Django CORS Headers
     'allauth',
     'allauth.account',
@@ -184,7 +185,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT Authentication (primary)
+        'rest_framework.authentication.SessionAuthentication',  # Fallback for browsable API
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -209,3 +211,38 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = ''  # Configure via environment variable
 EMAIL_HOST_PASSWORD = ''  # Configure via environment variable
 DEFAULT_FROM_EMAIL = 'noreply@techwatch.com'
+
+# Simple JWT Configuration
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    # Token Lifetimes
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Short-lived access tokens for security
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Long-lived refresh tokens for convenience
+
+    # Token Rotation & Blacklist (Security)
+    'ROTATE_REFRESH_TOKENS': True,  # Generate new refresh token on refresh
+    'BLACKLIST_AFTER_ROTATION': True,  # Blacklist old refresh token after rotation
+    'UPDATE_LAST_LOGIN': True,  # Update last_login field on token refresh
+
+    # Algorithm & Signing
+    'ALGORITHM': 'HS256',  # HMAC using SHA-256 hash algorithm
+    'SIGNING_KEY': SECRET_KEY,  # Use Django SECRET_KEY for signing
+    'VERIFYING_KEY': None,  # Not needed for HS256
+
+    # Token Claims
+    'AUTH_HEADER_TYPES': ('Bearer',),  # Authorization: Bearer <token>
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',  # Field in User model
+    'USER_ID_CLAIM': 'user_id',  # Claim name in JWT payload
+
+    # Token Validation
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',  # Claim that identifies token type
+
+    # Sliding Tokens (Disabled - using Access/Refresh pattern)
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}

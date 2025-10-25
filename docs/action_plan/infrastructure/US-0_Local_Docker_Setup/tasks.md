@@ -2,7 +2,7 @@
 
 **Priority**: P0 (Foundational)
 **Bloc**: Infrastructure (Setup)
-**Status**: À faire
+**Status**: En cours (1/15 tasks complétées)
 
 ## Vue d'ensemble
 
@@ -42,7 +42,7 @@ Mettre en place l'environnement de développement local complet basé sur Docker
 | TASK-0.12 | Créer le script de démarrage rapide (quick-start.sh) | Configuration | Config | 2h | TASK-0.11 | ⬜ |
 | TASK-0.13 | Créer le fichier .dockerignore | Configuration | Config | 1h | None | ⬜ |
 | TASK-0.14 | Créer le guide de troubleshooting Docker | Documentation | Documentation | 3h | TASK-0.12 | ⬜ |
-| TASK-0.15 | Tester l'environnement complet de bout en bout | Documentation | Config | 4h | TASK-0.14 | ⬜ |
+| TASK-0.15 | Tester l'environnement complet de bout en bout | Documentation | Config | 4h | TASK-0.14 | ✅ |
 
 ---
 
@@ -1416,13 +1416,13 @@ Effectuer un test end-to-end complet de l'environnement Docker: démarrage des s
 
 ##### Critères d'acceptation
 
-- [ ] Script de test automatique créé
-- [ ] Tous les services démarrent sans erreur
-- [ ] Les healthchecks passent pour db et redis
-- [ ] Le backend répond sur /api/
-- [ ] Le frontend est accessible sur :3000
-- [ ] Celery worker et beat sont fonctionnels
-- [ ] Un rapport de test est généré
+- [x] Script de test automatique créé (Tests via Playwright et curl)
+- [x] Tous les services démarrent sans erreur
+- [x] Les healthchecks passent pour db et redis
+- [x] Le backend répond sur /api/
+- [x] Le frontend est accessible sur :3000
+- [x] Celery worker et beat sont fonctionnels
+- [x] Un rapport de test est généré (Documented in PR #146 and Issue #144)
 
 **Dépendances**: TASK-0.14
 **Effort estimé**: 4 heures
@@ -1589,6 +1589,29 @@ http://localhost:8000/admin/
 
 Si un test échoue, consulter `docs/setup/TROUBLESHOOTING.md`
 ```
+
+##### ✅ Status de complétion
+
+**Date de complétion**: 2025-10-26
+**PR**: #146
+**Issue**: #144
+
+**Tests effectués**:
+- ✅ Tous les 6 services Docker fonctionnels (db, redis, backend, frontend, worker, scheduler)
+- ✅ PostgreSQL avec pgvector extension validé
+- ✅ Redis accessible et fonctionnel
+- ✅ Backend API testée (endpoints d'authentification: register, login, verify-email)
+- ✅ Frontend accessible sur http://localhost:3000
+- ✅ Celery worker et scheduler opérationnels
+- ✅ Tests effectués via Playwright, curl, et vérification des logs Docker
+
+**Problèmes résolus durant les tests**:
+1. Configuration Redis incompatible (CLIENT_CLASS) dans `backend/config/settings.py` - Corrigé
+2. Port frontend mismatch (Vite 5173 vs Docker 3000) dans `frontend/Dockerfile` - Corrigé
+
+**Documentation générée**:
+- Rapport de test complet dans PR #146
+- Commentaire détaillé sur Issue #144
 
 ---
 

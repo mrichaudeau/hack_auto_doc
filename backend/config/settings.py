@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2-xmr&7(#$a!qf2m#wz%2!so)_4dedwhx_fql3z@gzp-tli%g2'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-2-xmr&7(#$a!qf2m#wz%2!so)_4dedwhx_fql3z@gzp-tli%g2')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -85,12 +85,30 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Support both PostgreSQL (Docker) and SQLite (local development)
+if os.getenv('DB_HOST'):
+    # PostgreSQL configuration (Docker environment)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME', 'techwatch_db'),
+            'USER': os.getenv('DB_USER', 'postgres'),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
+            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+            'OPTIONS': {
+                'connect_timeout': 10,
+            },
+        }
     }
-}
+else:
+    # SQLite configuration (local development fallback)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password hashing
@@ -206,29 +224,38 @@ REST_FRAMEWORK = {
 }
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React frontend in development
+# Allow CORS from FRONTEND_URL and common development URLs
+cors_origins = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',') if os.getenv('CORS_ALLOWED_ORIGINS') else [
+    "http://localhost:3000",  # React frontend in Docker
+    "http://localhost:5173",  # Vite development server
     "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",
 ]
+# Add FRONTEND_URL if not already in list
+frontend_url = os.getenv('FRONTEND_URL', 'http://localhost:5173')
+if frontend_url not in cors_origins:
+    cors_origins.append(frontend_url)
+
+CORS_ALLOWED_ORIGINS = cors_origins
 CORS_ALLOW_CREDENTIALS = True
 
 # Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Console backend for development
-EMAIL_HOST = 'smtp.gmail.com'  # Will be configured via environment variables in production
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''  # Configure via environment variable
-EMAIL_HOST_PASSWORD = ''  # Configure via environment variable
-DEFAULT_FROM_EMAIL = 'noreply@techwatch.com'
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@techwatch.com')
 
 # Simple JWT Configuration
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    # Token Lifetimes
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Short-lived access tokens for security
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Long-lived refresh tokens for convenience
+    # Token Lifetimes (configurable via environment variables)
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.getenv('JWT_ACCESS_TOKEN_LIFETIME', '15'))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(os.getenv('JWT_REFRESH_TOKEN_LIFETIME', '7'))),
 
     # Token Rotation & Blacklist (Security)
     'ROTATE_REFRESH_TOKENS': True,  # Generate new refresh token on refresh
@@ -255,3 +282,65 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+# =============================================================================
+# Redis Configuration (for Celery and Caching)
+# =============================================================================
+
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+
+# Cache Configuration (using Redis)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': REDIS_URL,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'techwatch',
+        'TIMEOUT': 300,  # 5 minutes default timeout
+    }
+}
+
+# =============================================================================
+# Celery Configuration (for async tasks and scheduling)
+# =============================================================================
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', REDIS_URL)
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', REDIS_URL)
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_ENABLE_UTC = True
+
+# Celery Beat Schedule (for recurring tasks)
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# Task routing and options
+CELERY_TASK_ROUTES = {
+    'accounts.*': {'queue': 'default'},
+    # Future: Add routes for AI pipeline tasks
+    # 'pipeline.*': {'queue': 'pipeline'},
+}
+
+CELERY_TASK_DEFAULT_QUEUE = 'default'
+CELERY_TASK_DEFAULT_EXCHANGE = 'default'
+CELERY_TASK_DEFAULT_ROUTING_KEY = 'default'
+
+# Task execution settings
+CELERY_TASK_ACKS_LATE = True  # Tasks acknowledged after execution
+CELERY_WORKER_PREFETCH_MULTIPLIER = 4  # Number of tasks to prefetch
+CELERY_TASK_TIME_LIMIT = 300  # 5 minutes hard time limit
+CELERY_TASK_SOFT_TIME_LIMIT = 240  # 4 minutes soft time limit
+
+# =============================================================================
+# Static Files Configuration (for Docker)
+# =============================================================================
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = []
+
+# Media Files Configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

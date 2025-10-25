@@ -180,3 +180,4 @@ Each functional bloc document follows the structure:
 - Async profile updates on subscription changes
 - Celery Beat for daily recurring scraping tasks
 - Refer to @docs\00_choix_technologique.md when making technological assumption.
+- Never use emojy in logs or print, only utf-8 encoded characters

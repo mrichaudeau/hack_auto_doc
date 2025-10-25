@@ -1,54 +1,47 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/routes/ProtectedRoute';
 import RegisterPage from './pages/auth/RegisterPage';
 import EmailConfirmationPendingPage from './pages/auth/EmailConfirmationPendingPage';
 import EmailVerifiedPage from './pages/auth/EmailVerifiedPage';
+import LoginPage from './pages/auth/LoginPage';
+import DashboardPage from './pages/DashboardPage';
 import './App.css';
 
 /**
- * Main App Component - TASK-1.14
- * Configures routing for authentication pages
+ * Main App Component - TASK-1.14 & TASK-2.15
+ * Configures routing for authentication and protected pages
+ * Wrapped with AuthProvider for global authentication state
  */
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/email-confirmation-pending" element={<EmailConfirmationPendingPage />} />
-        <Route path="/verify-email/:key" element={<EmailVerifiedPage />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/email-confirmation-pending" element={<EmailConfirmationPendingPage />} />
+          <Route path="/verify-email/:key" element={<EmailVerifiedPage />} />
+          <Route path="/login" element={<LoginPage />} />
 
-        {/* Temporary login placeholder (will be implemented in US-2) */}
-        <Route
-          path="/login"
-          element={
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: '100vh',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
-              textAlign: 'center',
-              padding: '2rem'
-            }}>
-              <div>
-                <h1>Page de connexion</h1>
-                <p>Cette page sera implémentée dans US-2 (JWT Login)</p>
-                <a href="/register" style={{ color: 'white', textDecoration: 'underline' }}>
-                  Retour à l'inscription
-                </a>
-              </div>
-            </div>
-          }
-        />
+          {/* Protected Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Default redirect to register */}
-        <Route path="/" element={<Navigate to="/register" replace />} />
+          {/* Default redirect based on authentication status */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-        {/* Catch all - redirect to register */}
-        <Route path="*" element={<Navigate to="/register" replace />} />
-      </Routes>
-    </Router>
+          {/* Catch all - redirect to dashboard (will redirect to login if not authenticated) */}
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

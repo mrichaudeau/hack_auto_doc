@@ -19,6 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Django-allauth URLs (required for email confirmation URL generation)
+    path('accounts/', include('allauth.urls')),
     # API endpoints
-    path('api/', include('accounts.urls')),  # accounts API (includes allauth)
+    path('api/', include('accounts.urls')),  # accounts API
 ]

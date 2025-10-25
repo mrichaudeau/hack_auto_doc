@@ -66,17 +66,17 @@ class VerifyEmailView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, key):
-        return self._verify_email(key)
+        return self._verify_email(key, request)
 
     def post(self, request, key):
-        return self._verify_email(key)
+        return self._verify_email(key, request)
 
-    def _verify_email(self, key):
+    def _verify_email(self, key, request=None):
         """
         Internal method to verify email with the provided key.
         """
         try:
-            # Try to get the confirmation object
+            # Try to get the confirmation object from database first
             emailconfirmation = EmailConfirmation.objects.filter(
                 key=key.lower()
             ).select_related('email_address').first()
@@ -85,11 +85,20 @@ class VerifyEmailView(APIView):
                 # Try HMAC-based confirmation (newer allauth versions)
                 try:
                     emailconfirmation = EmailConfirmationHMAC.from_key(key)
-                except:
+                    if not emailconfirmation:
+                        return Response(
+                            {
+                                'error': 'Token de vérification invalide ou expiré.',
+                                'code': 'invalid_token'
+                            },
+                            status=status.HTTP_400_BAD_REQUEST
+                        )
+                except Exception as e:
                     return Response(
                         {
                             'error': 'Token de vérification invalide ou expiré.',
-                            'code': 'invalid_token'
+                            'code': 'invalid_token',
+                            'detail': str(e)
                         },
                         status=status.HTTP_400_BAD_REQUEST
                     )
@@ -134,7 +143,8 @@ class VerifyEmailView(APIView):
             return Response(
                 {
                     'error': 'Token de vérification invalide ou expiré.',
-                    'code': 'invalid_token'
+                    'code': 'invalid_token',
+                    'detail': str(e)
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )

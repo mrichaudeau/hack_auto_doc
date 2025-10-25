@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -165,6 +166,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Django-allauth Configuration (Modern API for v65+)
+ACCOUNT_ADAPTER = 'accounts.adapters.CustomAccountAdapter'  # Custom adapter for frontend URLs
 ACCOUNT_LOGIN_METHODS = {'email'}  # Only email-based login (replaces ACCOUNT_AUTHENTICATION_METHOD)
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']  # Required signup fields (replaces ACCOUNT_EMAIL_REQUIRED and ACCOUNT_USERNAME_REQUIRED)
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Email verification is required
@@ -172,6 +174,9 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # No username field in model
 ACCOUNT_UNIQUE_EMAIL = True  # Ensure email uniqueness
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3  # Verification link expires in 3 days
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False  # Don't auto-login after email confirmation
+
+# Frontend URL Configuration
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5173')
 
 # Django REST Framework Configuration
 REST_FRAMEWORK = {

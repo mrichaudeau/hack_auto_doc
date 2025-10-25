@@ -40,3 +40,8 @@ Thumbs.db
 
 # Claude pluggins
 plugins/
+
+# Cypress
+frontend/cypress/screenshots/
+frontend/cypress/videos/
+frontend/cypress/downloads/

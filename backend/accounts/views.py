@@ -2,16 +2,20 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
 from allauth.account.utils import perform_login
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
+import logging
 
-from .serializers import RegisterSerializer, UserSerializer
+from .serializers import RegisterSerializer, UserSerializer, LoginSerializer
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 class RegisterView(APIView):
@@ -220,3 +224,123 @@ class ResendVerificationEmailView(APIView):
                 },
                 status=status.HTTP_200_OK
             )
+
+
+class LoginView(APIView):
+    """
+    API endpoint for user login with JWT token generation.
+
+    POST /api/auth/login/
+    - Validates email/password credentials
+    - Returns JWT access and refresh tokens
+    - Returns user data
+    - Logs all login attempts for security audit
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data, context={'request': request})
+
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+
+            # Generate JWT tokens
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+            refresh_token = str(refresh)
+
+            # Prepare user data
+            user_data = UserSerializer(user).data
+
+            # Log successful login
+            logger.info(
+                f"Login successful - Email: {user.email}, "
+                f"IP: {request.META.get('REMOTE_ADDR', 'unknown')}"
+            )
+
+            return Response(
+                {
+                    'message': 'Connexion réussie.',
+                    'access_token': access_token,
+                    'refresh_token': refresh_token,
+                    'user': user_data
+                },
+                status=status.HTTP_200_OK
+            )
+
+        # Log failed login attempt
+        email = request.data.get('email', 'unknown')
+        logger.warning(
+            f"Login failed - Email: {email}, "
+            f"IP: {request.META.get('REMOTE_ADDR', 'unknown')}, "
+            f"Errors: {serializer.errors}"
+        )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+
+
+class LogoutView(APIView):
+    """
+    API endpoint for user logout with token blacklisting.
+
+    POST /api/auth/logout/
+    - Requires authentication (valid JWT access token)
+    - Blacklists the provided refresh token
+    - Returns 204 No Content on success
+    - Returns 400 if refresh token is invalid or missing
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        refresh_token = request.data.get('refresh_token')
+
+        if not refresh_token:
+            return Response(
+                {'refresh_token': 'Le refresh token est requis.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            # Blacklist the refresh token
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            # Log successful logout
+            logger.info(
+                f"Logout successful - User: {request.user.email}, "
+                f"IP: {request.META.get('REMOTE_ADDR', 'unknown')}"
+            )
+
+            return Response(
+                {'message': 'Déconnexion réussie.'},
+                status=status.HTTP_204_NO_CONTENT
+            )
+
+        except TokenError as e:
+            logger.warning(
+                f"Logout failed - User: {request.user.email}, "
+                f"IP: {request.META.get('REMOTE_ADDR', 'unknown')}, "
+                f"Error: {str(e)}"
+            )
+            return Response(
+                {'refresh_token': 'Token invalide ou déjà blacklisté.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class UserDetailView(APIView):
+    """
+    API endpoint to retrieve current authenticated user's data.
+
+    GET /api/users/me/
+    - Requires authentication (valid JWT access token)
+    - Returns current user's profile data
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)

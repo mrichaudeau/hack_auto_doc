@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions
 from rest_framework import serializers
@@ -111,3 +111,68 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'email', 'first_name', 'last_name', 'auth_provider', 'date_joined')
         read_only_fields = ('id', 'email', 'auth_provider', 'date_joined')
+
+
+class LoginSerializer(serializers.Serializer):
+    """
+    Serializer for user login with email/password authentication.
+    Validates credentials and returns authenticated user.
+    """
+    email = serializers.EmailField(
+        required=True,
+        label="Email"
+    )
+    password = serializers.CharField(
+        write_only=True,
+        required=True,
+        style={'input_type': 'password'},
+        label="Mot de passe"
+    )
+
+    def validate(self, attrs):
+        """
+        Validate email and password, authenticate user.
+        Returns authenticated user or raises validation error.
+        """
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        if not email or not password:
+            raise serializers.ValidationError(
+                "L'email et le mot de passe sont requis."
+            )
+
+        # Normalize email to lowercase for case-insensitive lookup
+        email = email.lower()
+
+        # Check if user exists with this email (case-insensitive)
+        try:
+            user = User.objects.get(email__iexact=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError(
+                "Email ou mot de passe incorrect."
+            )
+
+        # Check if account is active (email verified)
+        if not user.is_active:
+            raise serializers.ValidationError(
+                "Compte non verifie. Veuillez verifier votre email."
+            )
+
+        # Authenticate with Django's authenticate() function
+        # This checks the password using the configured password hashers
+        authenticated_user = authenticate(
+            request=self.context.get('request'),
+            username=email,  # Using email as username
+            password=password
+        )
+
+        if authenticated_user is None:
+            # Authentication failed - incorrect password
+            raise serializers.ValidationError(
+                "Email ou mot de passe incorrect."
+            )
+
+        # Store authenticated user for access in view
+        attrs['user'] = authenticated_user
+        return attrs

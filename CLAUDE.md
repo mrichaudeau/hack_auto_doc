@@ -179,3 +179,4 @@ Each functional bloc document follows the structure:
 - Celery retry logic (3 attempts) for API failures
 - Async profile updates on subscription changes
 - Celery Beat for daily recurring scraping tasks
+- Refer to @docs\00_choix_technologique.md when making technological assumption.

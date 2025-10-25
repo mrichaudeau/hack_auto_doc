@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',  # Django CORS Headers
     'allauth',
     'allauth.account',
+    'django_celery_beat',  # Celery Beat (periodic tasks)
     # Local apps
     'accounts.apps.AccountsConfig',
 ]
@@ -294,9 +295,6 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': REDIS_URL,
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        },
         'KEY_PREFIX': 'techwatch',
         'TIMEOUT': 300,  # 5 minutes default timeout
     }

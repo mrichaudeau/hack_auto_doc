@@ -195,6 +195,14 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ],
     'EXCEPTION_HANDLER': 'accounts.exceptions.custom_exception_handler',  # Custom JWT error handling
+    # Rate Limiting Configuration (TASK-2.20)
+    'DEFAULT_THROTTLE_CLASSES': [],  # No default throttling (applied per-view)
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/hour',  # Anonymous users: 100 requests per hour
+        'user': '1000/hour',  # Authenticated users: 1000 requests per hour
+        'auth': '10/minute',  # Authentication endpoints: 10 attempts per minute (login, register)
+        'auth_burst': '3/minute',  # Strict burst limit for sensitive endpoints
+    }
 }
 
 # CORS Configuration

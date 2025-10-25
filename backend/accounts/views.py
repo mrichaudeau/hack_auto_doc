@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
@@ -18,6 +19,17 @@ User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
+# Custom Throttle Classes for Authentication (TASK-2.20)
+class AuthThrottle(AnonRateThrottle):
+    """Throttle for authentication endpoints (login, register)."""
+    scope = 'auth'
+
+
+class AuthBurstThrottle(AnonRateThrottle):
+    """Strict burst protection for authentication endpoints."""
+    scope = 'auth_burst'
+
+
 class RegisterView(APIView):
     """
     API endpoint for user registration.
@@ -29,6 +41,7 @@ class RegisterView(APIView):
     - Returns 201 with success message (no JWT until verified)
     """
     permission_classes = [AllowAny]
+    throttle_classes = [AuthThrottle, AuthBurstThrottle]  # Rate limiting
 
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
@@ -164,6 +177,7 @@ class ResendVerificationEmailView(APIView):
     - Returns 400 if email is already verified or doesn't exist
     """
     permission_classes = [AllowAny]
+    throttle_classes = [AuthThrottle]  # Rate limiting (no burst for resend)
 
     def post(self, request):
         email = request.data.get('email', '').lower()
@@ -237,6 +251,7 @@ class LoginView(APIView):
     - Logs all login attempts for security audit
     """
     permission_classes = [AllowAny]
+    throttle_classes = [AuthThrottle, AuthBurstThrottle]  # Rate limiting
 
     def post(self, request):
         serializer = LoginSerializer(data=request.data, context={'request': request})

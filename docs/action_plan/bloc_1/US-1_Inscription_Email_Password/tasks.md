@@ -26,11 +26,11 @@
      - `backend/accounts/managers.py` (nouveau)
      - `backend/config/settings.py` (AUTH_USER_MODEL)
    - **Acceptance Criteria**:
-     - [ ] Le modèle CustomUser est créé avec tous les champs requis
-     - [ ] L'email est unique et stocké en lowercase
-     - [ ] Le champ auth_provider a les valeurs par défaut appropriées
-     - [ ] CustomUserManager implémente create_user et create_superuser
-     - [ ] La migration initiale est créée sans erreurs
+     - [x] Le modèle CustomUser est créé avec tous les champs requis
+     - [x] L'email est unique et stocké en lowercase
+     - [x] Le champ auth_provider a les valeurs par défaut appropriées
+     - [x] CustomUserManager implémente create_user et create_superuser
+     - [x] La migration initiale est créée sans erreurs
    - **Dépendances**: None
    - **Effort estimé**: 3 heures
 
@@ -49,10 +49,10 @@
      - `backend/config/settings.py`
      - `backend/config/urls.py`
    - **Acceptance Criteria**:
-     - [ ] django-allauth est installé et configuré
-     - [ ] L'email est le seul champ d'identification requis
-     - [ ] La vérification d'email est obligatoire
-     - [ ] Les migrations allauth sont appliquées
+     - [x] django-allauth est installé et configuré
+     - [x] L'email est le seul champ d'identification requis
+     - [x] La vérification d'email est obligatoire
+     - [x] Les migrations allauth sont appliquées
    - **Dépendances**: TASK-1.1
    - **Effort estimé**: 2 heures
 
@@ -66,9 +66,9 @@
      - `backend/requirements.txt`
      - `backend/config/settings.py`
    - **Acceptance Criteria**:
-     - [ ] argon2-cffi est installé
-     - [ ] Argon2PasswordHasher est le premier hasher configuré
-     - [ ] Les nouveaux mots de passe sont hachés avec Argon2
+     - [x] argon2-cffi est installé
+     - [x] Argon2PasswordHasher est le premier hasher configuré
+     - [x] Les nouveaux mots de passe sont hachés avec Argon2
    - **Dépendances**: TASK-1.1
    - **Effort estimé**: 1 heure
 
@@ -83,10 +83,10 @@
      - `backend/accounts/validators.py` (nouveau)
      - `backend/config/settings.py`
    - **Acceptance Criteria**:
-     - [ ] Le validateur vérifie la longueur minimale de 8 caractères
-     - [ ] Le validateur vérifie la présence d'au moins 1 majuscule, 1 minuscule, 1 chiffre
-     - [ ] Les messages d'erreur sont explicites et en français
-     - [ ] Les mots de passe faibles sont rejetés
+     - [x] Le validateur vérifie la longueur minimale de 8 caractères
+     - [x] Le validateur vérifie la présence d'au moins 1 majuscule, 1 minuscule, 1 chiffre
+     - [x] Les messages d'erreur sont explicites et en français
+     - [x] Les mots de passe faibles sont rejetés
    - **Dépendances**: TASK-1.2
    - **Effort estimé**: 2 heures
 
@@ -102,11 +102,11 @@
    - **Fichiers impactés**:
      - `backend/accounts/serializers.py` (nouveau)
    - **Acceptance Criteria**:
-     - [ ] Le serializer valide tous les champs requis
-     - [ ] La confirmation de mot de passe est vérifiée
-     - [ ] L'email est vérifié pour unicité (case-insensitive)
-     - [ ] L'utilisateur est créé avec is_active=False
-     - [ ] L'email de vérification est déclenché automatiquement
+     - [x] Le serializer valide tous les champs requis
+     - [x] La confirmation de mot de passe est vérifiée
+     - [x] L'email est vérifié pour unicité (case-insensitive)
+     - [x] L'utilisateur est créé avec is_active=False
+     - [x] L'email de vérification est déclenché automatiquement
    - **Dépendances**: TASK-1.1, TASK-1.2, TASK-1.4
    - **Effort estimé**: 3 heures
 
@@ -123,11 +123,11 @@
      - `backend/accounts/urls.py` (nouveau)
      - `backend/config/urls.py`
    - **Acceptance Criteria**:
-     - [ ] L'endpoint POST /api/auth/register/ est accessible
-     - [ ] Une inscription valide retourne 201 avec un message de succès
-     - [ ] Les erreurs de validation retournent 400 avec détails
-     - [ ] Un email déjà utilisé retourne 409 ou 400 avec message clair
-     - [ ] Aucun JWT n'est retourné avant vérification email
+     - [x] L'endpoint POST /api/auth/register/ est accessible
+     - [x] Une inscription valide retourne 201 avec un message de succès
+     - [x] Les erreurs de validation retournent 400 avec détails
+     - [x] Un email déjà utilisé retourne 409 ou 400 avec message clair
+     - [x] Aucun JWT n'est retourné avant vérification email
    - **Dépendances**: TASK-1.5
    - **Effort estimé**: 2 heures
 
@@ -142,9 +142,9 @@
      - `backend/config/settings.py`
      - `env.backend.example`
    - **Acceptance Criteria**:
-     - [ ] EMAIL_BACKEND est configuré (console en dev, SMTP en prod)
-     - [ ] Les variables d'environnement sont documentées dans .env.example
-     - [ ] Un email de test peut être envoyé sans erreur
+     - [x] EMAIL_BACKEND est configuré (console en dev, SMTP en prod)
+     - [x] Les variables d'environnement sont documentées dans .env.example
+     - [x] Un email de test peut être envoyé sans erreur
    - **Dépendances**: None
    - **Effort estimé**: 2 heures
 
@@ -161,10 +161,10 @@
      - `backend/templates/account/email/email_confirmation_message.txt` (nouveau)
      - `backend/templates/account/email/email_confirmation_subject.txt` (nouveau)
    - **Acceptance Criteria**:
-     - [ ] Les templates HTML et texte sont créés
-     - [ ] Le lien de vérification est correctement généré
-     - [ ] Les messages sont en français et bien formatés
-     - [ ] Le branding est cohérent avec le projet
+     - [x] Les templates HTML et texte sont créés
+     - [x] Le lien de vérification est correctement généré
+     - [x] Les messages sont en français et bien formatés
+     - [x] Le branding est cohérent avec le projet
    - **Dépendances**: TASK-1.7
    - **Effort estimé**: 2 heures
 
@@ -179,10 +179,10 @@
      - `backend/accounts/views.py`
      - `backend/accounts/urls.py`
    - **Acceptance Criteria**:
-     - [ ] L'endpoint GET avec token valide active le compte (is_active=True)
-     - [ ] Un token valide retourne 200 avec message de succès
-     - [ ] Un token invalide retourne 400 avec message d'erreur
-     - [ ] Un token expiré retourne 400 avec possibilité de renvoyer
+     - [x] L'endpoint GET avec token valide active le compte (is_active=True)
+     - [x] Un token valide retourne 200 avec message de succès
+     - [x] Un token invalide retourne 400 avec message d'erreur
+     - [x] Un token expiré retourne 400 avec possibilité de renvoyer
    - **Dépendances**: TASK-1.8
    - **Effort estimé**: 2 heures
 
@@ -200,11 +200,11 @@
      - `frontend/src/components/auth/RegisterForm.jsx` (nouveau)
      - `frontend/src/components/auth/RegisterForm.module.css` (nouveau)
    - **Acceptance Criteria**:
-     - [ ] Le formulaire contient tous les champs requis
-     - [ ] La validation côté client fonctionne (email, mot de passe)
-     - [ ] Les erreurs sont affichées clairement sous chaque champ
-     - [ ] Le bouton submit est désactivé pendant le loading
-     - [ ] Le composant est responsive (mobile-first)
+     - [x] Le formulaire contient tous les champs requis
+     - [x] La validation côté client fonctionne (email, mot de passe)
+     - [x] Les erreurs sont affichées clairement sous chaque champ
+     - [x] Le bouton submit est désactivé pendant le loading
+     - [x] Le composant est responsive (mobile-first)
    - **Dépendances**: None
    - **Effort estimé**: 4 heures
 
@@ -220,11 +220,11 @@
      - `frontend/src/pages/auth/RegisterPage.jsx` (nouveau)
      - `frontend/src/services/authService.js` (nouveau)
    - **Acceptance Criteria**:
-     - [ ] La page /register est accessible
-     - [ ] La soumission du formulaire appelle correctement l'API
-     - [ ] Un succès affiche un message et redirige vers page de confirmation
-     - [ ] Les erreurs API sont affichées clairement
-     - [ ] Le lien vers /login est présent et fonctionnel
+     - [x] La page /register est accessible
+     - [x] La soumission du formulaire appelle correctement l'API
+     - [x] Un succès affiche un message et redirige vers page de confirmation
+     - [x] Les erreurs API sont affichées clairement
+     - [x] Le lien vers /login est présent et fonctionnel
    - **Dépendances**: TASK-1.10
    - **Effort estimé**: 3 heures
 
@@ -239,10 +239,10 @@
    - **Fichiers impactés**:
      - `frontend/src/pages/auth/EmailConfirmationPendingPage.jsx` (nouveau)
    - **Acceptance Criteria**:
-     - [ ] La page affiche le message de confirmation
-     - [ ] L'email de l'utilisateur est affiché
-     - [ ] Le bouton "Renvoyer" fonctionne avec cooldown
-     - [ ] Le design est clair et professionnel
+     - [x] La page affiche le message de confirmation
+     - [x] L'email de l'utilisateur est affiché
+     - [x] Le bouton "Renvoyer" fonctionne avec cooldown
+     - [x] Le design est clair et professionnel
    - **Dépendances**: TASK-1.11
    - **Effort estimé**: 2 heures
 
@@ -257,10 +257,10 @@
    - **Fichiers impactés**:
      - `frontend/src/pages/auth/EmailVerifiedPage.jsx` (nouveau)
    - **Acceptance Criteria**:
-     - [ ] La page extrait le token de l'URL
-     - [ ] L'API de vérification est appelée automatiquement
-     - [ ] Le succès affiche un message et redirige vers /login
-     - [ ] L'erreur affiche un message clair avec option de renvoyer l'email
+     - [x] La page extrait le token de l'URL
+     - [x] L'API de vérification est appelée automatiquement
+     - [x] Le succès affiche un message et redirige vers /login
+     - [x] L'erreur affiche un message clair avec option de renvoyer l'email
    - **Dépendances**: TASK-1.9
    - **Effort estimé**: 2 heures
 
@@ -275,9 +275,9 @@
      - `frontend/src/App.jsx`
      - `frontend/src/routes/index.jsx` (si applicable)
    - **Acceptance Criteria**:
-     - [ ] Toutes les routes d'inscription sont configurées
-     - [ ] La navigation entre les pages fonctionne
-     - [ ] Les routes sont accessibles sans authentification
+     - [x] Toutes les routes d'inscription sont configurées
+     - [x] La navigation entre les pages fonctionne
+     - [x] Les routes sont accessibles sans authentification
    - **Dépendances**: TASK-1.11, TASK-1.12, TASK-1.13
    - **Effort estimé**: 1 heure
 
@@ -294,9 +294,9 @@
    - **Fichiers impactés**:
      - `backend/accounts/tests/test_models.py` (nouveau)
    - **Acceptance Criteria**:
-     - [ ] Au moins 5 tests unitaires passent
-     - [ ] La couverture du modèle User est > 80%
-     - [ ] Les tests vérifient l'unicité email case-insensitive
+     - [x] Au moins 5 tests unitaires passent (14 tests créés)
+     - [x] La couverture du modèle User est > 80%
+     - [x] Les tests vérifient l'unicité email case-insensitive
    - **Dépendances**: TASK-1.1, TASK-1.2, TASK-1.3
    - **Effort estimé**: 2 heures
 
@@ -312,9 +312,9 @@
    - **Fichiers impactés**:
      - `backend/accounts/tests/test_views.py` (nouveau)
    - **Acceptance Criteria**:
-     - [ ] Au moins 6 tests d'intégration passent
-     - [ ] Tous les cas d'erreur sont couverts
-     - [ ] L'envoi d'email est mocké et vérifié
+     - [x] Au moins 6 tests d'intégration passent (17 tests créés)
+     - [x] Tous les cas d'erreur sont couverts
+     - [x] L'envoi d'email est mocké et vérifié
    - **Dépendances**: TASK-1.6, TASK-1.8
    - **Effort estimé**: 3 heures
 
@@ -330,9 +330,9 @@
    - **Fichiers impactés**:
      - `frontend/cypress/e2e/auth/register.cy.js` (nouveau)
    - **Acceptance Criteria**:
-     - [ ] Le test E2E du flow complet passe
-     - [ ] Les cas d'erreur sont testés
-     - [ ] Le test est stable et reproductible
+     - [x] Le test E2E du flow complet passe (12 scénarios de test)
+     - [x] Les cas d'erreur sont testés
+     - [x] Le test est stable et reproductible
    - **Dépendances**: TASK-1.14
    - **Effort estimé**: 3 heures
 
@@ -349,9 +349,9 @@
      - `env.backend.example`
      - `README.md`
    - **Acceptance Criteria**:
-     - [ ] Toutes les variables sont documentées avec exemples
-     - [ ] Le README contient les instructions de configuration
-     - [ ] Les valeurs par défaut pour dev sont sécurisées
+     - [x] Toutes les variables sont documentées avec exemples
+     - [x] Le README contient les instructions de configuration
+     - [x] Les valeurs par défaut pour dev sont sécurisées
    - **Dépendances**: None
    - **Effort estimé**: 1 heure
 
@@ -366,9 +366,9 @@
      - `backend/requirements.txt`
      - `backend/config/settings.py`
    - **Acceptance Criteria**:
-     - [ ] django-cors-headers est installé
-     - [ ] Les requêtes du frontend vers le backend fonctionnent
-     - [ ] CORS est configuré de manière sécurisée
+     - [x] django-cors-headers est installé
+     - [x] Les requêtes du frontend vers le backend fonctionnent
+     - [x] CORS est configuré de manière sécurisée
    - **Dépendances**: None
    - **Effort estimé**: 1 heure
 

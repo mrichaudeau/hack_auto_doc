@@ -37,7 +37,13 @@ yarn-error.log*
 Thumbs.db
 
 # Docker
-.dockerignore
+# Docker volumes and data directories
+postgres_data/
+redis_data/
+docker-compose.override.yml
+
+# Keep .dockerignore files in version control
+# (They're needed for Docker builds, contain no secrets)
 
 # Claude pluggins
 plugins/
@@ -46,3 +52,7 @@ plugins/
 frontend/cypress/screenshots/
 frontend/cypress/videos/
 frontend/cypress/downloads/
+
+# Functional Spec Planner
+# Keep generated specs in git, but ignore GitHub issue mappings
+specs/**/github-issues.json

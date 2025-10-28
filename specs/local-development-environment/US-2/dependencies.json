@@ -1,0 +1,235 @@
+{
+  "userStory": "US-2",
+  "userStoryTitle": "Database Service with Vector Support",
+  "feature": "local-development-environment",
+  "priority": "P0",
+  "generatedAt": "2025-01-27",
+  "nodes": [
+    {
+      "id": "TASK-2.1",
+      "title": "Define PostgreSQL service in docker-compose.yml",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.2",
+      "title": "Create pgvector initialization script",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.3",
+      "title": "Configure database health checks",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.4",
+      "title": "Create named volume for data persistence",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "0.5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.5",
+      "title": "Configure database environment variables",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.6",
+      "title": "Document database connection and usage",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.7",
+      "title": "Write database connectivity tests",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.8",
+      "title": "Write pgvector extension verification tests",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "1.5h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-2.1",
+      "to": "TASK-2.2",
+      "type": "blocks",
+      "reason": "Database service must be defined before creating initialization script"
+    },
+    {
+      "from": "TASK-2.1",
+      "to": "TASK-2.3",
+      "type": "blocks",
+      "reason": "Database service must be defined before configuring health checks"
+    },
+    {
+      "from": "TASK-2.1",
+      "to": "TASK-2.4",
+      "type": "blocks",
+      "reason": "Database service must be defined before creating volumes"
+    },
+    {
+      "from": "TASK-2.1",
+      "to": "TASK-2.5",
+      "type": "blocks",
+      "reason": "Database service must be defined before configuring environment variables"
+    },
+    {
+      "from": "TASK-2.1",
+      "to": "TASK-2.6",
+      "type": "blocks",
+      "reason": "Database service must exist before documenting it"
+    },
+    {
+      "from": "TASK-2.2",
+      "to": "TASK-2.6",
+      "type": "blocks",
+      "reason": "pgvector setup must be complete before documenting usage"
+    },
+    {
+      "from": "TASK-2.1",
+      "to": "TASK-2.7",
+      "type": "blocks",
+      "reason": "Database service must exist before testing connectivity"
+    },
+    {
+      "from": "TASK-2.3",
+      "to": "TASK-2.7",
+      "type": "blocks",
+      "reason": "Health checks must be configured before testing them"
+    },
+    {
+      "from": "TASK-2.2",
+      "to": "TASK-2.8",
+      "type": "blocks",
+      "reason": "pgvector initialization must be complete before testing extension"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Core Database Setup",
+      "description": "Define PostgreSQL service with volume and environment configuration",
+      "estimatedTime": "2-3 hours",
+      "tasks": ["TASK-2.1", "TASK-2.4", "TASK-2.5"]
+    },
+    {
+      "phase": 2,
+      "name": "Extensions and Health",
+      "description": "Enable pgvector extension and configure health monitoring",
+      "estimatedTime": "2-2.5 hours",
+      "tasks": ["TASK-2.2", "TASK-2.3"]
+    },
+    {
+      "phase": 3,
+      "name": "Documentation and Testing",
+      "description": "Document database usage and verify functionality",
+      "estimatedTime": "3.5-4 hours",
+      "tasks": ["TASK-2.6", "TASK-2.7", "TASK-2.8"]
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Database Configuration",
+      "description": "After TASK-2.1, these configuration tasks can run in parallel",
+      "tasks": ["TASK-2.2", "TASK-2.3", "TASK-2.4", "TASK-2.5"],
+      "canStartAfter": ["TASK-2.1"]
+    },
+    {
+      "group": "Testing Suite",
+      "description": "Both test types can be developed and run in parallel",
+      "tasks": ["TASK-2.7", "TASK-2.8"],
+      "canStartAfter": ["TASK-2.2", "TASK-2.3"]
+    }
+  ],
+  "criticalPath": [
+    "TASK-2.1",
+    "TASK-2.2",
+    "TASK-2.6"
+  ],
+  "summary": {
+    "totalTasks": 8,
+    "byType": {
+      "infrastructure": 6,
+      "testing": 2
+    },
+    "bySpecialty": {
+      "config": 5,
+      "documentation": 1,
+      "integration": 2
+    },
+    "totalEffortHours": 11,
+    "totalEffortDays": "1.5 days (1 developer)",
+    "parallelEffortDays": "1 day (with parallelization)",
+    "averageTaskEffort": "1.4h",
+    "longestTask": {
+      "id": "TASK-2.1",
+      "title": "Define PostgreSQL service in docker-compose.yml",
+      "effort": "2h"
+    },
+    "shortestTask": {
+      "id": "TASK-2.4",
+      "title": "Create named volume for data persistence",
+      "effort": "0.5h"
+    }
+  },
+  "metadata": {
+    "generatedBy": "functional-spec-planner",
+    "skillVersion": "1.0",
+    "technologyStack": {
+      "database": "PostgreSQL 15 with pgvector extension",
+      "orchestration": "Docker Compose v2",
+      "containerImage": "ankane/pgvector:pg15 or postgres:15",
+      "testing": "Bash scripts, Python with psycopg2"
+    },
+    "performanceTargets": {
+      "startupTime": "< 10 seconds",
+      "simpleQueryResponse": "< 100ms",
+      "concurrentConnections": "20+ connections",
+      "vectorSearchTime": "< 500ms for 1000 vectors"
+    },
+    "securityRequirements": {
+      "portExposure": "Internal Docker network only (not exposed to host)",
+      "credentialManagement": "Environment variables in .env.backend",
+      "passwordPolicy": "Minimum 16 characters, mixed case, numbers, symbols"
+    },
+    "dependencies": {
+      "dependsOn": ["US-1: Docker Compose Service Orchestration"],
+      "blocks": [
+        "US-4: Django Backend API Service",
+        "US-6: Celery Worker Service",
+        "US-7: Celery Beat Scheduler",
+        "US-9: Database Initialization and Migrations"
+      ]
+    }
+  }
+}

@@ -1,46 +1,57 @@
-# Multi-stage Dockerfile for Django backend
-FROM python:3.13-slim as base
+# ============================================
+# Stage 1: Builder - Install dependencies
+# ============================================
+FROM python:3.13-slim as builder
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    POETRY_VERSION=2.2.1 \
-    POETRY_HOME="/opt/poetry" \
-    POETRY_NO_INTERACTION=1 \
-    POETRY_VIRTUALENVS_CREATE=false
+ENV POETRY_VERSION=2.2.1 \
+    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_NO_INTERACTION=1
 
-# Install system dependencies
+# Install build dependencies
 RUN apt-get update && apt-get install -y \
-    gcc \
-    postgresql-client \
+    build-essential \
+    libpq-dev \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
-RUN curl -sSL https://install.python-poetry.org | python3 - && \
-    ln -s /opt/poetry/bin/poetry /usr/local/bin/poetry
+RUN pip install --no-cache-dir poetry==${POETRY_VERSION}
 
-# Set working directory
 WORKDIR /app
 
-# Copy dependency files
+# Copy dependency files and install dependencies
 COPY pyproject.toml poetry.lock ./
+RUN poetry install --only main --no-root
 
-# Install Python dependencies only (not the project itself)
-RUN poetry install --no-root --only main
+# ============================================
+# Stage 2: Runtime - Minimal production image
+# ============================================
+FROM python:3.13-slim as runtime
 
-# Copy rest of the project
-COPY . .
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
 
-# Create necessary directories
-RUN mkdir -p /app/staticfiles /app/media
+# Install runtime dependencies only
+RUN apt-get update && apt-get install -y \
+    postgresql-client \
+    libpq5 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Expose port
+# Create non-root user
+RUN addgroup --system django && adduser --system --group django
+
+WORKDIR /app
+
+# Copy installed packages from builder
+COPY --from=builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+
+# Copy application code
+COPY --chown=django:django . .
+
+USER django
+
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/api/health/', timeout=5)" || exit 1
-
-# Default command (can be overridden in docker-compose)
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

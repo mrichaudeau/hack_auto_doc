@@ -1,63 +1,76 @@
-# Python cache files
+# Version Control
+.git/
+.gitignore
+.gitattributes
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-
-# Virtual environments
-.venv/
-venv/
-ENV/
-env/
-
-# Poetry
-poetry.lock.bak
-
-# Django
-*.log
-db.sqlite3
-db.sqlite3-journal
-/staticfiles/
-/media/
-
-# Testing
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
 .pytest_cache/
 .coverage
-.coverage.*
 htmlcov/
-.tox/
 *.cover
+.hypothesis/
 
-# IDE
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv
+
+# Environment Files (NEVER include in Docker images!)
+.env
+.env.local
+.env.*.local
+.env.backend
+
+# IDE and Editor
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 .DS_Store
-
-# Environment variables
-.env
-.env.*
-!.env.example
-
-# Git
-.git/
-.gitignore
-.gitattributes
+*.sublime-project
+*.sublime-workspace
 
 # Documentation
+README.md
 docs/
+*.md
+!requirements.md
+
+# Tests
+tests/
+test_*.py
+*_test.py
 
 # CI/CD
 .github/
 .gitlab-ci.yml
+Jenkinsfile
+.circleci/
 
-# Celery
-celerybeat-schedule
-celerybeat.pid
+# Docker
+Dockerfile
+docker-compose.yml
+docker-compose.*.yml
+.dockerignore
 
-# Misc
-*.bak
-*.tmp
-*.temp
+# Database
+*.sqlite3
+*.db
+db.sqlite3
+
+# Static and Media (generated at runtime)
+staticfiles/
+media/
+
+# Logs
+*.log
+logs/

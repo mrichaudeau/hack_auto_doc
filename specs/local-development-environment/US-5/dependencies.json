@@ -1,0 +1,363 @@
+{
+  "userStory": "US-5",
+  "feature": "local-development-environment",
+  "title": "React Frontend SPA Service",
+  "priority": "P0",
+  "generatedAt": "2025-01-29",
+  "nodes": [
+    {
+      "id": "TASK-5.1",
+      "title": "Create frontend Dockerfile with Node 20",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.2",
+      "title": "Define frontend service in docker-compose.yml",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.3",
+      "title": "Configure volume mounting for HMR",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1.5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.4",
+      "title": "Optimize node_modules with named volume",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.5",
+      "title": "Initialize Vite + React project",
+      "type": "frontend",
+      "specialty": "component",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.6",
+      "title": "Configure Vite dev server settings",
+      "type": "frontend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.7",
+      "title": "Configure API proxy to backend",
+      "type": "frontend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.8",
+      "title": "Set up environment variable management",
+      "type": "frontend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1.5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.9",
+      "title": "Configure HMR and WebSocket settings",
+      "type": "frontend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1.5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.10",
+      "title": "Enable source maps for debugging",
+      "type": "frontend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.11",
+      "title": "Test frontend service startup",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.12",
+      "title": "Test HMR functionality",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.13",
+      "title": "Test API proxy and backend integration",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2.5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.14",
+      "title": "Document frontend development workflow",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P0",
+      "effort": "1.5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.15",
+      "title": "Document troubleshooting guide",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-5.1",
+      "to": "TASK-5.2",
+      "type": "blocks",
+      "reason": "Dockerfile must exist before defining service in docker-compose"
+    },
+    {
+      "from": "TASK-5.2",
+      "to": "TASK-5.3",
+      "type": "blocks",
+      "reason": "Service must be defined before configuring volumes"
+    },
+    {
+      "from": "TASK-5.2",
+      "to": "TASK-5.4",
+      "type": "blocks",
+      "reason": "Service must be defined before optimizing node_modules"
+    },
+    {
+      "from": "TASK-5.2",
+      "to": "TASK-5.11",
+      "type": "blocks",
+      "reason": "Service must be defined before testing startup"
+    },
+    {
+      "from": "TASK-5.5",
+      "to": "TASK-5.6",
+      "type": "blocks",
+      "reason": "Vite project must be initialized before configuration"
+    },
+    {
+      "from": "TASK-5.5",
+      "to": "TASK-5.8",
+      "type": "blocks",
+      "reason": "Project must exist before setting up environment variables"
+    },
+    {
+      "from": "TASK-5.5",
+      "to": "TASK-5.14",
+      "type": "blocks",
+      "reason": "Project must exist before documenting workflow"
+    },
+    {
+      "from": "TASK-5.6",
+      "to": "TASK-5.7",
+      "type": "blocks",
+      "reason": "Dev server must be configured before adding proxy"
+    },
+    {
+      "from": "TASK-5.6",
+      "to": "TASK-5.9",
+      "type": "blocks",
+      "reason": "Dev server must be configured before HMR configuration"
+    },
+    {
+      "from": "TASK-5.6",
+      "to": "TASK-5.10",
+      "type": "blocks",
+      "reason": "Dev server must be configured before enabling source maps"
+    },
+    {
+      "from": "TASK-5.3",
+      "to": "TASK-5.12",
+      "type": "blocks",
+      "reason": "Volume mounting must be configured before testing HMR"
+    },
+    {
+      "from": "TASK-5.9",
+      "to": "TASK-5.12",
+      "type": "blocks",
+      "reason": "HMR must be configured before testing"
+    },
+    {
+      "from": "TASK-5.7",
+      "to": "TASK-5.13",
+      "type": "blocks",
+      "reason": "API proxy must be configured before testing"
+    },
+    {
+      "from": "TASK-5.11",
+      "to": "TASK-5.15",
+      "type": "blocks",
+      "reason": "Testing reveals issues to document in troubleshooting"
+    },
+    {
+      "from": "TASK-5.12",
+      "to": "TASK-5.15",
+      "type": "blocks",
+      "reason": "HMR testing reveals issues to document"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Infrastructure Setup",
+      "description": "Docker configuration, volumes, and service orchestration",
+      "tasks": ["TASK-5.1", "TASK-5.5", "TASK-5.2", "TASK-5.3", "TASK-5.4"],
+      "estimatedEffort": "8.5h"
+    },
+    {
+      "phase": 2,
+      "name": "Frontend Configuration",
+      "description": "Vite dev server, API proxy, HMR, environment variables, source maps",
+      "tasks": ["TASK-5.6", "TASK-5.7", "TASK-5.8", "TASK-5.9", "TASK-5.10"],
+      "estimatedEffort": "8h"
+    },
+    {
+      "phase": 3,
+      "name": "Testing",
+      "description": "Integration tests for startup, HMR, and API proxy",
+      "tasks": ["TASK-5.11", "TASK-5.12", "TASK-5.13"],
+      "estimatedEffort": "6.5h"
+    },
+    {
+      "phase": 4,
+      "name": "Documentation",
+      "description": "Development workflow guide and troubleshooting documentation",
+      "tasks": ["TASK-5.14", "TASK-5.15"],
+      "estimatedEffort": "2.5h"
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Phase1-Parallel-Init",
+      "description": "Dockerfile and Vite project initialization can run in parallel",
+      "tasks": ["TASK-5.1", "TASK-5.5"],
+      "canStartAfter": [],
+      "estimatedEffort": "2h"
+    },
+    {
+      "group": "Phase2-Env-Parallel",
+      "description": "Environment variables can be set up while configuring Vite",
+      "tasks": ["TASK-5.8"],
+      "canStartAfter": ["TASK-5.5"],
+      "estimatedEffort": "1.5h"
+    },
+    {
+      "group": "Phase3-Testing-Parallel",
+      "description": "Startup and HMR tests can run in parallel",
+      "tasks": ["TASK-5.11", "TASK-5.12"],
+      "canStartAfter": ["TASK-5.2", "TASK-5.3", "TASK-5.9"],
+      "estimatedEffort": "2h"
+    },
+    {
+      "group": "Phase4-Docs-Parallel",
+      "description": "Workflow and troubleshooting docs can be written in parallel",
+      "tasks": ["TASK-5.14", "TASK-5.15"],
+      "canStartAfter": ["TASK-5.11", "TASK-5.12"],
+      "estimatedEffort": "1.5h"
+    }
+  ],
+  "criticalPath": [
+    "TASK-5.1",
+    "TASK-5.2",
+    "TASK-5.6",
+    "TASK-5.7",
+    "TASK-5.13"
+  ],
+  "summary": {
+    "totalTasks": 15,
+    "byType": {
+      "infrastructure": 4,
+      "frontend": 6,
+      "testing": 3,
+      "documentation": 2
+    },
+    "bySpecialty": {
+      "config": 11,
+      "component": 1,
+      "integration": 3,
+      "documentation": 2
+    },
+    "totalEffortHours": 27.5,
+    "totalEffortDays": "3.4 days (sequential)",
+    "parallelizedEffortDays": "1.75 days (with 2 developers)",
+    "criticalPathHours": 16.5
+  },
+  "dependencies": {
+    "dependsOn": [
+      {
+        "userStory": "US-1",
+        "title": "Docker Compose Service Orchestration",
+        "reason": "Must have Docker Compose infrastructure before adding frontend service"
+      },
+      {
+        "userStory": "US-4",
+        "title": "Django Backend API Service",
+        "reason": "Frontend requires backend API for proxy testing and integration"
+      }
+    ],
+    "blocks": []
+  },
+  "risks": [
+    {
+      "id": "RISK-5.1",
+      "description": "HMR WebSocket connection issues in Docker",
+      "impact": "High",
+      "mitigation": "Configure HMR with correct host/port, use polling fallback"
+    },
+    {
+      "id": "RISK-5.2",
+      "description": "node_modules performance on Windows",
+      "impact": "High",
+      "mitigation": "Use named volume for node_modules (critical optimization)"
+    },
+    {
+      "id": "RISK-5.3",
+      "description": "API proxy timeout or errors",
+      "impact": "Medium",
+      "mitigation": "Configure reasonable timeout, clear error messages"
+    },
+    {
+      "id": "RISK-5.4",
+      "description": "File watching limits on Linux/macOS",
+      "impact": "Medium",
+      "mitigation": "Document how to increase inotify limits in troubleshooting guide"
+    }
+  ]
+}

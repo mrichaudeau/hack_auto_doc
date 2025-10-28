@@ -1,0 +1,383 @@
+{
+  "userStory": "US-3",
+  "feature": "local-development-environment",
+  "title": "Redis Broker and Cache Service",
+  "priority": "P0",
+  "generatedAt": "2025-01-29",
+  "nodes": [
+    {
+      "id": "TASK-3.1",
+      "title": "Define Redis service in docker-compose.yml",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.2",
+      "title": "Create named volume for Redis persistence",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.3",
+      "title": "Configure Redis health check",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1.5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.4",
+      "title": "Configure Redis memory policy and limits",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1.5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.5",
+      "title": "Add Redis client dependencies to Poetry",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.6",
+      "title": "Configure Celery broker URL",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.7",
+      "title": "Configure Django cache backend",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.8",
+      "title": "Create Redis connection health utility",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.9",
+      "title": "Test Redis service startup and health",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "1.5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.10",
+      "title": "Test Celery broker connectivity",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.11",
+      "title": "Test cache operations",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.12",
+      "title": "Test cross-platform compatibility",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.13",
+      "title": "Document Redis configuration",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.14",
+      "title": "Document Redis CLI debugging commands",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-3.1",
+      "to": "TASK-3.2",
+      "type": "blocks",
+      "reason": "Redis service must be defined before creating volume"
+    },
+    {
+      "from": "TASK-3.1",
+      "to": "TASK-3.3",
+      "type": "blocks",
+      "reason": "Redis service must be defined before configuring health check"
+    },
+    {
+      "from": "TASK-3.1",
+      "to": "TASK-3.4",
+      "type": "blocks",
+      "reason": "Redis service must be defined before configuring memory policy"
+    },
+    {
+      "from": "TASK-3.1",
+      "to": "TASK-3.6",
+      "type": "blocks",
+      "reason": "Redis service must exist before configuring broker URL"
+    },
+    {
+      "from": "TASK-3.1",
+      "to": "TASK-3.7",
+      "type": "blocks",
+      "reason": "Redis service must exist before configuring cache backend"
+    },
+    {
+      "from": "TASK-3.1",
+      "to": "TASK-3.9",
+      "type": "blocks",
+      "reason": "Redis service must be defined before testing startup"
+    },
+    {
+      "from": "TASK-3.1",
+      "to": "TASK-3.13",
+      "type": "blocks",
+      "reason": "Configuration must exist before documenting"
+    },
+    {
+      "from": "TASK-3.1",
+      "to": "TASK-3.14",
+      "type": "blocks",
+      "reason": "Service must exist before documenting CLI commands"
+    },
+    {
+      "from": "TASK-3.5",
+      "to": "TASK-3.6",
+      "type": "blocks",
+      "reason": "Redis client library must be installed before configuring Celery"
+    },
+    {
+      "from": "TASK-3.5",
+      "to": "TASK-3.7",
+      "type": "blocks",
+      "reason": "Redis client library must be installed before configuring cache"
+    },
+    {
+      "from": "TASK-3.5",
+      "to": "TASK-3.8",
+      "type": "blocks",
+      "reason": "Redis client library must be installed before creating health utility"
+    },
+    {
+      "from": "TASK-3.3",
+      "to": "TASK-3.9",
+      "type": "blocks",
+      "reason": "Health check must be configured before testing"
+    },
+    {
+      "from": "TASK-3.6",
+      "to": "TASK-3.10",
+      "type": "blocks",
+      "reason": "Broker URL must be configured before testing connectivity"
+    },
+    {
+      "from": "TASK-3.6",
+      "to": "TASK-3.13",
+      "type": "blocks",
+      "reason": "Configuration must exist before documenting"
+    },
+    {
+      "from": "TASK-3.7",
+      "to": "TASK-3.11",
+      "type": "blocks",
+      "reason": "Cache backend must be configured before testing operations"
+    },
+    {
+      "from": "TASK-3.7",
+      "to": "TASK-3.13",
+      "type": "blocks",
+      "reason": "Configuration must exist before documenting"
+    },
+    {
+      "from": "TASK-3.9",
+      "to": "TASK-3.12",
+      "type": "blocks",
+      "reason": "Basic startup tests must pass before cross-platform testing"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Infrastructure Setup",
+      "description": "Docker Compose service definition, volumes, health checks, and memory configuration",
+      "tasks": ["TASK-3.1", "TASK-3.2", "TASK-3.3", "TASK-3.4"],
+      "estimatedEffort": "6h"
+    },
+    {
+      "phase": 2,
+      "name": "Backend Configuration",
+      "description": "Add dependencies, configure Celery broker, Django cache, and health utilities",
+      "tasks": ["TASK-3.5", "TASK-3.6", "TASK-3.7", "TASK-3.8"],
+      "estimatedEffort": "7h"
+    },
+    {
+      "phase": 3,
+      "name": "Testing",
+      "description": "Integration tests for service startup, broker connectivity, cache operations, and cross-platform compatibility",
+      "tasks": ["TASK-3.9", "TASK-3.10", "TASK-3.11", "TASK-3.12"],
+      "estimatedEffort": "7.5h"
+    },
+    {
+      "phase": 4,
+      "name": "Documentation",
+      "description": "Document Redis configuration and CLI debugging commands",
+      "tasks": ["TASK-3.13", "TASK-3.14"],
+      "estimatedEffort": "2h"
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Phase1-Infrastructure",
+      "description": "Infrastructure tasks that can run in parallel after TASK-3.1",
+      "tasks": ["TASK-3.2", "TASK-3.3", "TASK-3.4"],
+      "canStartAfter": ["TASK-3.1"],
+      "estimatedEffort": "1.5h"
+    },
+    {
+      "group": "Phase1-Backend-Parallel",
+      "description": "Backend dependency installation can run alongside infrastructure setup",
+      "tasks": ["TASK-3.5"],
+      "canStartAfter": [],
+      "estimatedEffort": "1h"
+    },
+    {
+      "group": "Phase2-Backend-Config",
+      "description": "Backend configuration tasks that can run in parallel",
+      "tasks": ["TASK-3.6", "TASK-3.7"],
+      "canStartAfter": ["TASK-3.1", "TASK-3.5"],
+      "estimatedEffort": "2h"
+    },
+    {
+      "group": "Phase3-Testing-Parallel",
+      "description": "Independent test suites that can run in parallel",
+      "tasks": ["TASK-3.10", "TASK-3.11"],
+      "canStartAfter": ["TASK-3.6", "TASK-3.7"],
+      "estimatedEffort": "2h"
+    },
+    {
+      "group": "Phase4-Documentation-Parallel",
+      "description": "Documentation tasks that can run in parallel",
+      "tasks": ["TASK-3.13", "TASK-3.14"],
+      "canStartAfter": ["TASK-3.1", "TASK-3.6", "TASK-3.7"],
+      "estimatedEffort": "1h"
+    }
+  ],
+  "criticalPath": [
+    "TASK-3.1",
+    "TASK-3.6",
+    "TASK-3.10",
+    "TASK-3.12"
+  ],
+  "summary": {
+    "totalTasks": 14,
+    "byType": {
+      "infrastructure": 4,
+      "backend": 4,
+      "testing": 4,
+      "documentation": 2
+    },
+    "bySpecialty": {
+      "config": 7,
+      "api": 1,
+      "integration": 4,
+      "documentation": 2
+    },
+    "totalEffortHours": 22.5,
+    "totalEffortDays": "2.8 days (sequential)",
+    "parallelizedEffortDays": "1.7 days (with 2 developers)",
+    "criticalPathHours": 13.5
+  },
+  "dependencies": {
+    "dependsOn": [
+      {
+        "userStory": "US-1",
+        "title": "Docker Compose Service Orchestration",
+        "reason": "Must have Docker Compose infrastructure before adding Redis service"
+      }
+    ],
+    "blocks": [
+      {
+        "userStory": "US-4",
+        "title": "Django Backend API Service",
+        "reason": "Backend requires Redis for caching"
+      },
+      {
+        "userStory": "US-6",
+        "title": "Celery Worker Service for AI Pipeline",
+        "reason": "Workers require Redis broker for task queues"
+      },
+      {
+        "userStory": "US-7",
+        "title": "Celery Beat Scheduler Service",
+        "reason": "Scheduler requires Redis for schedule storage and task dispatch"
+      }
+    ]
+  },
+  "risks": [
+    {
+      "id": "RISK-3.1",
+      "description": "Memory exhaustion in development",
+      "impact": "High",
+      "mitigation": "Configure maxmemory=256MB and allkeys-lru eviction policy"
+    },
+    {
+      "id": "RISK-3.2",
+      "description": "Data loss on container restart",
+      "impact": "Medium",
+      "mitigation": "Use named volumes for persistence, document acceptable data loss scenarios"
+    },
+    {
+      "id": "RISK-3.3",
+      "description": "Port conflicts on developer machines",
+      "impact": "Low",
+      "mitigation": "Don't expose 6379 to host (internal only), document conflict resolution"
+    },
+    {
+      "id": "RISK-3.4",
+      "description": "Cross-platform volume performance differences",
+      "impact": "Medium",
+      "mitigation": "Use named volumes, test on all platforms (TASK-3.12)"
+    }
+  ]
+}

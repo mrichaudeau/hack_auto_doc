@@ -1,0 +1,435 @@
+{
+  "userStory": "US-4",
+  "feature": "local-development-environment",
+  "title": "Django Backend API Service",
+  "priority": "P0",
+  "generatedAt": "2025-01-29",
+  "nodes": [
+    {
+      "id": "TASK-4.1",
+      "title": "Create backend Dockerfile with Poetry",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.2",
+      "title": "Define backend service in docker-compose.yml",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.3",
+      "title": "Configure source code volume mounting",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.4",
+      "title": "Add core backend dependencies via Poetry",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.5",
+      "title": "Configure multi-stage Dockerfile for optimization",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.6",
+      "title": "Initialize Django project structure",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.7",
+      "title": "Configure Django settings for development",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.8",
+      "title": "Configure database connection settings",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.9",
+      "title": "Configure Redis cache and Celery broker",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.10",
+      "title": "Implement health check API endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.11",
+      "title": "Configure CORS for frontend requests",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1.5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.12",
+      "title": "Configure static files for Django Admin",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.13",
+      "title": "Set up Django Admin interface",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1.5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.14",
+      "title": "Test backend service startup",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.15",
+      "title": "Test database and Redis connectivity",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.16",
+      "title": "Test hot reload functionality",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.17",
+      "title": "Test API endpoints and admin interface",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.18",
+      "title": "Document API endpoints and development workflow",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-4.1",
+      "to": "TASK-4.2",
+      "type": "blocks",
+      "reason": "Dockerfile must exist before defining service in docker-compose"
+    },
+    {
+      "from": "TASK-4.1",
+      "to": "TASK-4.5",
+      "type": "blocks",
+      "reason": "Initial Dockerfile must exist before optimization"
+    },
+    {
+      "from": "TASK-4.2",
+      "to": "TASK-4.3",
+      "type": "blocks",
+      "reason": "Service must be defined before configuring volumes"
+    },
+    {
+      "from": "TASK-4.2",
+      "to": "TASK-4.14",
+      "type": "blocks",
+      "reason": "Service must be defined before testing startup"
+    },
+    {
+      "from": "TASK-4.4",
+      "to": "TASK-4.6",
+      "type": "blocks",
+      "reason": "Dependencies must be installed before initializing Django"
+    },
+    {
+      "from": "TASK-4.6",
+      "to": "TASK-4.7",
+      "type": "blocks",
+      "reason": "Project structure must exist before configuring settings"
+    },
+    {
+      "from": "TASK-4.6",
+      "to": "TASK-4.10",
+      "type": "blocks",
+      "reason": "Project structure must exist before implementing endpoints"
+    },
+    {
+      "from": "TASK-4.6",
+      "to": "TASK-4.13",
+      "type": "blocks",
+      "reason": "Project structure must exist before setting up admin"
+    },
+    {
+      "from": "TASK-4.7",
+      "to": "TASK-4.8",
+      "type": "blocks",
+      "reason": "Base settings must exist before database configuration"
+    },
+    {
+      "from": "TASK-4.7",
+      "to": "TASK-4.9",
+      "type": "blocks",
+      "reason": "Base settings must exist before Redis configuration"
+    },
+    {
+      "from": "TASK-4.7",
+      "to": "TASK-4.11",
+      "type": "blocks",
+      "reason": "Base settings must exist before CORS configuration"
+    },
+    {
+      "from": "TASK-4.7",
+      "to": "TASK-4.12",
+      "type": "blocks",
+      "reason": "Base settings must exist before static files configuration"
+    },
+    {
+      "from": "TASK-4.8",
+      "to": "TASK-4.15",
+      "type": "blocks",
+      "reason": "Database configuration must exist before testing connectivity"
+    },
+    {
+      "from": "TASK-4.9",
+      "to": "TASK-4.15",
+      "type": "blocks",
+      "reason": "Redis configuration must exist before testing connectivity"
+    },
+    {
+      "from": "TASK-4.3",
+      "to": "TASK-4.16",
+      "type": "blocks",
+      "reason": "Volume mounting must be configured before testing hot reload"
+    },
+    {
+      "from": "TASK-4.10",
+      "to": "TASK-4.17",
+      "type": "blocks",
+      "reason": "Endpoints must exist before testing"
+    },
+    {
+      "from": "TASK-4.10",
+      "to": "TASK-4.18",
+      "type": "blocks",
+      "reason": "Endpoints must exist before documentation"
+    },
+    {
+      "from": "TASK-4.13",
+      "to": "TASK-4.17",
+      "type": "blocks",
+      "reason": "Admin interface must exist before testing"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Infrastructure Foundation",
+      "description": "Docker setup, dependency management, and service orchestration",
+      "tasks": ["TASK-4.1", "TASK-4.4", "TASK-4.2", "TASK-4.3", "TASK-4.5"],
+      "estimatedEffort": "10h"
+    },
+    {
+      "phase": 2,
+      "name": "Django Configuration",
+      "description": "Django project setup, settings, database, Redis, CORS, static files",
+      "tasks": ["TASK-4.6", "TASK-4.7", "TASK-4.8", "TASK-4.9", "TASK-4.11", "TASK-4.12"],
+      "estimatedEffort": "14.5h"
+    },
+    {
+      "phase": 3,
+      "name": "API and Admin",
+      "description": "Health check endpoint and Django Admin interface setup",
+      "tasks": ["TASK-4.10", "TASK-4.13"],
+      "estimatedEffort": "3.5h"
+    },
+    {
+      "phase": 4,
+      "name": "Testing and Documentation",
+      "description": "Integration tests for all components and comprehensive documentation",
+      "tasks": ["TASK-4.14", "TASK-4.15", "TASK-4.16", "TASK-4.17", "TASK-4.18"],
+      "estimatedEffort": "11h"
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Phase1-Parallel-Init",
+      "description": "Dockerfile and dependencies can be developed in parallel",
+      "tasks": ["TASK-4.1", "TASK-4.4"],
+      "canStartAfter": [],
+      "estimatedEffort": "3h"
+    },
+    {
+      "group": "Phase1-Optimization",
+      "description": "Dockerfile optimization can run parallel with Django init",
+      "tasks": ["TASK-4.5"],
+      "canStartAfter": ["TASK-4.1"],
+      "estimatedEffort": "2h"
+    },
+    {
+      "group": "Phase2-Config-Parallel",
+      "description": "CORS and static files configuration can run in parallel",
+      "tasks": ["TASK-4.11", "TASK-4.12"],
+      "canStartAfter": ["TASK-4.7"],
+      "estimatedEffort": "2h"
+    },
+    {
+      "group": "Phase4-Testing-Parallel",
+      "description": "Independent test suites can run in parallel",
+      "tasks": ["TASK-4.14", "TASK-4.15", "TASK-4.16"],
+      "canStartAfter": ["TASK-4.2", "TASK-4.8", "TASK-4.9", "TASK-4.3"],
+      "estimatedEffort": "2h"
+    }
+  ],
+  "criticalPath": [
+    "TASK-4.1",
+    "TASK-4.2",
+    "TASK-4.6",
+    "TASK-4.7",
+    "TASK-4.8",
+    "TASK-4.15"
+  ],
+  "summary": {
+    "totalTasks": 18,
+    "byType": {
+      "infrastructure": 5,
+      "backend": 7,
+      "testing": 4,
+      "documentation": 2
+    },
+    "bySpecialty": {
+      "config": 13,
+      "api": 1,
+      "integration": 4,
+      "documentation": 2
+    },
+    "totalEffortHours": 39,
+    "totalEffortDays": "4.9 days (sequential)",
+    "parallelizedEffortDays": "2.5 days (with 2 developers)",
+    "criticalPathHours": 24
+  },
+  "dependencies": {
+    "dependsOn": [
+      {
+        "userStory": "US-1",
+        "title": "Docker Compose Service Orchestration",
+        "reason": "Must have Docker Compose infrastructure before adding backend service"
+      },
+      {
+        "userStory": "US-2",
+        "title": "Database Service with Vector Support",
+        "reason": "Backend requires PostgreSQL connection"
+      },
+      {
+        "userStory": "US-3",
+        "title": "Redis Broker and Cache Service",
+        "reason": "Backend requires Redis for caching and Celery broker"
+      }
+    ],
+    "blocks": [
+      {
+        "userStory": "US-6",
+        "title": "Celery Worker Service for AI Pipeline",
+        "reason": "Workers share backend codebase and require backend configuration"
+      },
+      {
+        "userStory": "US-7",
+        "title": "Celery Beat Scheduler Service",
+        "reason": "Scheduler shares backend codebase and configuration"
+      },
+      {
+        "userStory": "US-9",
+        "title": "Database Initialization and Migrations",
+        "reason": "Migrations require backend service to run manage.py commands"
+      },
+      {
+        "userStory": "US-10",
+        "title": "Superuser Creation for Admin Access",
+        "reason": "Superuser creation requires backend service and Django Admin"
+      }
+    ]
+  },
+  "risks": [
+    {
+      "id": "RISK-4.1",
+      "description": "Volume mount performance on Windows",
+      "impact": "High",
+      "mitigation": "Use WSL2 backend, store code in WSL filesystem"
+    },
+    {
+      "id": "RISK-4.2",
+      "description": "Poetry dependency resolution slow",
+      "impact": "Medium",
+      "mitigation": "Use poetry.lock for fast installs, cache Poetry dependencies in Docker layer"
+    },
+    {
+      "id": "RISK-4.3",
+      "description": "Database connection pool exhaustion",
+      "impact": "Medium",
+      "mitigation": "Configure CONN_MAX_AGE for connection pooling, monitor connection counts"
+    },
+    {
+      "id": "RISK-4.4",
+      "description": "Static files not loading in admin",
+      "impact": "Low",
+      "mitigation": "Verify STATIC_URL and STATICFILES_DIRS, test after configuration"
+    }
+  ]
+}

@@ -1,23 +1,20 @@
 services:
   # PostgreSQL database with pgvector extension
   db:
-    image: postgres:15
-    container_name: db
+    image: ankane/pgvector:pg15
+    container_name: veille_tech_db
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-tech_watch_db}
-      # Trust authentication for local development
-      POSTGRES_HOST_AUTH_METHOD: trust
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./backend/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     networks:
       - app-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -26,10 +23,10 @@ services:
       resources:
         limits:
           cpus: '1.0'
-          memory: 1G
-        reservations:
-          cpus: '0.5'
           memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
 
   # Redis for Celery broker and caching
   redis:

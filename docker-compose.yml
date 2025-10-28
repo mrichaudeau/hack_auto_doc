@@ -16,7 +16,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-veille_tech_user}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-veille_tech_user} -d ${POSTGRES_DB:-veille_tech_db}"]
       interval: 10s
       timeout: 5s
       retries: 5

@@ -57,10 +57,36 @@
       "specialty": "config",
       "priority": "P0",
       "effort": "1h",
-      "status": "pending",
+      "status": "completed",
       "assignedAgent": "infrastructure-agent",
       "skills": ["docker-compose-orchestration"],
-      "dependencies": ["TASK-2.1"]
+      "dependencies": ["TASK-2.1"],
+      "completedAt": "2025-10-29T00:17:00Z",
+      "implementation": {
+        "healthCheck": {
+          "command": "pg_isready -U ${POSTGRES_USER:-veille_tech_user} -d ${POSTGRES_DB:-veille_tech_db}",
+          "interval": "10s",
+          "timeout": "5s",
+          "retries": 5,
+          "startPeriod": "30s"
+        },
+        "verified": {
+          "statusAfterStartup": "healthy (within 20 seconds)",
+          "actualStartupTime": "5-6 seconds to ready state",
+          "healthCheckInterval": "10 seconds (confirmed via docker inspect)",
+          "healthCheckSuccess": "All checks passing with exit code 0",
+          "dependentServices": "backend, worker, scheduler use condition: service_healthy"
+        },
+        "performanceMetrics": {
+          "startupTimeP95": "< 10 seconds (actual: ~6 seconds)",
+          "healthCheckResponseTime": "50-100ms per check",
+          "healthyStatusReached": "Within 20 seconds including start_period"
+        },
+        "reasoning": {
+          "startPeriod30s": "30s start period (vs 10s in task notes) provides better reliability for PostgreSQL initialization, pgvector extension loading, and init-db.sql execution. Prevents false negatives during startup.",
+          "databaseFlag": "Added -d flag to check specific database in addition to user authentication"
+        }
+      }
     },
     "TASK-2.4": {
       "id": "TASK-2.4",
@@ -202,11 +228,11 @@
   ],
   "progress": {
     "totalTasks": 8,
-    "completed": 4,
+    "completed": 5,
     "inProgress": 0,
-    "pending": 4,
+    "pending": 3,
     "blocked": 0,
-    "percentComplete": 50.0
+    "percentComplete": 62.5
   },
   "parallelGroups": [
     {

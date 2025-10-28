@@ -81,10 +81,32 @@
       "specialty": "config",
       "priority": "P0",
       "effort": "1h",
-      "status": "pending",
+      "status": "completed",
       "assignedAgent": "infrastructure-agent",
       "skills": ["environment-configuration"],
-      "dependencies": ["TASK-2.1"]
+      "dependencies": ["TASK-2.1"],
+      "completedAt": "2025-10-29T00:30:00Z",
+      "implementation": {
+        "files": [
+          ".env.backend (actual credentials - gitignored)",
+          ".env.backend.example (template with placeholders - committed)"
+        ],
+        "environmentVariables": [
+          "POSTGRES_USER=veille_tech_user",
+          "POSTGRES_PASSWORD (strong 32-char generated password)",
+          "POSTGRES_DB=veille_tech_db",
+          "POSTGRES_HOST=db",
+          "POSTGRES_PORT=5432",
+          "DATABASE_URL (full connection string)"
+        ],
+        "security": {
+          "passwordGeneration": "openssl rand -base64 24",
+          "passwordPolicy": "Minimum 16 chars, mixed case, numbers, symbols",
+          "gitignore": ".env.backend excluded from version control",
+          "dockerComposeIntegration": "db service uses env_file: .env.backend"
+        },
+        "validation": "docker-compose config validates successfully"
+      }
     },
     "TASK-2.6": {
       "id": "TASK-2.6",
@@ -157,11 +179,11 @@
   ],
   "progress": {
     "totalTasks": 8,
-    "completed": 2,
+    "completed": 3,
     "inProgress": 0,
-    "pending": 6,
+    "pending": 5,
     "blocked": 0,
-    "percentComplete": 25.0
+    "percentComplete": 37.5
   },
   "parallelGroups": [
     {

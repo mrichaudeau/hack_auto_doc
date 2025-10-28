@@ -1,20 +1,22 @@
 services:
   # PostgreSQL database with pgvector extension
   db:
-    image: ankane/pgvector:pg15
+    image: pgvector/pgvector:pg15
     container_name: veille_tech_db
     restart: unless-stopped
+    env_file:
+      - .env.backend
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-veille_tech_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-tech_watch_db}
+      POSTGRES_DB: ${POSTGRES_DB:-veille_tech_db}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     networks:
       - app-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-veille_tech_user}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -178,11 +180,15 @@ services:
 
 volumes:
   # Named volume for PostgreSQL data persistence
+  # Stores all database tables, indexes, and configuration
+  # Supports up to 10GB of development data
   postgres_data:
+    name: veille_tech_postgres_data
     driver: local
 
   # Named volume for Redis data persistence
   redis_data:
+    name: veille_tech_redis_data
     driver: local
 
 networks:

@@ -1,0 +1,343 @@
+{
+  "feature": "subscriptions",
+  "featureTitle": "Subject and Subscription Management",
+  "sourceFile": "docs/po_input/subscriptions.md",
+  "parsedAt": "2025-10-28T12:00:00Z",
+  "parser": "functional-spec-planner:parse-functional-spec",
+  "version": "1.0",
+  "status": "parsed",
+  "bloc": 2,
+  "priority": "P1",
+  "userStories": [
+    {
+      "id": "US-1",
+      "title": "Admin Subject Catalog Management",
+      "priority": "P1",
+      "status": "draft",
+      "effortDays": 5
+    },
+    {
+      "id": "US-2",
+      "title": "View Active Subject Catalog",
+      "priority": "P1",
+      "status": "draft",
+      "effortDays": 3
+    },
+    {
+      "id": "US-3",
+      "title": "Subscribe to Subject",
+      "priority": "P1",
+      "status": "draft",
+      "effortDays": 5
+    },
+    {
+      "id": "US-4",
+      "title": "Unsubscribe from Subject",
+      "priority": "P2",
+      "status": "draft",
+      "effortDays": 3
+    },
+    {
+      "id": "US-5",
+      "title": "Bootstrap Monitoring Task on New Subscription",
+      "priority": "P2",
+      "status": "draft",
+      "effortDays": 8
+    },
+    {
+      "id": "US-6",
+      "title": "View My Subscriptions",
+      "priority": "P1",
+      "status": "draft",
+      "effortDays": 3
+    },
+    {
+      "id": "US-7",
+      "title": "Display Subscriber Count (Admin View)",
+      "priority": "P3",
+      "status": "draft",
+      "effortDays": 2
+    }
+  ],
+  "statistics": {
+    "totalUserStories": 7,
+    "totalEffortDays": 29,
+    "byPriority": {
+      "P1": 4,
+      "P2": 2,
+      "P3": 1
+    },
+    "functionalRequirements": 4,
+    "nonFunctionalRequirements": 4,
+    "dependencies": 7,
+    "externalDependencies": 5
+  },
+  "files": {
+    "feature": "specs/subscriptions/feature.md",
+    "userStoriesOverview": "specs/subscriptions/user-stories.md",
+    "dependencies": "specs/subscriptions/dependencies.json",
+    "userStories": [
+      "specs/subscriptions/US-1/user-story.md",
+      "specs/subscriptions/US-2/user-story.md",
+      "specs/subscriptions/US-3/user-story.md",
+      "specs/subscriptions/US-4/user-story.md",
+      "specs/subscriptions/US-5/user-story.md",
+      "specs/subscriptions/US-6/user-story.md",
+      "specs/subscriptions/US-7/user-story.md"
+    ]
+  },
+  "nextSteps": [
+    "Review generated specifications in specs/subscriptions/",
+    "Generate tasks for first User Story: /spec-generate-tasks subscriptions/US-1",
+    "Or batch generate for all: /spec-full-pipeline docs/po_input/subscriptions.md"
+  ],
+  "integrations": {
+    "dependsOn": [
+      {
+        "feature": "authentication",
+        "bloc": 1,
+        "type": "blocking",
+        "reason": "All user operations require authentication"
+      },
+      {
+        "feature": "ai-pipeline",
+        "bloc": 3,
+        "type": "async",
+        "reason": "Bootstrap task execution for content generation"
+      }
+    ],
+    "consumedBy": [
+      {
+        "feature": "report-consultation",
+        "bloc": 4,
+        "type": "consuming",
+        "reason": "Subscription data for dashboard filtering"
+      },
+      {
+        "feature": "recommendation-engine",
+        "bloc": 5,
+        "type": "consuming",
+        "reason": "Subscription history for user profiling"
+      }
+    ]
+  },
+  "technicalContext": {
+    "framework": "Django REST Framework",
+    "authentication": "JWT (djangorestframework-simplejwt)",
+    "asyncTasks": "Celery + Redis",
+    "database": "PostgreSQL 15+",
+    "cache": "Redis",
+    "auditTrail": "django-simple-history",
+    "admin": "Django Admin"
+  },
+  "dataModels": [
+    {
+      "name": "Subject",
+      "fields": [
+        "id (PK)",
+        "name (unique, max 100 chars)",
+        "description (max 500 chars)",
+        "status (choices: active, archived)",
+        "web_sources (JSON array of URLs)",
+        "created_at",
+        "updated_at"
+      ],
+      "indexes": ["status", "name"],
+      "constraints": ["unique_together(name, case_insensitive)"]
+    },
+    {
+      "name": "Subscription",
+      "fields": [
+        "id (PK)",
+        "user_id (FK -> User)",
+        "subject_id (FK -> Subject)",
+        "created_at"
+      ],
+      "indexes": ["user_id", "subject_id"],
+      "constraints": ["unique_together(user_id, subject_id)"]
+    },
+    {
+      "name": "AuditLog",
+      "fields": [
+        "id (PK)",
+        "user_id",
+        "subject_id",
+        "action (create, update, delete, subscribe, unsubscribe)",
+        "timestamp",
+        "ip_address"
+      ],
+      "indexes": ["user_id", "subject_id", "timestamp"]
+    }
+  ],
+  "performanceTargets": {
+    "subjectCatalogLatency": "< 100ms P95",
+    "subscriptionCreateLatency": "< 200ms P95",
+    "mySubscriptionsLatency": "< 200ms P95",
+    "bootstrapTaskLatency": "< 5 minutes P95",
+    "concurrentRequests": "10,000 concurrent API requests"
+  },
+  "externalDependencies": [
+    {
+      "name": "Redis",
+      "type": "infrastructure",
+      "required": true,
+      "version": "7.0+",
+      "purpose": ["distributed-locking", "celery-broker", "optional-caching"]
+    },
+    {
+      "name": "PostgreSQL",
+      "type": "database",
+      "required": true,
+      "version": "15+",
+      "purpose": ["subject-storage", "subscription-storage"]
+    },
+    {
+      "name": "Celery",
+      "type": "task-queue",
+      "required": true,
+      "version": "5.2+",
+      "purpose": ["bootstrap-task-execution"]
+    },
+    {
+      "name": "Django",
+      "type": "framework",
+      "required": true,
+      "version": "4.2+",
+      "purpose": ["web-framework"]
+    },
+    {
+      "name": "Django REST Framework",
+      "type": "framework",
+      "required": true,
+      "version": "3.14+",
+      "purpose": ["api-framework"]
+    }
+  ],
+  "blockers": {
+    "identified": false,
+    "notes": "No critical blockers. All external dependencies standard and available. Bloc 3 can be stubbed initially."
+  },
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Subject Catalog Foundation",
+      "stories": ["US-1", "US-2"],
+      "duration": "5-8 days",
+      "keyDeliverables": [
+        "Subject model with validation",
+        "Django Admin interface",
+        "Subject listing API",
+        "Database indexes"
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "User Subscription & Content Triggering",
+      "stories": ["US-3", "US-4", "US-5"],
+      "duration": "13-16 days",
+      "keyDeliverables": [
+        "Subscription model",
+        "Subscribe/unsubscribe APIs",
+        "Bootstrap task orchestration",
+        "Redis locking",
+        "Audit logging"
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "Subscription Management & Analytics",
+      "stories": ["US-6", "US-7"],
+      "duration": "5-7 days",
+      "keyDeliverables": [
+        "My subscriptions endpoint",
+        "Admin subscriber count display",
+        "Caching and optimization"
+      ]
+    }
+  ],
+  "criticalPath": [
+    "US-1",
+    "US-2",
+    "US-3",
+    "US-5"
+  ],
+  "parallelizationStrategy": [
+    {
+      "phase": 1,
+      "groups": [],
+      "note": "US-1 and US-2 sequential (subjects must exist before viewing)"
+    },
+    {
+      "phase": 2,
+      "groups": [
+        ["US-3", "US-4"]
+      ],
+      "note": "Subscribe and unsubscribe can develop in parallel"
+    },
+    {
+      "phase": 3,
+      "groups": [
+        ["US-6", "US-7"]
+      ],
+      "note": "My subscriptions and subscriber count can develop in parallel"
+    }
+  ],
+  "testingStrategy": {
+    "unitTestCoverage": "> 80%",
+    "integrationTests": [
+      "subject-creation-workflow",
+      "subject-api-listing",
+      "subscription-creation",
+      "bootstrap-task-queuing",
+      "audit-logging",
+      "my-subscriptions-endpoint",
+      "unsubscribe-workflow"
+    ],
+    "endToEndTests": [
+      "admin-creates-subject-to-user-subscription-flow",
+      "user-browses-and-subscribes-flow",
+      "multiple-users-subscribe-to-same-subject"
+    ],
+    "performanceTests": [
+      "concurrent-subscriptions-1000",
+      "subject-listing-large-catalog",
+      "bootstrap-queue-processing"
+    ],
+    "securityTests": [
+      "sql-injection",
+      "xss-protection",
+      "csrf-protection",
+      "authorization-checks"
+    ]
+  },
+  "deploymentChecklist": [
+    {
+      "item": "Database migrations for Subject and Subscription models",
+      "phase": 1
+    },
+    {
+      "item": "Redis configuration and connectivity",
+      "phase": 2
+    },
+    {
+      "item": "Celery worker deployment",
+      "phase": 2
+    },
+    {
+      "item": "Django Admin setup with admin user",
+      "phase": 1
+    },
+    {
+      "item": "API documentation and Swagger setup",
+      "phase": 1
+    },
+    {
+      "item": "Monitoring and alerting for bootstrap tasks",
+      "phase": 2
+    },
+    {
+      "item": "Feature flags for gradual rollout",
+      "phase": 1
+    }
+  ]
+}

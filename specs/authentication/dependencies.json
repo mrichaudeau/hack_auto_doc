@@ -1,0 +1,301 @@
+{
+  "feature": "authentication",
+  "featureTitle": "User Authentication and Authorization",
+  "generated": "2025-10-28",
+  "nodes": [
+    {
+      "id": "US-1",
+      "type": "user-story",
+      "title": "Standard User Registration",
+      "priority": "P0",
+      "status": "draft",
+      "effortEstimate": "3 days"
+    },
+    {
+      "id": "US-2",
+      "type": "user-story",
+      "title": "Email Verification",
+      "priority": "P0",
+      "status": "draft",
+      "effortEstimate": "2 days"
+    },
+    {
+      "id": "US-3",
+      "type": "user-story",
+      "title": "Standard User Login",
+      "priority": "P0",
+      "status": "draft",
+      "effortEstimate": "3 days"
+    },
+    {
+      "id": "US-4",
+      "type": "user-story",
+      "title": "JWT Token Refresh",
+      "priority": "P0",
+      "status": "draft",
+      "effortEstimate": "2 days"
+    },
+    {
+      "id": "US-5",
+      "type": "user-story",
+      "title": "Password Reset Request",
+      "priority": "P1",
+      "status": "draft",
+      "effortEstimate": "2 days"
+    },
+    {
+      "id": "US-6",
+      "type": "user-story",
+      "title": "Password Reset Completion",
+      "priority": "P1",
+      "status": "draft",
+      "effortEstimate": "2 days"
+    },
+    {
+      "id": "US-7",
+      "type": "user-story",
+      "title": "Microsoft Entra ID SSO Login",
+      "priority": "P1",
+      "status": "draft",
+      "effortEstimate": "5 days"
+    },
+    {
+      "id": "US-8",
+      "type": "user-story",
+      "title": "User Profile Viewing",
+      "priority": "P1",
+      "status": "draft",
+      "effortEstimate": "1 day"
+    },
+    {
+      "id": "US-9",
+      "type": "user-story",
+      "title": "User Profile Update",
+      "priority": "P2",
+      "status": "draft",
+      "effortEstimate": "2 days"
+    },
+    {
+      "id": "US-10",
+      "type": "user-story",
+      "title": "Password Change (Standard Users)",
+      "priority": "P2",
+      "status": "draft",
+      "effortEstimate": "2 days"
+    },
+    {
+      "id": "US-11",
+      "type": "user-story",
+      "title": "Account Unification (SSO + Standard)",
+      "priority": "P2",
+      "status": "draft",
+      "effortEstimate": "3 days"
+    },
+    {
+      "id": "US-12",
+      "type": "user-story",
+      "title": "Logout from Current Session",
+      "priority": "P2",
+      "status": "draft",
+      "effortEstimate": "1 day"
+    },
+    {
+      "id": "US-13",
+      "type": "user-story",
+      "title": "Logout from All Devices",
+      "priority": "P3",
+      "status": "draft",
+      "effortEstimate": "2 days"
+    }
+  ],
+  "edges": [
+    {
+      "from": "US-1",
+      "to": "US-2",
+      "type": "blocks",
+      "description": "User registration must complete before email verification can occur"
+    },
+    {
+      "from": "US-1",
+      "to": "US-3",
+      "type": "blocks",
+      "description": "User must be registered before they can log in"
+    },
+    {
+      "from": "US-2",
+      "to": "US-3",
+      "type": "blocks",
+      "description": "Email must be verified before login is allowed"
+    },
+    {
+      "from": "US-3",
+      "to": "US-4",
+      "type": "blocks",
+      "description": "Login must issue JWT tokens before refresh mechanism is needed"
+    },
+    {
+      "from": "US-1",
+      "to": "US-5",
+      "type": "blocks",
+      "description": "User account must exist before password can be reset"
+    },
+    {
+      "from": "US-5",
+      "to": "US-6",
+      "type": "blocks",
+      "description": "Password reset request must occur before reset can be completed"
+    },
+    {
+      "from": "US-1",
+      "to": "US-7",
+      "type": "related",
+      "description": "SSO login creates user accounts similar to standard registration"
+    },
+    {
+      "from": "US-3",
+      "to": "US-7",
+      "type": "related",
+      "description": "SSO login issues JWT tokens like standard login"
+    },
+    {
+      "from": "US-3",
+      "to": "US-8",
+      "type": "blocks",
+      "description": "User must be logged in (authenticated) to view profile"
+    },
+    {
+      "from": "US-4",
+      "to": "US-8",
+      "type": "blocks",
+      "description": "Profile viewing requires valid JWT token (with refresh capability)"
+    },
+    {
+      "from": "US-8",
+      "to": "US-9",
+      "type": "blocks",
+      "description": "Profile viewing provides baseline for profile updates"
+    },
+    {
+      "from": "US-3",
+      "to": "US-10",
+      "type": "blocks",
+      "description": "User must be logged in to change password"
+    },
+    {
+      "from": "US-1",
+      "to": "US-11",
+      "type": "blocks",
+      "description": "Standard account must exist before SSO can be unified with it"
+    },
+    {
+      "from": "US-7",
+      "to": "US-11",
+      "type": "blocks",
+      "description": "SSO login logic must exist before account unification can occur"
+    },
+    {
+      "from": "US-3",
+      "to": "US-12",
+      "type": "blocks",
+      "description": "Login creates session before logout can end it"
+    },
+    {
+      "from": "US-4",
+      "to": "US-12",
+      "type": "blocks",
+      "description": "Refresh tokens must exist before they can be blacklisted on logout"
+    },
+    {
+      "from": "US-12",
+      "to": "US-13",
+      "type": "blocks",
+      "description": "Single-session logout provides foundation for all-devices logout"
+    }
+  ],
+  "implementationOrder": [
+    {
+      "phase": 1,
+      "name": "Standard Authentication Foundation",
+      "stories": ["US-1", "US-2", "US-3", "US-4"],
+      "rationale": "Core authentication infrastructure required for all other features"
+    },
+    {
+      "phase": 2,
+      "name": "Password Management & Enterprise SSO",
+      "stories": ["US-5", "US-6", "US-7", "US-8"],
+      "rationale": "Password recovery and enterprise features enable broader adoption"
+    },
+    {
+      "phase": 3,
+      "name": "Profile & Session Management",
+      "stories": ["US-9", "US-10", "US-11", "US-12", "US-13"],
+      "rationale": "Enhanced user control and security features"
+    }
+  ],
+  "criticalPath": [
+    "US-1",
+    "US-2",
+    "US-3",
+    "US-4"
+  ],
+  "parallelizable": [
+    {
+      "group": "after_phase1",
+      "stories": ["US-5", "US-7", "US-8"],
+      "description": "These can be developed in parallel after core auth is complete"
+    },
+    {
+      "group": "profile_features",
+      "stories": ["US-9", "US-10"],
+      "description": "Profile update and password change can be developed in parallel"
+    },
+    {
+      "group": "logout_features",
+      "stories": ["US-12", "US-13"],
+      "description": "Single and multi-device logout can be developed together"
+    }
+  ],
+  "externalDependencies": [
+    {
+      "name": "Microsoft Azure AD Tenant",
+      "affectedStories": ["US-7", "US-11"],
+      "type": "infrastructure",
+      "required": true,
+      "notes": "Azure AD app registration must be configured before SSO development"
+    },
+    {
+      "name": "SMTP Email Service",
+      "affectedStories": ["US-1", "US-2", "US-5", "US-6"],
+      "type": "service",
+      "required": true,
+      "notes": "Email service required for verification and password reset flows"
+    },
+    {
+      "name": "Redis Server",
+      "affectedStories": ["US-3", "US-4", "US-12", "US-13"],
+      "type": "infrastructure",
+      "required": true,
+      "notes": "Redis required for token blacklist and rate limiting"
+    },
+    {
+      "name": "Supabase (PostgreSQL)",
+      "affectedStories": ["US-1", "US-3", "US-7", "US-8", "US-9", "US-10", "US-11"],
+      "type": "database",
+      "required": true,
+      "notes": "Primary database for user data storage"
+    }
+  ],
+  "summary": {
+    "totalStories": 13,
+    "byPriority": {
+      "P0": 4,
+      "P1": 4,
+      "P2": 4,
+      "P3": 1
+    },
+    "totalEffortDays": 30,
+    "criticalPathDays": 10,
+    "phases": 3,
+    "parallelGroups": 3
+  }
+}

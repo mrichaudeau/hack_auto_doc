@@ -1,0 +1,143 @@
+{
+  "feature": "authentication",
+  "featureTitle": "User Authentication and Authorization",
+  "sourceFile": "docs/po_input/authentication.md",
+  "parsedAt": "2025-10-28T12:00:00Z",
+  "parser": "functional-spec-planner:parse-functional-spec",
+  "version": "1.0",
+  "status": "parsed",
+  "bloc": 1,
+  "priority": "P0",
+  "userStories": [
+    {
+      "id": "US-1",
+      "title": "Standard User Registration",
+      "priority": "P0",
+      "status": "draft",
+      "effortDays": 3
+    },
+    {
+      "id": "US-2",
+      "title": "Email Verification",
+      "priority": "P0",
+      "status": "draft",
+      "effortDays": 2
+    },
+    {
+      "id": "US-3",
+      "title": "Standard User Login",
+      "priority": "P0",
+      "status": "draft",
+      "effortDays": 3
+    },
+    {
+      "id": "US-4",
+      "title": "JWT Token Refresh",
+      "priority": "P0",
+      "status": "draft",
+      "effortDays": 2
+    },
+    {
+      "id": "US-5",
+      "title": "Password Reset Request",
+      "priority": "P1",
+      "status": "draft",
+      "effortDays": 2
+    },
+    {
+      "id": "US-6",
+      "title": "Password Reset Completion",
+      "priority": "P1",
+      "status": "draft",
+      "effortDays": 2
+    },
+    {
+      "id": "US-7",
+      "title": "Microsoft Entra ID SSO Login",
+      "priority": "P1",
+      "status": "draft",
+      "effortDays": 5
+    },
+    {
+      "id": "US-8",
+      "title": "User Profile Viewing",
+      "priority": "P1",
+      "status": "draft",
+      "effortDays": 1
+    },
+    {
+      "id": "US-9",
+      "title": "User Profile Update",
+      "priority": "P2",
+      "status": "draft",
+      "effortDays": 2
+    },
+    {
+      "id": "US-10",
+      "title": "Password Change (Standard Users)",
+      "priority": "P2",
+      "status": "draft",
+      "effortDays": 2
+    },
+    {
+      "id": "US-11",
+      "title": "Account Unification (SSO + Standard)",
+      "priority": "P2",
+      "status": "draft",
+      "effortDays": 3
+    },
+    {
+      "id": "US-12",
+      "title": "Logout from Current Session",
+      "priority": "P2",
+      "status": "draft",
+      "effortDays": 1
+    },
+    {
+      "id": "US-13",
+      "title": "Logout from All Devices",
+      "priority": "P3",
+      "status": "draft",
+      "effortDays": 2
+    }
+  ],
+  "statistics": {
+    "totalUserStories": 13,
+    "totalEffortDays": 30,
+    "byPriority": {
+      "P0": 4,
+      "P1": 4,
+      "P2": 4,
+      "P3": 1
+    },
+    "functionalRequirements": 7,
+    "nonFunctionalRequirements": 5,
+    "dependencies": 17,
+    "externalDependencies": 4
+  },
+  "files": {
+    "feature": "specs/authentication/feature.md",
+    "userStoriesOverview": "specs/authentication/user-stories.md",
+    "dependencies": "specs/authentication/dependencies.json",
+    "userStories": [
+      "specs/authentication/US-1/user-story.md",
+      "specs/authentication/US-2/user-story.md",
+      "specs/authentication/US-3/user-story.md",
+      "specs/authentication/US-4/user-story.md",
+      "specs/authentication/US-5/user-story.md",
+      "specs/authentication/US-6/user-story.md",
+      "specs/authentication/US-7/user-story.md",
+      "specs/authentication/US-8/user-story.md",
+      "specs/authentication/US-9/user-story.md",
+      "specs/authentication/US-10/user-story.md",
+      "specs/authentication/US-11/user-story.md",
+      "specs/authentication/US-12/user-story.md",
+      "specs/authentication/US-13/user-story.md"
+    ]
+  },
+  "nextSteps": [
+    "Review generated specifications in specs/authentication/",
+    "Generate tasks for first User Story: /spec-generate-tasks authentication/US-1",
+    "Or batch generate for all: /spec-full-pipeline docs/po_input/authentication.md"
+  ]
+}

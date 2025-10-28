@@ -1,0 +1,293 @@
+{
+  "feature": "local-development-environment",
+  "featureTitle": "Local Development Environment",
+  "generatedAt": "2025-01-27T10:30:00Z",
+  "nodes": [
+    {
+      "id": "US-1",
+      "type": "user-story",
+      "title": "Docker Compose Service Orchestration",
+      "priority": "P0",
+      "status": "draft",
+      "effort": 3
+    },
+    {
+      "id": "US-2",
+      "type": "user-story",
+      "title": "Database Service with Vector Support",
+      "priority": "P0",
+      "status": "draft",
+      "effort": 2
+    },
+    {
+      "id": "US-3",
+      "type": "user-story",
+      "title": "Redis Broker and Cache Service",
+      "priority": "P0",
+      "status": "draft",
+      "effort": 2
+    },
+    {
+      "id": "US-4",
+      "type": "user-story",
+      "title": "Django Backend API Service",
+      "priority": "P0",
+      "status": "draft",
+      "effort": 5
+    },
+    {
+      "id": "US-5",
+      "type": "user-story",
+      "title": "React Frontend SPA Service",
+      "priority": "P0",
+      "status": "draft",
+      "effort": 5
+    },
+    {
+      "id": "US-6",
+      "type": "user-story",
+      "title": "Celery Worker Service for AI Pipeline",
+      "priority": "P0",
+      "status": "draft",
+      "effort": 3
+    },
+    {
+      "id": "US-7",
+      "type": "user-story",
+      "title": "Celery Beat Scheduler Service",
+      "priority": "P1",
+      "status": "draft",
+      "effort": 2
+    },
+    {
+      "id": "US-8",
+      "type": "user-story",
+      "title": "Environment Configuration Management",
+      "priority": "P0",
+      "status": "draft",
+      "effort": 3
+    },
+    {
+      "id": "US-9",
+      "type": "user-story",
+      "title": "Database Initialization and Migrations",
+      "priority": "P0",
+      "status": "draft",
+      "effort": 2
+    },
+    {
+      "id": "US-10",
+      "type": "user-story",
+      "title": "Superuser Creation for Admin Access",
+      "priority": "P1",
+      "status": "draft",
+      "effort": 1
+    },
+    {
+      "id": "US-11",
+      "type": "user-story",
+      "title": "Service Health Monitoring and Logs",
+      "priority": "P1",
+      "status": "draft",
+      "effort": 3
+    },
+    {
+      "id": "US-12",
+      "type": "user-story",
+      "title": "Development Workflow Documentation",
+      "priority": "P1",
+      "status": "draft",
+      "effort": 2
+    }
+  ],
+  "edges": [
+    {
+      "from": "US-1",
+      "to": "US-2",
+      "type": "blocks",
+      "description": "Docker Compose orchestration must be in place before database service can be configured"
+    },
+    {
+      "from": "US-1",
+      "to": "US-3",
+      "type": "blocks",
+      "description": "Docker Compose orchestration must be in place before Redis service can be configured"
+    },
+    {
+      "from": "US-1",
+      "to": "US-8",
+      "type": "blocks",
+      "description": "Docker Compose must exist before environment configuration can be integrated"
+    },
+    {
+      "from": "US-2",
+      "to": "US-4",
+      "type": "blocks",
+      "description": "Backend requires database service to be available"
+    },
+    {
+      "from": "US-3",
+      "to": "US-4",
+      "type": "blocks",
+      "description": "Backend requires Redis service for Celery broker and caching"
+    },
+    {
+      "from": "US-8",
+      "to": "US-4",
+      "type": "blocks",
+      "description": "Backend requires environment configuration for secrets and API keys"
+    },
+    {
+      "from": "US-2",
+      "to": "US-9",
+      "type": "blocks",
+      "description": "Database service must be running before migrations can be executed"
+    },
+    {
+      "from": "US-9",
+      "to": "US-10",
+      "type": "blocks",
+      "description": "Migrations must complete before superuser can be created"
+    },
+    {
+      "from": "US-4",
+      "to": "US-5",
+      "type": "blocks",
+      "description": "Frontend requires backend API to be available for proxy configuration"
+    },
+    {
+      "from": "US-4",
+      "to": "US-6",
+      "type": "blocks",
+      "description": "Celery worker shares backend codebase and requires backend service structure"
+    },
+    {
+      "from": "US-4",
+      "to": "US-7",
+      "type": "blocks",
+      "description": "Celery Beat shares backend codebase and requires backend service structure"
+    },
+    {
+      "from": "US-6",
+      "to": "US-11",
+      "type": "related",
+      "description": "Worker logs are monitored by health monitoring system"
+    },
+    {
+      "from": "US-7",
+      "to": "US-11",
+      "type": "related",
+      "description": "Scheduler logs are monitored by health monitoring system"
+    },
+    {
+      "from": "US-1",
+      "to": "US-12",
+      "type": "related",
+      "description": "Documentation includes Docker Compose commands and usage"
+    },
+    {
+      "from": "US-2",
+      "to": "US-12",
+      "type": "related",
+      "description": "Documentation includes database setup and migration instructions"
+    },
+    {
+      "from": "US-8",
+      "to": "US-12",
+      "type": "related",
+      "description": "Documentation includes environment configuration setup"
+    },
+    {
+      "from": "US-9",
+      "to": "US-12",
+      "type": "related",
+      "description": "Documentation includes migration command instructions"
+    },
+    {
+      "from": "US-10",
+      "to": "US-12",
+      "type": "related",
+      "description": "Documentation includes superuser creation instructions"
+    },
+    {
+      "from": "US-11",
+      "to": "US-12",
+      "type": "related",
+      "description": "Documentation includes health monitoring and log access instructions"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Core Infrastructure",
+      "duration": "Week 1",
+      "userStories": ["US-1", "US-2", "US-3", "US-8"],
+      "deliverable": "All infrastructure services running with proper networking and health checks"
+    },
+    {
+      "phase": 2,
+      "name": "Application Services",
+      "duration": "Week 2",
+      "userStories": ["US-4", "US-5", "US-6", "US-9"],
+      "deliverable": "Complete development stack with hot reload for rapid iteration"
+    },
+    {
+      "phase": 3,
+      "name": "Developer Experience",
+      "duration": "Week 3",
+      "userStories": ["US-7", "US-10", "US-11", "US-12"],
+      "deliverable": "Fully documented environment with comprehensive monitoring and admin access"
+    }
+  ],
+  "externalDependencies": [
+    {
+      "name": "Docker Desktop / Docker Engine",
+      "type": "infrastructure",
+      "required": true,
+      "notes": "Version 24+ required for Docker Compose v2 support"
+    },
+    {
+      "name": "Google AI Studio API",
+      "type": "external-service",
+      "required": true,
+      "notes": "API key required for LLM functionality in Celery workers"
+    },
+    {
+      "name": "Firecrawl API",
+      "type": "external-service",
+      "required": true,
+      "notes": "API key required for web scraping functionality"
+    },
+    {
+      "name": "Microsoft Azure AD",
+      "type": "external-service",
+      "required": false,
+      "notes": "Optional for SSO testing; can be skipped for standard auth development"
+    },
+    {
+      "name": "SMTP Server",
+      "type": "external-service",
+      "required": false,
+      "notes": "Required for email functionality; can be mocked with MailHog for local development"
+    }
+  ],
+  "criticalPath": [
+    "US-1",
+    "US-2",
+    "US-3",
+    "US-8",
+    "US-4",
+    "US-6",
+    "US-9"
+  ],
+  "statistics": {
+    "totalStories": 12,
+    "totalEffort": 33,
+    "p0Stories": 8,
+    "p1Stories": 4,
+    "p2Stories": 0,
+    "p3Stories": 0,
+    "blockingRelationships": 13,
+    "relatedRelationships": 7
+  }
+}

@@ -1,64 +1,24 @@
-# Multi-stage Dockerfile for React frontend
+FROM node:20-alpine
 
-# Development stage
-FROM node:20-alpine as development
-
+# Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy dependency files first for better layer caching
+COPY package.json package-lock.json ./
 
-# Install dependencies
+# Install dependencies using clean install for reproducibility
 RUN npm ci
 
-# Copy project files
+# Copy application code
 COPY . .
 
-# Expose port
+# Expose Vite dev server port
 EXPOSE 3000
 
-# Set environment
-ENV NODE_ENV=development
+# Configure Vite for Docker environment
+ENV HOST=0.0.0.0 \
+    PORT=3000 \
+    CHOKIDAR_USEPOLLING=true
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
-
-# Start development server on port 3000
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
-
-# Production build stage
-FROM node:20-alpine as build
-
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies (including devDependencies for build)
-RUN npm ci
-
-# Copy project files
-COPY . .
-
-# Build the application
-RUN npm run build
-
-# Production stage
-FROM nginx:alpine as production
-
-# Copy built files from build stage
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port
-EXPOSE 80
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:80 || exit 1
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Run Vite development server with hot reload
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

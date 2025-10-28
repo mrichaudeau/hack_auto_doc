@@ -6,9 +6,9 @@ L'environnement de développement local est orchestré par `docker-compose.yml` 
 
 | Service Docker | Rôle Technique | Base Image & Port |
 | :--- | :--- | :--- |
-| **`db`** | Base de données relationnelle et vectorielle. Utilise l'extension `pgvector`. | `postgres:15` (Port 5432) |
+| **`db`** | Base de données relationnelle et vectorielle supabase. Utilise l'extension `pgvector`. | `postgres:15` (Port 5432) |
 | **`redis`** | Broker de messages pour Celery et cache distribué. | `redis:latest` (Port 6379) |
-| **`backend`** | Application Django/DRF (API REST). Exécute la logique métier. | `python:3.11` (Port 8000) |
+| **`backend`** | Application Django/DRF (API REST). Exécute la logique métier. | `python:3.13` (Port 8000) |
 | **`frontend`** | Application React (SPA). Sert l'interface utilisateur. | `node:20` (Port 3000) |
 | **`worker`** | Worker Celery. Exécute les tâches de scraping et le Pipeline IA (Langgraph). | (Hérité de `backend`) |
 | **`scheduler`** | Celery Beat. Planifie les tâches récurrentes (ex: scraping quotidien). | (Hérité de `backend`) |

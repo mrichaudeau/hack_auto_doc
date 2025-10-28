@@ -1,0 +1,299 @@
+{
+  "feature": "subscriptions",
+  "featureTitle": "Subject and Subscription Management",
+  "generated": "2025-10-28",
+  "nodes": [
+    {
+      "id": "US-1",
+      "type": "user-story",
+      "title": "Admin Subject Catalog Management",
+      "priority": "P1",
+      "status": "draft",
+      "effortEstimate": "5 days"
+    },
+    {
+      "id": "US-2",
+      "type": "user-story",
+      "title": "View Active Subject Catalog",
+      "priority": "P1",
+      "status": "draft",
+      "effortEstimate": "3 days"
+    },
+    {
+      "id": "US-3",
+      "type": "user-story",
+      "title": "Subscribe to Subject",
+      "priority": "P1",
+      "status": "draft",
+      "effortEstimate": "5 days"
+    },
+    {
+      "id": "US-4",
+      "type": "user-story",
+      "title": "Unsubscribe from Subject",
+      "priority": "P2",
+      "status": "draft",
+      "effortEstimate": "3 days"
+    },
+    {
+      "id": "US-5",
+      "type": "user-story",
+      "title": "Bootstrap Monitoring Task on New Subscription",
+      "priority": "P2",
+      "status": "draft",
+      "effortEstimate": "8 days"
+    },
+    {
+      "id": "US-6",
+      "type": "user-story",
+      "title": "View My Subscriptions",
+      "priority": "P1",
+      "status": "draft",
+      "effortEstimate": "3 days"
+    },
+    {
+      "id": "US-7",
+      "type": "user-story",
+      "title": "Display Subscriber Count (Admin View)",
+      "priority": "P3",
+      "status": "draft",
+      "effortEstimate": "2 days"
+    }
+  ],
+  "edges": [
+    {
+      "from": "US-1",
+      "to": "US-2",
+      "type": "blocks",
+      "description": "Admin must create subjects before users can view and discover them"
+    },
+    {
+      "from": "US-2",
+      "to": "US-3",
+      "type": "blocks",
+      "description": "Users must be able to view subject catalog before they can subscribe"
+    },
+    {
+      "from": "US-3",
+      "to": "US-4",
+      "type": "related",
+      "description": "Unsubscribe is the inverse operation of subscribe"
+    },
+    {
+      "from": "US-3",
+      "to": "US-5",
+      "type": "blocks",
+      "description": "Subscription creation triggers bootstrap monitoring task"
+    },
+    {
+      "from": "US-3",
+      "to": "US-6",
+      "type": "blocks",
+      "description": "Subscriptions must exist before users can view their subscriptions"
+    },
+    {
+      "from": "US-1",
+      "to": "US-7",
+      "type": "related",
+      "description": "Subjects created by admin provide basis for subscriber count analytics"
+    },
+    {
+      "from": "US-3",
+      "to": "US-7",
+      "type": "blocks",
+      "description": "Subscriptions (user actions) provide data for subscriber count display"
+    },
+    {
+      "from": "authentication:*",
+      "to": "US-1",
+      "type": "blocks",
+      "description": "Admin user authentication required for subject management"
+    },
+    {
+      "from": "authentication:*",
+      "to": "US-2",
+      "type": "blocks",
+      "description": "User authentication required to access subject catalog (in secured context)"
+    },
+    {
+      "from": "authentication:*",
+      "to": "US-3",
+      "type": "blocks",
+      "description": "User authentication required for subscription creation"
+    },
+    {
+      "from": "authentication:*",
+      "to": "US-4",
+      "type": "blocks",
+      "description": "User authentication required for unsubscribe operations"
+    },
+    {
+      "from": "authentication:*",
+      "to": "US-6",
+      "type": "blocks",
+      "description": "User authentication required to view personal subscriptions"
+    },
+    {
+      "from": "Bloc3:*",
+      "to": "US-5",
+      "type": "blocks",
+      "description": "AI Pipeline (Bloc 3) required for bootstrap task orchestration and execution"
+    }
+  ],
+  "implementationOrder": [
+    {
+      "phase": 1,
+      "name": "Subject Catalog Foundation",
+      "stories": ["US-1", "US-2"],
+      "rationale": "Admin capabilities and user discovery foundation required before subscription features"
+    },
+    {
+      "phase": 2,
+      "name": "User Subscription & Content Triggering",
+      "stories": ["US-3", "US-4", "US-5"],
+      "rationale": "Core subscription functionality and bootstrap mechanism for content generation"
+    },
+    {
+      "phase": 3,
+      "name": "Subscription Management & Analytics",
+      "stories": ["US-6", "US-7"],
+      "rationale": "User experience and admin insights into subscription adoption"
+    }
+  ],
+  "criticalPath": [
+    "US-1",
+    "US-2",
+    "US-3",
+    "US-5"
+  ],
+  "parallelizable": [
+    {
+      "group": "phase1_parallel",
+      "stories": [],
+      "description": "US-1 and US-2 are sequential (must create subjects before viewing)"
+    },
+    {
+      "group": "phase2_parallel",
+      "stories": ["US-3", "US-4"],
+      "description": "Subscribe and unsubscribe operations can be developed in parallel after catalog complete"
+    },
+    {
+      "group": "phase3_parallel",
+      "stories": ["US-6", "US-7"],
+      "description": "My subscriptions and subscriber count can be developed in parallel after subscriptions exist"
+    }
+  ],
+  "externalDependencies": [
+    {
+      "name": "Bloc 1 (Authentication)",
+      "affectedStories": ["US-1", "US-2", "US-3", "US-4", "US-5", "US-6", "US-7"],
+      "type": "feature",
+      "required": true,
+      "notes": "All user operations require authentication. Admin operations require admin role. Must be implemented first."
+    },
+    {
+      "name": "Bloc 3 (AI Pipeline)",
+      "affectedStories": ["US-5"],
+      "type": "feature",
+      "required": false,
+      "notes": "Required for bootstrap task execution. Can stub with logging initially. Core task: trigger_subject_monitoring(subject_id, trigger='bootstrap')"
+    },
+    {
+      "name": "Redis Server",
+      "affectedStories": ["US-3", "US-4", "US-5"],
+      "type": "infrastructure",
+      "required": true,
+      "notes": "Required for distributed locking (prevent concurrent bootstrap), Celery broker, and caching"
+    },
+    {
+      "name": "PostgreSQL Database",
+      "affectedStories": ["US-1", "US-2", "US-3", "US-4", "US-5", "US-6", "US-7"],
+      "type": "database",
+      "required": true,
+      "notes": "Required for Subject and Subscription data persistence. Version 15+."
+    },
+    {
+      "name": "Celery Task Queue",
+      "affectedStories": ["US-5"],
+      "type": "infrastructure",
+      "required": true,
+      "notes": "Required for async bootstrap task execution. Integrated with Redis broker."
+    }
+  ],
+  "blockerAnalysis": {
+    "none": true,
+    "notes": "No critical blockers identified. All external dependencies are standard and available. Bloc 3 can be stubbed initially if not yet available."
+  },
+  "summary": {
+    "totalStories": 7,
+    "byPriority": {
+      "P1": 4,
+      "P2": 2,
+      "P3": 1
+    },
+    "totalEffortDays": 29,
+    "criticalPathDays": 21,
+    "phases": 3,
+    "parallelGroups": 3
+  },
+  "integrationPoints": [
+    {
+      "bloc": 1,
+      "feature": "Authentication",
+      "type": "blocking",
+      "description": "All user operations require JWT authentication. Admin operations require admin role.",
+      "api": "Authorization: Bearer <access_token>"
+    },
+    {
+      "bloc": 3,
+      "feature": "AI Pipeline",
+      "type": "async",
+      "description": "Bootstrap task triggers content generation pipeline",
+      "api": "Celery task: trigger_subject_monitoring(subject_id, trigger='bootstrap')",
+      "notes": "Can be stubbed initially with logging"
+    },
+    {
+      "bloc": 4,
+      "feature": "Report Consultation",
+      "type": "consuming",
+      "description": "Uses subscription data to filter reports on user dashboard",
+      "api": "GET /api/subscriptions/ provides subject_ids for filtering",
+      "notes": "Can develop in parallel"
+    },
+    {
+      "bloc": 5,
+      "feature": "Recommendation Engine",
+      "type": "consuming",
+      "description": "Uses subscription history for user profiling",
+      "api": "GET /api/users/me/subscriptions/ provides subscription history",
+      "notes": "Can develop in parallel"
+    }
+  ],
+  "technicalNotes": {
+    "architecture": "Django REST Framework with Celery async tasks",
+    "authentication": "JWT via djangorestframework-simplejwt",
+    "dataModels": [
+      {
+        "name": "Subject",
+        "fields": ["id", "name", "description", "status", "web_sources", "created_at", "updated_at"],
+        "indexes": ["status", "name"]
+      },
+      {
+        "name": "Subscription",
+        "fields": ["id", "user_id", "subject_id", "created_at"],
+        "constraints": ["unique_together(user, subject)"]
+      }
+    ],
+    "performanceTargets": {
+      "catalogListingLatency": "< 100ms P95",
+      "subscriptionCreateLatency": "< 200ms P95",
+      "bootstrapLatency": "< 5 minutes P95"
+    }
+  },
+  "sequentialDependencies": [
+    {
+      "sequence": "US-1 -> US-2 -> US-3 -> US-5",
+      "description": "Critical path: subjects created -> visible to users -> users subscribe -> bootstrap triggered"
+    }
+  ]
+}

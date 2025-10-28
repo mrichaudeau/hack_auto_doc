@@ -1,0 +1,38 @@
+{
+  "feature": "local-development-environment",
+  "featureTitle": "Local Development Environment",
+  "sourceFile": "docs/po_input/00_local_development_environment.md",
+  "parsedAt": "2025-01-27T10:30:00Z",
+  "userStories": [
+    "US-1",
+    "US-2",
+    "US-3",
+    "US-4",
+    "US-5",
+    "US-6",
+    "US-7",
+    "US-8",
+    "US-9",
+    "US-10",
+    "US-11",
+    "US-12"
+  ],
+  "totalUserStories": 12,
+  "totalRequirements": 8,
+  "functionalRequirements": 8,
+  "nonFunctionalRequirements": 5,
+  "dependencies": 20,
+  "status": "parsed",
+  "version": "1.0",
+  "priority": "P0",
+  "estimatedEffort": 33,
+  "phases": 3,
+  "bloc": "Infrastructure",
+  "tags": [
+    "docker",
+    "development-environment",
+    "infrastructure",
+    "local-setup",
+    "docker-compose"
+  ]
+}

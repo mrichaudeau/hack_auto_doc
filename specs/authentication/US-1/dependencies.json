@@ -1,0 +1,419 @@
+{
+  "userStory": "US-1",
+  "userStoryTitle": "Standard User Registration",
+  "feature": "authentication",
+  "priority": "P0",
+  "generatedAt": "2025-10-28",
+  "nodes": [
+    {
+      "id": "TASK-1.1",
+      "title": "Create CustomUser model with email as username",
+      "type": "backend",
+      "specialty": "database",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.2",
+      "title": "Configure django-allauth for email-based auth",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.3",
+      "title": "Setup Argon2 password hashing",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.4",
+      "title": "Implement password validation rules",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.5",
+      "title": "Create user registration serializer",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P0",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.6",
+      "title": "Implement registration API endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P0",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.7",
+      "title": "Setup Celery for async email sending",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.8",
+      "title": "Implement verification email service",
+      "type": "backend",
+      "specialty": "email",
+      "priority": "P0",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.9",
+      "title": "Configure rate limiting for registration",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.10",
+      "title": "Create registration form component",
+      "type": "frontend",
+      "specialty": "component",
+      "priority": "P0",
+      "effort": "5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.11",
+      "title": "Implement password strength indicator",
+      "type": "frontend",
+      "specialty": "component",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.12",
+      "title": "Create registration page with form",
+      "type": "frontend",
+      "specialty": "page",
+      "priority": "P0",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.13",
+      "title": "Create API service for registration",
+      "type": "frontend",
+      "specialty": "api",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.14",
+      "title": "Implement success/error messaging",
+      "type": "frontend",
+      "specialty": "component",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.15",
+      "title": "Write unit tests for registration logic",
+      "type": "testing",
+      "specialty": "unit",
+      "priority": "P0",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.16",
+      "title": "Write integration tests for registration",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.17",
+      "title": "Write security tests (rate limit, validation)",
+      "type": "testing",
+      "specialty": "security",
+      "priority": "P0",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.18",
+      "title": "Configure SMTP settings for email",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-1.19",
+      "title": "Create API documentation for endpoint",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-1.1",
+      "to": "TASK-1.2",
+      "type": "blocks",
+      "reason": "CustomUser model must exist before configuring django-allauth"
+    },
+    {
+      "from": "TASK-1.1",
+      "to": "TASK-1.3",
+      "type": "blocks",
+      "reason": "User model must exist before configuring password hashing"
+    },
+    {
+      "from": "TASK-1.3",
+      "to": "TASK-1.4",
+      "type": "blocks",
+      "reason": "Password hashing must be configured before validation rules"
+    },
+    {
+      "from": "TASK-1.1",
+      "to": "TASK-1.5",
+      "type": "blocks",
+      "reason": "User model must exist for serializer"
+    },
+    {
+      "from": "TASK-1.4",
+      "to": "TASK-1.5",
+      "type": "blocks",
+      "reason": "Password validators must exist before serializer validation"
+    },
+    {
+      "from": "TASK-1.5",
+      "to": "TASK-1.6",
+      "type": "blocks",
+      "reason": "Serializer must exist before API endpoint implementation"
+    },
+    {
+      "from": "TASK-1.7",
+      "to": "TASK-1.8",
+      "type": "blocks",
+      "reason": "Celery must be configured before email service implementation"
+    },
+    {
+      "from": "TASK-1.6",
+      "to": "TASK-1.9",
+      "type": "blocks",
+      "reason": "API endpoint must exist before adding rate limiting"
+    },
+    {
+      "from": "TASK-1.6",
+      "to": "TASK-1.10",
+      "type": "blocks",
+      "reason": "API endpoint must exist for frontend form integration"
+    },
+    {
+      "from": "TASK-1.10",
+      "to": "TASK-1.12",
+      "type": "blocks",
+      "reason": "Form component must exist before page integration"
+    },
+    {
+      "from": "TASK-1.11",
+      "to": "TASK-1.12",
+      "type": "blocks",
+      "reason": "Password strength indicator must exist before page integration"
+    },
+    {
+      "from": "TASK-1.6",
+      "to": "TASK-1.13",
+      "type": "blocks",
+      "reason": "API endpoint must exist before creating frontend service"
+    },
+    {
+      "from": "TASK-1.13",
+      "to": "TASK-1.14",
+      "type": "blocks",
+      "reason": "API service must exist for error handling integration"
+    },
+    {
+      "from": "TASK-1.5",
+      "to": "TASK-1.15",
+      "type": "blocks",
+      "reason": "Serializer and endpoint must exist before unit testing"
+    },
+    {
+      "from": "TASK-1.6",
+      "to": "TASK-1.15",
+      "type": "blocks",
+      "reason": "Endpoint must exist before unit testing"
+    },
+    {
+      "from": "TASK-1.6",
+      "to": "TASK-1.16",
+      "type": "blocks",
+      "reason": "API endpoint must exist before integration testing"
+    },
+    {
+      "from": "TASK-1.8",
+      "to": "TASK-1.16",
+      "type": "blocks",
+      "reason": "Email service must exist before integration testing"
+    },
+    {
+      "from": "TASK-1.9",
+      "to": "TASK-1.17",
+      "type": "blocks",
+      "reason": "Rate limiting must exist before security testing"
+    },
+    {
+      "from": "TASK-1.6",
+      "to": "TASK-1.19",
+      "type": "blocks",
+      "reason": "API endpoint must exist before documentation"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Backend Foundation",
+      "description": "Set up core backend infrastructure and user model",
+      "estimatedDays": "1-2 days",
+      "tasks": ["TASK-1.1", "TASK-1.2", "TASK-1.3", "TASK-1.18", "TASK-1.7"]
+    },
+    {
+      "phase": 2,
+      "name": "Backend Core Logic",
+      "description": "Implement registration API, validation, and email service",
+      "estimatedDays": "1-2 days",
+      "tasks": ["TASK-1.4", "TASK-1.5", "TASK-1.6", "TASK-1.8", "TASK-1.9"]
+    },
+    {
+      "phase": 3,
+      "name": "Frontend Development",
+      "description": "Build registration UI components and pages",
+      "estimatedDays": "1-2 days",
+      "tasks": ["TASK-1.11", "TASK-1.10", "TASK-1.13", "TASK-1.14", "TASK-1.12"]
+    },
+    {
+      "phase": 4,
+      "name": "Testing and Documentation",
+      "description": "Comprehensive testing and API documentation",
+      "estimatedDays": "2 days",
+      "tasks": ["TASK-1.15", "TASK-1.16", "TASK-1.17", "TASK-1.19"]
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Backend Foundation",
+      "description": "SMTP and Celery can be configured in parallel",
+      "tasks": ["TASK-1.18", "TASK-1.7"],
+      "canStartAfter": []
+    },
+    {
+      "group": "Backend Email Path",
+      "description": "Email service can be developed in parallel with rate limiting",
+      "tasks": ["TASK-1.8", "TASK-1.9"],
+      "canStartAfter": ["TASK-1.6", "TASK-1.7"]
+    },
+    {
+      "group": "Frontend Components",
+      "description": "Form and password strength can be developed in parallel",
+      "tasks": ["TASK-1.10", "TASK-1.11", "TASK-1.13"],
+      "canStartAfter": ["TASK-1.6"]
+    },
+    {
+      "group": "Testing Suite",
+      "description": "All test types can be developed in parallel",
+      "tasks": ["TASK-1.15", "TASK-1.16", "TASK-1.17"],
+      "canStartAfter": ["TASK-1.6", "TASK-1.8", "TASK-1.9"]
+    }
+  ],
+  "criticalPath": [
+    "TASK-1.1",
+    "TASK-1.3",
+    "TASK-1.4",
+    "TASK-1.5",
+    "TASK-1.6",
+    "TASK-1.10",
+    "TASK-1.12",
+    "TASK-1.16"
+  ],
+  "summary": {
+    "totalTasks": 19,
+    "byType": {
+      "backend": 9,
+      "frontend": 5,
+      "testing": 3,
+      "infrastructure": 2
+    },
+    "bySpecialty": {
+      "database": 1,
+      "config": 3,
+      "security": 3,
+      "api": 3,
+      "email": 1,
+      "component": 3,
+      "page": 1,
+      "unit": 1,
+      "integration": 1,
+      "documentation": 1
+    },
+    "totalEffortHours": 63,
+    "totalEffortDays": "8 days (1 developer)",
+    "parallelEffortDays": "6 days (2 developers)",
+    "averageTaskEffort": "3.3h",
+    "longestTask": {
+      "id": "TASK-1.10",
+      "title": "Create registration form component",
+      "effort": "5h"
+    },
+    "shortestTask": {
+      "id": "TASK-1.2",
+      "title": "Configure django-allauth for email-based auth",
+      "effort": "2h"
+    }
+  },
+  "metadata": {
+    "generatedBy": "functional-spec-planner",
+    "skillVersion": "1.0",
+    "technologyStack": {
+      "backend": "Django 4.2+, DRF 3.14+, Python 3.11+",
+      "frontend": "React 18+",
+      "database": "PostgreSQL 15+",
+      "cache": "Redis 7+",
+      "authentication": "django-allauth, Argon2",
+      "async": "Celery 5.2+"
+    },
+    "performanceTargets": {
+      "registrationEndpointP95": "< 300ms",
+      "emailDelivery": "< 30 seconds",
+      "codeCoverage": "> 80%"
+    },
+    "securityRequirements": {
+      "passwordHashing": "Argon2",
+      "rateLimit": "5 attempts/IP/hour",
+      "emailVerification": "mandatory"
+    }
+  }
+}

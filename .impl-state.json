@@ -18,7 +18,7 @@
       "skills": ["docker-compose-orchestration"],
       "completedAt": "2025-10-29T00:00:00Z",
       "implementation": {
-        "image": "ankane/pgvector:pg15",
+        "image": "pgvector/pgvector:pg15",
         "containerName": "veille_tech_db",
         "portExposure": "internal-only (no host mapping)",
         "resourceLimits": "CPU: 1.0, Memory: 512M",
@@ -69,10 +69,33 @@
       "specialty": "config",
       "priority": "P0",
       "effort": "0.5h",
-      "status": "pending",
+      "status": "completed",
       "assignedAgent": "infrastructure-agent",
       "skills": ["docker-compose-orchestration"],
-      "dependencies": ["TASK-2.1"]
+      "dependencies": ["TASK-2.1"],
+      "completedAt": "2025-10-29T00:45:00Z",
+      "implementation": {
+        "volumeName": "veille_tech_postgres_data",
+        "volumeDriver": "local",
+        "mountPath": "/var/lib/postgresql/data",
+        "capacity": "Supports 10GB+ (941GB available on host system)",
+        "persistence": "Data persists across docker-compose down and up",
+        "inspection": "docker volume inspect veille_tech_postgres_data shows proper configuration",
+        "features": [
+          "Named volume with explicit name: veille_tech_postgres_data",
+          "Local driver for host filesystem storage",
+          "Mounted to PostgreSQL data directory in db service",
+          "Automatic creation on first docker-compose up",
+          "Data survives container recreation and restarts",
+          "No POSTGRES_HOST_AUTH_METHOD warnings in logs"
+        ],
+        "tested": {
+          "volumeCreation": "Volume created successfully on docker-compose up",
+          "dataPersistence": "Data persists after docker-compose down and up",
+          "volumeInspection": "docker volume inspect works correctly",
+          "diskSpace": "941GB available, exceeds 10GB requirement"
+        }
+      }
     },
     "TASK-2.5": {
       "id": "TASK-2.5",
@@ -179,11 +202,11 @@
   ],
   "progress": {
     "totalTasks": 8,
-    "completed": 3,
+    "completed": 4,
     "inProgress": 0,
-    "pending": 5,
+    "pending": 4,
     "blocked": 0,
-    "percentComplete": 37.5
+    "percentComplete": 50.0
   },
   "parallelGroups": [
     {

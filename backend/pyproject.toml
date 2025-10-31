@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "veille-tech-backend"
+version = "0.1.0"
+description = "AI-powered Technology Watch Platform - Backend API"
+authors = ["Team <team@example.com>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.13"
+django = "^5.1"
+djangorestframework = "^3.15"
+psycopg2-binary = "^2.9"
+redis = "^5.2"
+django-redis = "^5.4"
+celery = "^5.4"
+django-cors-headers = "^4.6"
+python-decouple = "^3.8"
+gunicorn = "^23.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3"
+pytest-django = "^4.9"
+black = "^24.10"
+flake8 = "^7.1"
+ipython = "^8.31"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

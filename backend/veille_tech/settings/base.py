@@ -16,6 +16,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv(
 
 # Application definition
 INSTALLED_APPS = [
+    'veille_tech.apps.VeilleTechConfig',  # Main app with config validation
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

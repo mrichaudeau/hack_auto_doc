@@ -74,17 +74,31 @@ The **Technology Watch Platform** (Plateforme de Veille Technologique IA) helps 
    cp .env.backend.example .env.backend
    cp .env.frontend.example .env.frontend
 
-   # Edit .env.backend with your credentials
-   # IMPORTANT: Generate secure passwords
+   # Generate cryptographically secure secrets (SECRET_KEY, JWT_SECRET_KEY)
+   python backend/scripts/generate_secrets.py
+
+   # Or manually generate with openssl
    openssl rand -base64 24  # For POSTGRES_PASSWORD
-   openssl rand -base64 32  # For SECRET_KEY
+   openssl rand -base64 48  # For SECRET_KEY (64 chars)
    ```
 
 3. **Configure API keys in `.env.backend`:**
+   
+   Edit `.env.backend` and set the following required API keys:
+   
    ```bash
+   # Get from https://makersuite.google.com/app/apikey
    GOOGLE_AI_STUDIO_API_KEY=your-google-ai-studio-api-key
+   
+   # Get from https://firecrawl.dev/
    FIRECRAWL_API_KEY=your-firecrawl-api-key
    ```
+   
+   **Important:** Replace ALL placeholder values (`your-*-key-here`) with actual secrets. 
+   The application will validate configuration on startup and fail with clear error messages if 
+   required variables are missing or invalid.
+   
+   For complete variable reference, see [Environment Variables Documentation](docs/setup/environment_variables.md).
 
 4. **Build and start services:**
    ```bash

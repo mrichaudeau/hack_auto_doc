@@ -421,6 +421,227 @@ LIMIT 10;
 
 **Note :** Nécessite l'extension `pg_stat_statements` activée dans `postgresql.conf`.
 
+### 5.9. Configuration et Usage de Redis
+
+#### 5.9.1. Vue d'Ensemble
+
+Redis sert de service dual dans la plateforme :
+- **DB 0 : Broker Celery** - Gestion des files d'attente de tâches asynchrones (AI pipeline)
+- **DB 1 : Cache applicatif** - Mise en cache des réponses API et données de session
+
+**Caractéristiques :**
+- Mémoire maximale : 256MB
+- Politique d'éviction : `allkeys-lru` (suppression automatique des clés les moins récemment utilisées)
+- Port : 6379 (non exposé sur l'hôte - réseau interne uniquement)
+- Persistance : Volume nommé `redis_data` pour snapshot RDB
+
+#### 5.9.2. Configuration des Variables d'Environnement
+
+Les URLs de connexion Redis sont configurées dans `.env.backend` :
+
+```bash
+# Celery Broker (Redis DB 0)
+# Utilisé par les workers Celery et le scheduler Beat
+CELERY_BROKER_URL=redis://redis:6379/0
+CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+# Cache Backend (Redis DB 1)
+# Utilisé par le framework de cache Django
+REDIS_CACHE_URL=redis://redis:6379/1
+```
+
+**Important :** Les deux bases Redis utilisent le même service mais des bases de données séparées (0 et 1) pour éviter les conflits.
+
+#### 5.9.3. Démarrage et Vérification
+
+```bash
+# Démarrer Redis
+docker-compose up -d redis
+
+# Vérifier le statut de santé
+docker-compose ps redis
+# Devrait afficher "healthy" en moins de 5 secondes
+
+# Tester la connexion
+docker-compose exec redis redis-cli ping
+# Sortie attendue: PONG
+```
+
+#### 5.9.4. Accès au CLI Redis
+
+**Se connecter au Redis CLI :**
+```bash
+docker-compose exec redis redis-cli
+```
+
+**Se connecter à une base spécifique :**
+```bash
+# DB 0 (broker Celery)
+docker-compose exec redis redis-cli -n 0
+
+# DB 1 (cache applicatif)
+docker-compose exec redis redis-cli -n 1
+```
+
+**Commandes de base :**
+```bash
+# Test de connexion
+PING
+
+# Obtenir les infos Redis
+INFO
+INFO memory
+INFO stats
+
+# Lister toutes les clés
+KEYS *
+
+# Obtenir une valeur
+GET key_name
+
+# Supprimer une clé
+DEL key_name
+```
+
+#### 5.9.5. Inspection du Broker Celery (DB 0)
+
+```bash
+# Voir les files d'attente Celery
+docker-compose exec redis redis-cli -n 0 KEYS '*celery*'
+
+# Vérifier la longueur d'une file
+docker-compose exec redis redis-cli -n 0 LLEN celery
+
+# Voir les tâches en attente
+docker-compose exec redis redis-cli -n 0 LRANGE celery 0 -1
+
+# Monitorer les commandes en temps réel
+docker-compose exec redis redis-cli -n 0 MONITOR
+```
+
+#### 5.9.6. Inspection du Cache (DB 1)
+
+```bash
+# Voir les clés en cache
+docker-compose exec redis redis-cli -n 1 KEYS '*'
+
+# Voir les clés avec préfixe
+docker-compose exec redis redis-cli -n 1 KEYS 'techwatch:*'
+
+# Obtenir le TTL d'une clé (temps avant expiration)
+docker-compose exec redis redis-cli -n 1 TTL key_name
+# Retourne: secondes restantes, -1 (pas d'expiration), -2 (clé inexistante)
+
+# Vider tous les caches (DB 1 seulement)
+docker-compose exec redis redis-cli -n 1 FLUSHDB
+```
+
+#### 5.9.7. Vérification de la Configuration
+
+```bash
+# Vérifier la limite mémoire
+docker-compose exec redis redis-cli CONFIG GET maxmemory
+# Devrait retourner: 268435456 (256MB en bytes)
+
+# Vérifier la politique d'éviction
+docker-compose exec redis redis-cli CONFIG GET maxmemory-policy
+# Devrait retourner: allkeys-lru
+```
+
+#### 5.9.8. Monitoring des Performances
+
+```bash
+# Surveiller la latence
+docker-compose exec redis redis-cli --latency
+
+# Surveiller l'usage mémoire
+docker-compose exec redis redis-cli INFO memory | findstr used_memory_human
+
+# Lister les clients connectés
+docker-compose exec redis redis-cli CLIENT LIST
+
+# Voir les requêtes lentes
+docker-compose exec redis redis-cli SLOWLOG GET 10
+```
+
+#### 5.9.9. Dépannage
+
+**Problème : Connection refused**
+```bash
+# Vérifier que Redis est en cours d'exécution
+docker-compose ps redis
+
+# Vérifier les logs
+docker-compose logs redis
+
+# Redémarrer Redis
+docker-compose restart redis
+```
+
+**Problème : Limite mémoire atteinte**
+```bash
+# Vérifier l'usage mémoire actuel
+docker-compose exec redis redis-cli INFO memory
+
+# Vérifier les clés évincées
+docker-compose exec redis redis-cli INFO stats | findstr evicted_keys
+# Si evicted_keys augmente, c'est normal (politique LRU active)
+```
+
+**Problème : Données ne persistent pas**
+```bash
+# Vérifier que le volume existe
+docker volume ls | findstr redis_data
+
+# Inspecter le volume
+docker volume inspect veille_tech_redis_data
+```
+
+#### 5.9.10. Workflow de Vérification Broker Celery
+
+Pour vérifier que le broker Celery fonctionne correctement :
+
+```bash
+# Terminal 1 : Surveiller les commandes Redis
+docker-compose exec redis redis-cli -n 0 MONITOR
+
+# Terminal 2 : Envoyer une tâche de test depuis Django
+docker-compose exec backend python manage.py shell
+>>> from celery import current_app
+>>> current_app.send_task('test_task')
+
+# Observer dans le terminal 1 : commandes LPUSH/RPOP indiquant l'envoi de la tâche
+```
+
+#### 5.9.11. Workflow de Vérification Cache
+
+Pour vérifier le hit/miss du cache :
+
+```bash
+# 1. Vider le cache
+docker-compose exec redis redis-cli -n 1 FLUSHDB
+
+# 2. Surveiller les opérations cache
+docker-compose exec redis redis-cli -n 1 MONITOR
+
+# 3. Faire une requête API qui utilise le cache
+# - Première requête : Observer SET (cache miss, valeur stockée)
+# - Deuxième requête : Observer GET (cache hit)
+```
+
+#### 5.9.12. Sécurité et Production
+
+**Environnement local :**
+- Port 6379 non exposé sur l'hôte (sécurité par isolation réseau)
+- Pas d'authentification requise (réseau Docker isolé)
+
+**Pour la production (OBLIGATOIRE) :**
+- Activer Redis AUTH : `requirepass your_strong_password`
+- Activer TLS/SSL pour les connexions
+- Exposer uniquement via réseau interne sécurisé
+- Changer la politique de persistance (RDB + AOF)
+- Augmenter maxmemory selon les besoins
+
 ## 6. Accès aux Services
 
 * **Application Frontend (Interface Utilisateur) :** `http://localhost:3000`

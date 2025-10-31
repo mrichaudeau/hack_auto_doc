@@ -35,9 +35,10 @@ services:
     image: redis:latest
     container_name: redis
     restart: unless-stopped
-    command: redis-server --appendonly yes
-    ports:
-      - "6379:6379"
+    command: >
+      redis-server
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
     volumes:
       - redis_data:/data
     networks:
@@ -46,7 +47,10 @@ services:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 3
+      start_period: 5s
+    labels:
+      - "description=Redis broker and cache service - DB 0: Celery broker, DB 1: Application cache"
     deploy:
       resources:
         limits:

@@ -6,10 +6,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env.backend
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-veille_tech_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-veille_tech_db}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql

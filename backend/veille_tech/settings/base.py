@@ -86,7 +86,6 @@ CACHES = {
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'KEY_PREFIX': 'techwatch',
-            'PARSER_CLASS': 'redis.connection.HiredisParser',
             'CONNECTION_POOL_CLASS_KWARGS': {
                 'max_connections': 50,
                 'retry_on_timeout': True,

@@ -4,10 +4,10 @@
   "status": "in_progress",
   "progress": {
     "total": 15,
-    "completed": 9,
+    "completed": 11,
     "inProgress": 0,
     "blocked": 0,
-    "pending": 6
+    "pending": 4
   },
   "generatedArtifacts": {
     "agents": [
@@ -156,23 +156,27 @@
     },
     "TASK-6.10": {
       "title": "Implement worker health check",
-      "status": "pending",
+      "status": "completed",
       "category": "infrastructure",
       "agent": "infrastructure-agent",
       "effort": "3h",
       "priority": "P2",
       "dependencies": ["TASK-6.8"],
-      "files": ["backend/veille_tech/management/commands/check_worker_health.py"]
+      "files": ["backend/veille_tech/management/commands/celery_health_check.py", "docker-compose.yml"],
+      "completedAt": "2025-11-02T16:00:00Z",
+      "notes": "Created Django management command celery_health_check.py that verifies: (1) Celery app initialization, (2) Redis broker connectivity with PING, (3) Active worker stats via celery inspect. Returns exit code 0 for healthy, 1 for unhealthy. Added health check to docker-compose.yml worker service with 30s interval, 10s timeout, 3 retries, 10s start_period."
     },
     "TASK-6.11": {
       "title": "Document worker management",
-      "status": "pending",
+      "status": "completed",
       "category": "infrastructure",
       "agent": "infrastructure-agent",
       "effort": "2h",
       "priority": "P3",
       "dependencies": ["TASK-6.10"],
-      "files": ["docs/setup/celery_worker.md", "README.md"]
+      "files": ["docs/setup/celery_worker.md", "README.md"],
+      "completedAt": "2025-11-02T16:00:00Z",
+      "notes": "Created comprehensive docs/setup/celery_worker.md covering: starting/stopping workers, viewing logs, enqueueing tasks (Django shell + API), checking worker status (health check, inspect, status commands), scaling workers (horizontal/vertical, concurrency, pool types), troubleshooting (worker not starting, tasks not executing, memory issues, timeouts, auto-reload, Redis connection, stuck tasks), configuration (env vars, Django settings), and best practices (idempotency, error handling, logging, resource management, monitoring, workflows). Updated README.md with Celery Worker Management section including quick reference commands and link to full documentation."
     },
     "TASK-6.12": {
       "title": "Unit test Celery app initialization",
@@ -235,7 +239,7 @@
       "name": "Infrastructure",
       "tasks": ["TASK-6.10", "TASK-6.11", "TASK-6.12"],
       "parallelGroups": [],
-      "status": "pending"
+      "status": "completed"
     },
     {
       "wave": 4,
@@ -258,7 +262,7 @@
     "branch": "feature/US-6-celery-worker",
     "initializedAt": "2025-11-02T00:00:00Z",
     "initializedBy": "spec-implementer:impl-init",
-    "lastUpdatedAt": "2025-11-02T14:00:00Z",
-    "completionPercentage": "60%"
+    "lastUpdatedAt": "2025-11-02T16:00:00Z",
+    "completionPercentage": "73%"
   }
 }

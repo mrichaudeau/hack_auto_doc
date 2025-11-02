@@ -118,9 +118,84 @@ CELERY_TASK_RETRY_BACKOFF = True  # Enable exponential backoff
 CELERY_TASK_RETRY_BACKOFF_MAX = 600  # Max 10 minutes between retries
 CELERY_TASK_RETRY_JITTER = True  # Add randomness to prevent thundering herd
 
-# Task time limits
+# Task time limits and graceful shutdown
+# Soft limit (300s): Raises SoftTimeLimitExceeded exception for graceful cleanup
+# Hard limit (600s): Forcefully terminates task if cleanup doesn't complete
+# Watchdog auto-reload: Monitors Python files for changes and restarts worker
+#   - IMPORTANT: Windows users MUST use Docker Desktop with WSL2 backend (not Hyper-V)
+#   - WSL2 provides proper filesystem events for file watching
+#   - Without WSL2, watchdog may not detect file changes reliably
 CELERY_TASK_SOFT_TIME_LIMIT = 300  # 5 minutes soft limit (allows cleanup)
 CELERY_TASK_TIME_LIMIT = 600  # 10 minutes hard limit (forced termination)
+
+# Task queue configuration
+# Two queues with different priorities for workload management:
+#   - 'default': Standard tasks (e.g., test_task, health_check_task) - Priority 5
+#   - 'high_priority': Urgent tasks (e.g., ai_pipeline, urgent_* patterns) - Priority 10
+# Task routing automatically assigns tasks to queues based on name patterns
+CELERY_TASK_DEFAULT_QUEUE = 'default'
+CELERY_TASK_QUEUE_MAX_PRIORITY = 10  # Maximum priority value for task queuing
+CELERY_TASK_DEFAULT_PRIORITY = 5  # Default priority for unspecified tasks
+
+# Task routing rules
+# Maps task name patterns to specific queues for workload segregation
+# Example patterns:
+#   - 'veille_tech.tasks.test_task' -> 'default' queue
+#   - 'veille_tech.tasks.urgent_*' -> 'high_priority' queue
+#   - 'ai_pipeline.*' -> 'high_priority' queue (AI processing tasks)
+CELERY_TASK_ROUTES = {
+    # Test and health check tasks go to default queue
+    'veille_tech.tasks.test_task': {
+        'queue': 'default',
+        'priority': 5,
+    },
+    'veille_tech.tasks.health_check_task': {
+        'queue': 'default',
+        'priority': 3,
+    },
+    # AI pipeline tasks get high priority queue
+    # Pattern matching: any task starting with 'ai_pipeline.' or 'urgent_'
+    'ai_pipeline.*': {
+        'queue': 'high_priority',
+        'priority': 10,
+    },
+    'urgent_*': {
+        'queue': 'high_priority',
+        'priority': 10,
+    },
+}
+
+# Worker prefetch multiplier
+# Controls how many tasks each worker process prefetches from the queue
+# Higher values improve throughput but reduce task distribution fairness
+# Recommended: 4 for balanced performance/fairness (4 tasks per worker process)
+CELERY_WORKER_PREFETCH_MULTIPLIER = 4
+
+# Worker pool and concurrency configuration
+# Pool Types:
+#   - 'prefork' (default): Multiprocessing pool, best for CPU-bound tasks
+#     Each worker is a separate process (fork), isolated memory space
+#     Memory usage: ~200-500MB per worker process
+#     Best for: AI pipeline tasks, data processing, CPU-intensive operations
+#   - 'gevent': Greenlet-based async pool, best for I/O-bound tasks
+#     Single process with lightweight greenlets (cooperative multitasking)
+#     Memory usage: ~100-200MB total (shared memory)
+#     Best for: HTTP requests, database queries, file I/O operations
+#   - 'eventlet': Similar to gevent, alternative async implementation
+#     Requires: pip install celery[eventlet]
+#
+# Concurrency Settings:
+#   - Development: 2-4 workers (lower memory usage, easier debugging)
+#   - Production: CPU cores for prefork, 100-500 for gevent/eventlet
+#   - AI Pipeline: 4-8 workers (balance throughput vs memory for LLM calls)
+CELERY_WORKER_POOL = config('CELERY_WORKER_POOL', default='prefork')
+CELERY_WORKER_CONCURRENCY = config('CELERY_WORKER_CONCURRENCY', default=4, cast=int)
+
+# Worker task limits for memory management
+# Restart worker process after executing N tasks to prevent memory leaks
+# Set to 0 to disable (worker never restarts based on task count)
+# Recommended: 100-1000 for long-running workers with potential memory leaks
+CELERY_WORKER_MAX_TASKS_PER_CHILD = config('CELERY_WORKER_MAX_TASKS_PER_CHILD', default=100, cast=int)
 
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = config(

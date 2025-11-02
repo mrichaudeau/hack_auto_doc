@@ -4,10 +4,10 @@
   "status": "in_progress",
   "progress": {
     "total": 15,
-    "completed": 4,
+    "completed": 9,
     "inProgress": 0,
     "blocked": 0,
-    "pending": 11
+    "pending": 6
   },
   "generatedArtifacts": {
     "agents": [
@@ -96,53 +96,63 @@
     },
     "TASK-6.5": {
       "title": "Configure task queues",
-      "status": "pending",
+      "status": "completed",
       "category": "backend",
       "agent": "backend-agent",
       "effort": "2h",
       "priority": "P2",
       "dependencies": ["TASK-6.1"],
-      "files": ["backend/veille_tech/settings/base.py"]
+      "files": ["backend/veille_tech/settings/base.py"],
+      "completedAt": "2025-11-02T14:00:00Z",
+      "notes": "Configured task queue routing with 'default' and 'high_priority' queues. Added CELERY_TASK_ROUTES for test_task, health_check_task (default queue), and ai_pipeline/urgent patterns (high_priority queue). Set CELERY_TASK_QUEUE_MAX_PRIORITY=10, CELERY_TASK_DEFAULT_PRIORITY=5, CELERY_WORKER_PREFETCH_MULTIPLIER=4."
     },
     "TASK-6.6": {
       "title": "Enable watchdog for auto-reload",
-      "status": "pending",
+      "status": "completed",
       "category": "backend",
       "agent": "backend-agent",
       "effort": "2h",
       "priority": "P2",
       "dependencies": ["TASK-6.1"],
-      "files": ["backend/pyproject.toml", "docker-compose.yml"]
+      "files": ["backend/pyproject.toml", "backend/veille_tech/settings/base.py"],
+      "completedAt": "2025-11-02T14:00:00Z",
+      "notes": "Added watchdog ^4.0 to pyproject.toml dependencies. Verified --watchdog flag already present in docker-compose.yml worker command. Added graceful shutdown documentation to settings explaining soft/hard time limits and WSL2 requirement for Windows users."
     },
     "TASK-6.7": {
       "title": "Configure worker concurrency and pool",
-      "status": "pending",
+      "status": "completed",
       "category": "backend",
       "agent": "backend-agent",
       "effort": "2h",
       "priority": "P2",
       "dependencies": ["TASK-6.1"],
-      "files": ["backend/veille_tech/settings/base.py", "docker-compose.yml"]
+      "files": ["backend/veille_tech/settings/base.py", ".env.backend.example"],
+      "completedAt": "2025-11-02T14:00:00Z",
+      "notes": "Added CELERY_WORKER_POOL, CELERY_WORKER_CONCURRENCY, CELERY_WORKER_MAX_TASKS_PER_CHILD settings with environment variable overrides. Documented pool types (prefork/gevent/eventlet) with memory usage, trade-offs, and recommendations. Updated .env.backend.example with comprehensive documentation for CELERY_WORKER_POOL, CELERY_WORKER_CONCURRENCY, and CELERY_WORKER_MAX_TASKS_PER_CHILD."
     },
     "TASK-6.8": {
       "title": "Define worker service in docker-compose.yml",
-      "status": "pending",
+      "status": "completed",
       "category": "infrastructure",
       "agent": "infrastructure-agent",
       "effort": "3h",
       "priority": "P1",
       "dependencies": ["TASK-6.1"],
-      "files": ["docker-compose.yml"]
+      "files": ["docker-compose.yml"],
+      "completedAt": "2025-11-02T12:30:00Z",
+      "notes": "Updated worker service with Poetry run command, watchdog flag, concurrency env var, backend dependency, PYTHONUNBUFFERED env, and descriptive label. Also updated scheduler service for consistency."
     },
     "TASK-6.9": {
       "title": "Configure environment variables",
-      "status": "pending",
+      "status": "completed",
       "category": "infrastructure",
       "agent": "infrastructure-agent",
       "effort": "2h",
       "priority": "P1",
       "dependencies": ["TASK-6.2"],
-      "files": [".env.backend", ".env.backend.example", "docs/setup/environment_variables.md"]
+      "files": [".env.backend.example"],
+      "completedAt": "2025-11-02T14:00:00Z",
+      "notes": "Updated .env.backend.example with comprehensive Celery worker configuration including CELERY_BROKER_URL, CELERY_RESULT_BACKEND, CELERY_WORKER_POOL, CELERY_WORKER_CONCURRENCY (default 4), CELERY_WORKER_MAX_TASKS_PER_CHILD (default 100), GOOGLE_AI_API_KEY, FIRECRAWL_API_KEY with detailed documentation comments explaining pool types, concurrency recommendations, and memory management."
     },
     "TASK-6.10": {
       "title": "Implement worker health check",
@@ -210,25 +220,29 @@
       "wave": 1,
       "name": "Foundation",
       "tasks": ["TASK-6.1", "TASK-6.2", "TASK-6.3", "TASK-6.4"],
-      "parallelGroups": []
+      "parallelGroups": [],
+      "status": "completed"
     },
     {
       "wave": 2,
       "name": "Worker Service",
       "tasks": ["TASK-6.8", "TASK-6.9", "TASK-6.5", "TASK-6.6", "TASK-6.7"],
-      "parallelGroups": []
+      "parallelGroups": [],
+      "status": "completed"
     },
     {
       "wave": 3,
       "name": "Infrastructure",
       "tasks": ["TASK-6.10", "TASK-6.11", "TASK-6.12"],
-      "parallelGroups": []
+      "parallelGroups": [],
+      "status": "pending"
     },
     {
       "wave": 4,
       "name": "Testing and Validation",
       "tasks": ["TASK-6.13", "TASK-6.14", "TASK-6.15"],
-      "parallelGroups": []
+      "parallelGroups": [],
+      "status": "pending"
     }
   ],
   "metadata": {
@@ -243,6 +257,8 @@
     "technologies": ["Python 3.13", "Django 5.1+", "Celery 5.4+", "Redis 7+", "Docker Compose", "Poetry 2.2.1", "Pytest 8+", "Watchdog 4+"],
     "branch": "feature/US-6-celery-worker",
     "initializedAt": "2025-11-02T00:00:00Z",
-    "initializedBy": "spec-implementer:impl-init"
+    "initializedBy": "spec-implementer:impl-init",
+    "lastUpdatedAt": "2025-11-02T14:00:00Z",
+    "completionPercentage": "60%"
   }
 }

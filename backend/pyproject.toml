@@ -16,6 +16,7 @@ celery = "^5.4"
 django-cors-headers = "^4.6"
 python-decouple = "^3.8"
 gunicorn = "^23.0"
+watchdog = "^4.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3"

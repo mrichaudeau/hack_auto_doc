@@ -259,20 +259,37 @@ docker-compose exec backend python manage.py test
 docker-compose exec backend pytest
 ```
 
-### Celery Commands
+### Celery Worker Management
 
 ```bash
+# Start/stop worker
+docker-compose up -d worker
+docker-compose stop worker
+docker-compose restart worker
+
 # View worker logs
 docker-compose logs -f worker
 
+# Check worker health
+docker-compose exec backend python manage.py celery_health_check
+
+# Check worker status
+docker-compose exec backend poetry run celery -A veille_tech status
+
+# View active tasks
+docker-compose exec backend poetry run celery -A veille_tech inspect active
+
+# Enqueue task (from Django shell)
+docker-compose exec backend python manage.py shell
+>>> from veille_tech.tasks import test_task
+>>> result = test_task.delay("Test message")
+>>> print(result.id)  # Task ID
+
 # View scheduler logs
 docker-compose logs -f scheduler
-
-# Manually trigger task (from Django shell)
-docker-compose exec backend python manage.py shell
->>> from myapp.tasks import my_task
->>> my_task.delay(arg1, arg2)
 ```
+
+For detailed worker management, troubleshooting, and scaling guides, see [Celery Worker Documentation](docs/setup/celery_worker.md).
 
 ### Redis Commands
 

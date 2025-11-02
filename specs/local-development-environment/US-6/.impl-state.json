@@ -1,0 +1,268 @@
+{
+  "userStory": "local-development-environment/US-6",
+  "title": "Celery Worker Service for AI Pipeline",
+  "status": "in_progress",
+  "progress": {
+    "total": 15,
+    "completed": 11,
+    "inProgress": 0,
+    "blocked": 0,
+    "pending": 4
+  },
+  "generatedArtifacts": {
+    "agents": [
+      {
+        "name": "backend-agent",
+        "path": ".claude/spec-implementer-generated/agents/backend-agent.md",
+        "assignedTasks": ["TASK-6.1", "TASK-6.2", "TASK-6.3", "TASK-6.4", "TASK-6.5", "TASK-6.6", "TASK-6.7"]
+      },
+      {
+        "name": "testing-agent",
+        "path": ".claude/spec-implementer-generated/agents/testing-agent.md",
+        "assignedTasks": ["TASK-6.12", "TASK-6.13", "TASK-6.14", "TASK-6.15"]
+      },
+      {
+        "name": "infrastructure-agent",
+        "path": ".claude/spec-implementer-generated/agents/infrastructure-agent.md",
+        "assignedTasks": ["TASK-6.8", "TASK-6.9", "TASK-6.10", "TASK-6.11"]
+      }
+    ],
+    "skills": [
+      {
+        "name": "celery-worker-configuration",
+        "path": ".claude/spec-implementer-generated/skills/celery-worker-configuration/SKILL.md",
+        "usedByAgents": ["backend-agent", "infrastructure-agent"]
+      },
+      {
+        "name": "integration-testing",
+        "path": ".claude/spec-implementer-generated/skills/integration-testing/SKILL.md",
+        "usedByAgents": ["testing-agent"]
+      },
+      {
+        "name": "docker-compose-orchestration",
+        "path": ".claude/spec-implementer-generated/skills/docker-compose-orchestration/SKILL.md",
+        "usedByAgents": ["infrastructure-agent"]
+      }
+    ]
+  },
+  "tasks": {
+    "TASK-6.1": {
+      "title": "Create Celery app configuration",
+      "status": "completed",
+      "category": "backend",
+      "agent": "backend-agent",
+      "effort": "3h",
+      "priority": "P1",
+      "dependencies": [],
+      "files": ["backend/veille_tech/celery.py", "backend/veille_tech/__init__.py"],
+      "completedAt": "2025-11-02T10:00:00Z",
+      "notes": "Added logging configuration via setup_logging signal. Celery app loads successfully."
+    },
+    "TASK-6.2": {
+      "title": "Configure broker and result backend",
+      "status": "completed",
+      "category": "backend",
+      "agent": "backend-agent",
+      "effort": "2h",
+      "priority": "P1",
+      "dependencies": ["TASK-6.1"],
+      "files": ["backend/veille_tech/settings/base.py"],
+      "completedAt": "2025-11-02T10:00:00Z",
+      "notes": "Added CELERY_RESULT_EXPIRES=3600 to complete broker/result backend configuration."
+    },
+    "TASK-6.3": {
+      "title": "Implement task retry policy",
+      "status": "completed",
+      "category": "backend",
+      "agent": "backend-agent",
+      "effort": "2h",
+      "priority": "P1",
+      "dependencies": ["TASK-6.1"],
+      "files": ["backend/veille_tech/settings/base.py"],
+      "completedAt": "2025-11-02T10:00:00Z",
+      "notes": "Configured retry policy with exponential backoff, acks_late, and time limits (5min soft, 10min hard)."
+    },
+    "TASK-6.4": {
+      "title": "Create sample test task",
+      "status": "completed",
+      "category": "backend",
+      "agent": "backend-agent",
+      "effort": "2h",
+      "priority": "P2",
+      "dependencies": ["TASK-6.1"],
+      "files": ["backend/veille_tech/tasks.py"],
+      "completedAt": "2025-11-02T10:00:00Z",
+      "notes": "Created tasks.py with test_task and health_check_task. Includes proper logging, error handling, and exponential backoff."
+    },
+    "TASK-6.5": {
+      "title": "Configure task queues",
+      "status": "completed",
+      "category": "backend",
+      "agent": "backend-agent",
+      "effort": "2h",
+      "priority": "P2",
+      "dependencies": ["TASK-6.1"],
+      "files": ["backend/veille_tech/settings/base.py"],
+      "completedAt": "2025-11-02T14:00:00Z",
+      "notes": "Configured task queue routing with 'default' and 'high_priority' queues. Added CELERY_TASK_ROUTES for test_task, health_check_task (default queue), and ai_pipeline/urgent patterns (high_priority queue). Set CELERY_TASK_QUEUE_MAX_PRIORITY=10, CELERY_TASK_DEFAULT_PRIORITY=5, CELERY_WORKER_PREFETCH_MULTIPLIER=4."
+    },
+    "TASK-6.6": {
+      "title": "Enable watchdog for auto-reload",
+      "status": "completed",
+      "category": "backend",
+      "agent": "backend-agent",
+      "effort": "2h",
+      "priority": "P2",
+      "dependencies": ["TASK-6.1"],
+      "files": ["backend/pyproject.toml", "backend/veille_tech/settings/base.py"],
+      "completedAt": "2025-11-02T14:00:00Z",
+      "notes": "Added watchdog ^4.0 to pyproject.toml dependencies. Verified --watchdog flag already present in docker-compose.yml worker command. Added graceful shutdown documentation to settings explaining soft/hard time limits and WSL2 requirement for Windows users."
+    },
+    "TASK-6.7": {
+      "title": "Configure worker concurrency and pool",
+      "status": "completed",
+      "category": "backend",
+      "agent": "backend-agent",
+      "effort": "2h",
+      "priority": "P2",
+      "dependencies": ["TASK-6.1"],
+      "files": ["backend/veille_tech/settings/base.py", ".env.backend.example"],
+      "completedAt": "2025-11-02T14:00:00Z",
+      "notes": "Added CELERY_WORKER_POOL, CELERY_WORKER_CONCURRENCY, CELERY_WORKER_MAX_TASKS_PER_CHILD settings with environment variable overrides. Documented pool types (prefork/gevent/eventlet) with memory usage, trade-offs, and recommendations. Updated .env.backend.example with comprehensive documentation for CELERY_WORKER_POOL, CELERY_WORKER_CONCURRENCY, and CELERY_WORKER_MAX_TASKS_PER_CHILD."
+    },
+    "TASK-6.8": {
+      "title": "Define worker service in docker-compose.yml",
+      "status": "completed",
+      "category": "infrastructure",
+      "agent": "infrastructure-agent",
+      "effort": "3h",
+      "priority": "P1",
+      "dependencies": ["TASK-6.1"],
+      "files": ["docker-compose.yml"],
+      "completedAt": "2025-11-02T12:30:00Z",
+      "notes": "Updated worker service with Poetry run command, watchdog flag, concurrency env var, backend dependency, PYTHONUNBUFFERED env, and descriptive label. Also updated scheduler service for consistency."
+    },
+    "TASK-6.9": {
+      "title": "Configure environment variables",
+      "status": "completed",
+      "category": "infrastructure",
+      "agent": "infrastructure-agent",
+      "effort": "2h",
+      "priority": "P1",
+      "dependencies": ["TASK-6.2"],
+      "files": [".env.backend.example"],
+      "completedAt": "2025-11-02T14:00:00Z",
+      "notes": "Updated .env.backend.example with comprehensive Celery worker configuration including CELERY_BROKER_URL, CELERY_RESULT_BACKEND, CELERY_WORKER_POOL, CELERY_WORKER_CONCURRENCY (default 4), CELERY_WORKER_MAX_TASKS_PER_CHILD (default 100), GOOGLE_AI_API_KEY, FIRECRAWL_API_KEY with detailed documentation comments explaining pool types, concurrency recommendations, and memory management."
+    },
+    "TASK-6.10": {
+      "title": "Implement worker health check",
+      "status": "completed",
+      "category": "infrastructure",
+      "agent": "infrastructure-agent",
+      "effort": "3h",
+      "priority": "P2",
+      "dependencies": ["TASK-6.8"],
+      "files": ["backend/veille_tech/management/commands/celery_health_check.py", "docker-compose.yml"],
+      "completedAt": "2025-11-02T16:00:00Z",
+      "notes": "Created Django management command celery_health_check.py that verifies: (1) Celery app initialization, (2) Redis broker connectivity with PING, (3) Active worker stats via celery inspect. Returns exit code 0 for healthy, 1 for unhealthy. Added health check to docker-compose.yml worker service with 30s interval, 10s timeout, 3 retries, 10s start_period."
+    },
+    "TASK-6.11": {
+      "title": "Document worker management",
+      "status": "completed",
+      "category": "infrastructure",
+      "agent": "infrastructure-agent",
+      "effort": "2h",
+      "priority": "P3",
+      "dependencies": ["TASK-6.10"],
+      "files": ["docs/setup/celery_worker.md", "README.md"],
+      "completedAt": "2025-11-02T16:00:00Z",
+      "notes": "Created comprehensive docs/setup/celery_worker.md covering: starting/stopping workers, viewing logs, enqueueing tasks (Django shell + API), checking worker status (health check, inspect, status commands), scaling workers (horizontal/vertical, concurrency, pool types), troubleshooting (worker not starting, tasks not executing, memory issues, timeouts, auto-reload, Redis connection, stuck tasks), configuration (env vars, Django settings), and best practices (idempotency, error handling, logging, resource management, monitoring, workflows). Updated README.md with Celery Worker Management section including quick reference commands and link to full documentation."
+    },
+    "TASK-6.12": {
+      "title": "Unit test Celery app initialization",
+      "status": "pending",
+      "category": "testing",
+      "agent": "testing-agent",
+      "effort": "2h",
+      "priority": "P2",
+      "dependencies": ["TASK-6.1"],
+      "files": ["backend/tests/unit/test_celery_app.py", "backend/pytest.ini", "backend/veille_tech/settings/test.py"]
+    },
+    "TASK-6.13": {
+      "title": "Integration test task execution",
+      "status": "pending",
+      "category": "testing",
+      "agent": "testing-agent",
+      "effort": "3h",
+      "priority": "P1",
+      "dependencies": ["TASK-6.8"],
+      "files": ["backend/tests/integration/test_celery_worker.py"]
+    },
+    "TASK-6.14": {
+      "title": "Test task retry behavior",
+      "status": "pending",
+      "category": "testing",
+      "agent": "testing-agent",
+      "effort": "3h",
+      "priority": "P2",
+      "dependencies": ["TASK-6.3"],
+      "files": ["backend/tests/integration/test_task_retry.py"]
+    },
+    "TASK-6.15": {
+      "title": "Test worker auto-reload",
+      "status": "pending",
+      "category": "testing",
+      "agent": "testing-agent",
+      "effort": "2h",
+      "priority": "P3",
+      "dependencies": ["TASK-6.6", "TASK-6.8"],
+      "files": ["backend/tests/integration/test_worker_autoreload.py"]
+    }
+  },
+  "executionWaves": [
+    {
+      "wave": 1,
+      "name": "Foundation",
+      "tasks": ["TASK-6.1", "TASK-6.2", "TASK-6.3", "TASK-6.4"],
+      "parallelGroups": [],
+      "status": "completed"
+    },
+    {
+      "wave": 2,
+      "name": "Worker Service",
+      "tasks": ["TASK-6.8", "TASK-6.9", "TASK-6.5", "TASK-6.6", "TASK-6.7"],
+      "parallelGroups": [],
+      "status": "completed"
+    },
+    {
+      "wave": 3,
+      "name": "Infrastructure",
+      "tasks": ["TASK-6.10", "TASK-6.11", "TASK-6.12"],
+      "parallelGroups": [],
+      "status": "completed"
+    },
+    {
+      "wave": 4,
+      "name": "Testing and Validation",
+      "tasks": ["TASK-6.13", "TASK-6.14", "TASK-6.15"],
+      "parallelGroups": [],
+      "status": "pending"
+    }
+  ],
+  "metadata": {
+    "feature": "local-development-environment",
+    "userStoryId": "US-6",
+    "totalEffort": "35h",
+    "estimatedDuration": "4-5 days",
+    "dependencies": {
+      "userStories": ["US-1", "US-2", "US-3", "US-4"],
+      "services": ["Redis (US-3)", "Django Backend (US-4)", "Docker Compose (US-1)"]
+    },
+    "technologies": ["Python 3.13", "Django 5.1+", "Celery 5.4+", "Redis 7+", "Docker Compose", "Poetry 2.2.1", "Pytest 8+", "Watchdog 4+"],
+    "branch": "feature/US-6-celery-worker",
+    "initializedAt": "2025-11-02T00:00:00Z",
+    "initializedBy": "spec-implementer:impl-init",
+    "lastUpdatedAt": "2025-11-02T16:00:00Z",
+    "completionPercentage": "73%"
+  }
+}

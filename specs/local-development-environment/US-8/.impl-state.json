@@ -1,0 +1,459 @@
+{
+  "userStory": "US-8",
+  "feature": "local-development-environment",
+  "title": "Environment Configuration Management",
+  "priority": "P0",
+  "branch": "feature/US-8-environment-configuration",
+  "startedAt": "2025-01-31T00:00:00Z",
+  "lastUpdated": "2025-11-02T10:00:43Z",
+  "status": "in-progress",
+  "tasks": {
+    "TASK-8.1": {
+      "id": "TASK-8.1",
+      "title": "Install python-decouple dependency",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "0.5h",
+      "status": "completed",
+      "description": "Install the python-decouple library via Poetry to enable secure loading of environment variables in Django.",
+      "filesImpacted": [
+        "backend/pyproject.toml",
+        "backend/poetry.lock"
+      ],
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "python-decouple added to [tool.poetry.dependencies] section of pyproject.toml",
+        "Version constraint specified (e.g., python-decouple = \"^3.8\")",
+        "poetry lock executed successfully without conflicts",
+        "poetry install completes and decouple is available in virtual environment",
+        "Library can be imported: from decouple import config works without errors"
+      ],
+      "completedAt": "2025-01-31T20:30:00Z",
+      "commitSha": "3ff248f",
+      "notes": "Verified python-decouple already installed at version ^3.8 in pyproject.toml"
+    },
+    "TASK-8.2": {
+      "id": "TASK-8.2",
+      "title": "Configure Django settings to load environment variables",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "completed",
+      "description": "Update Django settings files to load all configuration from environment variables using python-decouple instead of hardcoded values.",
+      "filesImpacted": [
+        "backend/veille_tech/settings/base.py",
+        "backend/veille_tech/settings/development.py",
+        "backend/veille_tech/settings/production.py",
+        "backend/config/__init__.py"
+      ],
+      "dependencies": [
+        "TASK-8.1"
+      ],
+      "acceptanceCriteria": [
+        "All hardcoded secrets removed from settings files",
+        "Database configuration loads from DATABASE_URL environment variable",
+        "Redis configuration loads from REDIS_URL, CELERY_BROKER_URL, REDIS_CACHE_URL",
+        "Django settings load from environment: SECRET_KEY, DEBUG, ALLOWED_HOSTS",
+        "JWT configuration loads from: JWT_SECRET_KEY, JWT_ACCESS_TOKEN_LIFETIME_MINUTES, JWT_REFRESH_TOKEN_LIFETIME_DAYS",
+        "AI API keys load from: GOOGLE_AI_STUDIO_API_KEY, FIRECRAWL_API_KEY",
+        "Type coercion works correctly (booleans for DEBUG, integers for timeouts, lists for ALLOWED_HOSTS)",
+        "Optional variables have sensible defaults (e.g., DEBUG=True for development)",
+        "Backend starts successfully with valid .env.backend file"
+      ],
+      "completedAt": "2025-01-31T20:35:00Z",
+      "commitSha": "2367d91",
+      "notes": "Added AI/ML API keys, JWT configuration, email settings, and LOG_LEVEL to Django settings"
+    },
+    "TASK-8.3": {
+      "id": "TASK-8.3",
+      "title": "Add environment variable validation at startup",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "completed",
+      "description": "Implement a startup check that validates all required environment variables are present and correctly formatted before Django initialization.",
+      "filesImpacted": [
+        "backend/veille_tech/apps.py",
+        "backend/veille_tech/config_validator.py",
+        "backend/veille_tech/settings/base.py"
+      ],
+      "dependencies": [
+        "TASK-8.2"
+      ],
+      "acceptanceCriteria": [
+        "Validation runs automatically on Django startup (via AppConfig.ready())",
+        "Checks presence of all required environment variables",
+        "Validates format of critical variables (DATABASE_URL, REDIS_URL patterns)",
+        "Validates API keys are not placeholder values (not \"your-api-key-here\")",
+        "Clear error messages displayed when variables missing or invalid",
+        "Error messages include: which variable is missing/invalid, expected format or pattern, link to documentation",
+        "Application exits with non-zero code if validation fails",
+        "Validation skipped for certain management commands (e.g., makemigrations, shell)",
+        "No performance impact (< 100ms validation time)"
+      ],
+      "completedAt": "2025-01-31T20:42:00Z",
+      "commitSha": "6413f30",
+      "notes": "Created config_validator.py and apps.py with startup validation integrated into Django"
+    },
+    "TASK-8.4": {
+      "id": "TASK-8.4",
+      "title": "Create JWT secret generation utility",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P2",
+      "effort": "1h",
+      "status": "completed",
+      "description": "Create a command-line utility script that generates cryptographically secure random secrets for JWT_SECRET_KEY and SECRET_KEY.",
+      "filesImpacted": [
+        "backend/scripts/generate_secrets.py",
+        "backend/README.md"
+      ],
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "Script generates cryptographically secure random secrets using secrets module",
+        "Generates both SECRET_KEY and JWT_SECRET_KEY (minimum 50 characters each)",
+        "Output format ready for copying to .env.backend",
+        "Can be run with: python scripts/generate_secrets.py",
+        "Can also be run with: poetry run python scripts/generate_secrets.py",
+        "Script includes usage documentation in docstring",
+        "Secrets are URL-safe (no special characters that need escaping)"
+      ],
+      "completedAt": "2025-01-31T20:32:00Z",
+      "commitSha": "0855bee",
+      "notes": "Created generate_secrets.py utility for cryptographically secure secret generation"
+    },
+    "TASK-8.5": {
+      "id": "TASK-8.5",
+      "title": "Configure Vite to load environment variables",
+      "type": "frontend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "blocked",
+      "description": "Ensure Vite is properly configured to load environment variables from .env.frontend file with TypeScript type definitions.",
+      "filesImpacted": [
+        "frontend/vite.config.js",
+        "frontend/src/vite-env.d.ts",
+        "frontend/.env.frontend"
+      ],
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "Vite configuration verified to load .env.frontend file",
+        "Environment variables prefixed with VITE_ are accessible",
+        "import.meta.env.VITE_API_URL accessible in application code",
+        "TypeScript definitions added for all VITE_ environment variables",
+        "Autocomplete works for environment variables in IDE",
+        "Type errors shown if accessing undefined environment variables",
+        "Frontend starts successfully with .env.frontend file present",
+        "Changes to .env.frontend require frontend restart (documented behavior)"
+      ],
+      "blockedReason": "React frontend application not initialized (only Dockerfile exists)",
+      "blockedBy": "Frontend initialization (US-5 or similar)",
+      "notes": "Cannot configure Vite until React application is created"
+    },
+    "TASK-8.6": {
+      "id": "TASK-8.6",
+      "title": "Create environment variable access helper",
+      "type": "frontend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "1.5h",
+      "status": "blocked",
+      "description": "Create a centralized utility module for safely accessing environment variables with validation, type conversion, and fallback values.",
+      "filesImpacted": [
+        "frontend/src/config/env.ts",
+        "frontend/src/config/index.ts",
+        "frontend/src/main.tsx"
+      ],
+      "dependencies": [
+        "TASK-8.5"
+      ],
+      "acceptanceCriteria": [
+        "Utility module created with type-safe environment variable access",
+        "Supports string, boolean, and number types with proper parsing",
+        "Required variables throw clear errors if missing",
+        "Optional variables support default values",
+        "Boolean parsing handles 'true', 'false', '1', '0' correctly",
+        "Configuration validated on application startup",
+        "Clear error messages for missing required variables",
+        "Centralized config object exported for application use",
+        "Documentation comments explain each configuration value"
+      ],
+      "blockedReason": "React frontend application not initialized (only Dockerfile exists)",
+      "blockedBy": "TASK-8.5",
+      "notes": "Depends on Vite configuration which is blocked"
+    },
+    "TASK-8.7": {
+      "id": "TASK-8.7",
+      "title": "Test backend with valid environment configuration",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "pending",
+      "description": "Create integration tests that verify Django backend correctly loads and uses environment variables with valid .env.backend file.",
+      "filesImpacted": [
+        "backend/tests/test_config.py",
+        "backend/tests/fixtures/.env.test",
+        "backend/pytest.ini"
+      ],
+      "dependencies": [
+        "TASK-8.3"
+      ],
+      "acceptanceCriteria": [
+        "Test verifies DATABASE_URL is loaded and parsed correctly",
+        "Test verifies Redis URLs are loaded (CELERY_BROKER_URL, REDIS_CACHE_URL)",
+        "Test verifies Django settings loaded (SECRET_KEY, DEBUG, ALLOWED_HOSTS)",
+        "Test verifies JWT configuration loaded correctly",
+        "Test verifies AI API keys are accessible",
+        "Test verifies boolean values parsed correctly (DEBUG=True becomes boolean True)",
+        "Test verifies integer values parsed correctly (JWT_ACCESS_TOKEN_LIFETIME_MINUTES)",
+        "Test verifies CSV lists parsed correctly (ALLOWED_HOSTS)",
+        "Test verifies database connection successful with loaded credentials",
+        "Test verifies Redis connection successful with loaded URL",
+        "All tests pass with valid .env.backend configuration"
+      ],
+      "notes": "Requires backend running with configured .env.backend file for integration testing"
+    },
+    "TASK-8.8": {
+      "id": "TASK-8.8",
+      "title": "Test backend error handling for missing variables",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "pending",
+      "description": "Create integration tests that verify Django backend fails gracefully with clear error messages when required environment variables are missing.",
+      "filesImpacted": [
+        "backend/tests/test_config_validation.py",
+        "backend/tests/conftest.py"
+      ],
+      "dependencies": [
+        "TASK-8.3"
+      ],
+      "acceptanceCriteria": [
+        "Test verifies error raised when DATABASE_URL missing",
+        "Test verifies error raised when SECRET_KEY missing",
+        "Test verifies error raised when JWT_SECRET_KEY missing",
+        "Test verifies error raised when API keys missing",
+        "Test verifies error raised for placeholder API key values",
+        "Test verifies error raised for malformed DATABASE_URL",
+        "Test verifies clear error message shown with missing variable name",
+        "Test verifies error message includes resolution instructions",
+        "Test verifies application exits with non-zero code on configuration error",
+        "Tests use context managers to temporarily unset environment variables",
+        "All validation tests pass"
+      ],
+      "notes": "Requires backend running with configured .env.backend file for integration testing"
+    },
+    "TASK-8.9": {
+      "id": "TASK-8.9",
+      "title": "Test frontend environment variable loading",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "blocked",
+      "description": "Create tests for frontend environment configuration helper to verify correct loading, parsing, and validation of environment variables.",
+      "filesImpacted": [
+        "frontend/src/config/env.test.ts",
+        "frontend/vitest.config.ts"
+      ],
+      "dependencies": [
+        "TASK-8.6"
+      ],
+      "acceptanceCriteria": [
+        "Test verifies required variables throw error when missing",
+        "Test verifies optional variables return default values",
+        "Test verifies boolean parsing works correctly ('true', 'false', '1', '0')",
+        "Test verifies number parsing works correctly",
+        "Test verifies invalid numbers throw clear errors",
+        "Test verifies config object has correct structure",
+        "Test verifies API URL validation catches malformed URLs",
+        "Test verifies validateConfig() function works correctly",
+        "All frontend configuration tests pass",
+        "Tests use mocked import.meta.env for isolation"
+      ],
+      "blockedReason": "React frontend application not initialized (only Dockerfile exists)",
+      "blockedBy": "TASK-8.6",
+      "notes": "Cannot test frontend configuration until helper is created"
+    },
+    "TASK-8.10": {
+      "id": "TASK-8.10",
+      "title": "Update setup documentation with environment configuration",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "completed",
+      "description": "Update local development setup documentation to include comprehensive instructions for environment configuration.",
+      "filesImpacted": [
+        "docs/setup/00_setup_local_docker.md",
+        "README.md"
+      ],
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "Documentation includes step-by-step instructions for copying .env files",
+        "Instructions show exact commands: cp .env.backend.example .env.backend",
+        "Documentation explains required vs optional variables",
+        "Links provided to obtain Google AI Studio API key (https://makersuite.google.com/app/apikey)",
+        "Links provided to obtain Firecrawl API key (https://firecrawl.dev/)",
+        "Instructions for generating secure secrets using utility script",
+        "Troubleshooting section covers common issues",
+        "Examples show correct format for each type of variable",
+        "Security warnings included (never commit .env files to Git)",
+        "Documentation tested by following it step-by-step"
+      ],
+      "completedAt": "2025-01-31T20:40:00Z",
+      "commitSha": "3ff248f",
+      "notes": "Updated README.md with enhanced environment configuration instructions"
+    },
+    "TASK-8.11": {
+      "id": "TASK-8.11",
+      "title": "Create environment variable reference documentation",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "1.5h",
+      "status": "completed",
+      "description": "Create comprehensive reference documentation for all environment variables with descriptions, formats, and examples.",
+      "filesImpacted": [
+        "docs/setup/environment_variables.md"
+      ],
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "Documentation lists all backend environment variables",
+        "Documentation lists all frontend environment variables",
+        "Each variable documented with: name, description, required/optional status, default value, expected format, example value, notes",
+        "Variables organized by category (Database, Redis, Django, JWT, AI, Email, Security)",
+        "Documentation includes table of contents for easy navigation",
+        "Cross-references to example files (.env.backend.example, .env.frontend.example)",
+        "Security best practices section included",
+        "Documentation is clear and accessible to junior developers"
+      ],
+      "completedAt": "2025-01-31T20:38:00Z",
+      "commitSha": "b205c6e",
+      "notes": "Created comprehensive 344-line environment_variables.md documentation"
+    },
+    "TASK-8.12": {
+      "id": "TASK-8.12",
+      "title": "Verify .env files excluded from Git",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "completed",
+      "description": "Verify .env files are properly excluded from Git and add validation to prevent accidental commits of secrets.",
+      "filesImpacted": [
+        ".gitignore",
+        ".github/workflows/validate-secrets.yml",
+        "docs/setup/security_checklist.md"
+      ],
+      "dependencies": [],
+      "acceptanceCriteria": [
+        ".gitignore contains entries for .env files (already done, verify)",
+        "Verification script created to check for .env files in Git history",
+        "Documentation created explaining how to check for accidentally committed secrets",
+        "Optional: Pre-commit hook or CI check added to block .env commits",
+        "Git status shows .env.backend and .env.frontend as untracked (not staged)",
+        "git check-ignore .env.backend returns the file (confirms it's ignored)",
+        "Repository search for \"GOOGLE_AI_API_KEY\" in history returns no results (if new repo)"
+      ],
+      "completedAt": "2025-01-31T20:39:00Z",
+      "commitSha": "72b7207",
+      "notes": "Verified .gitignore and created 275-line security_checklist.md"
+    }
+  },
+  "generatedAgents": [],
+  "generatedSkills": [],
+  "progress": {
+    "totalTasks": 12,
+    "completed": 7,
+    "inProgress": 0,
+    "pending": 2,
+    "blocked": 3,
+    "percentComplete": 58
+  },
+  "currentWave": 4,
+  "executionWaves": [
+    {
+      "wave": 1,
+      "tasks": [
+        "TASK-8.1",
+        "TASK-8.4",
+        "TASK-8.5",
+        "TASK-8.10",
+        "TASK-8.11",
+        "TASK-8.12"
+      ],
+      "description": "Initial tasks with no dependencies"
+    },
+    {
+      "wave": 2,
+      "tasks": [
+        "TASK-8.2",
+        "TASK-8.6"
+      ],
+      "description": "Tasks depending on Wave 1"
+    },
+    {
+      "wave": 3,
+      "tasks": [
+        "TASK-8.3"
+      ],
+      "description": "Tasks depending on Wave 2"
+    },
+    {
+      "wave": 4,
+      "tasks": [
+        "TASK-8.7",
+        "TASK-8.8",
+        "TASK-8.9"
+      ],
+      "description": "Testing tasks depending on Wave 3"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "6413f30",
+      "message": "feat(US-8): TASK-8.3 - Add environment variable validation at startup",
+      "date": "2025-01-31T20:42:00Z"
+    },
+    {
+      "sha": "3ff248f",
+      "message": "feat(US-8): TASK-8.10 - Update setup documentation with environment configuration",
+      "date": "2025-01-31T20:40:00Z"
+    },
+    {
+      "sha": "72b7207",
+      "message": "feat(US-8): TASK-8.12 - Verify .env files excluded from Git",
+      "date": "2025-01-31T20:39:00Z"
+    },
+    {
+      "sha": "b205c6e",
+      "message": "feat(US-8): TASK-8.11 - Create environment variable reference documentation",
+      "date": "2025-01-31T20:38:00Z"
+    },
+    {
+      "sha": "2367d91",
+      "message": "feat(US-8): TASK-8.2 - Configure Django settings for environment variables",
+      "date": "2025-01-31T20:35:00Z"
+    },
+    {
+      "sha": "0855bee",
+      "message": "feat(US-8): TASK-8.4 - Add JWT secret generation utility",
+      "date": "2025-01-31T20:32:00Z"
+    }
+  ],
+  "errorReports": [],
+  "pullRequest": {
+    "number": 151,
+    "url": "https://github.com/mrichaudeau/hack_auto_doc/pull/151",
+    "title": "feat(US-8): Environment Configuration Management",
+    "status": "open",
+    "createdAt": "2025-11-02T10:00:43Z"
+  }
+}

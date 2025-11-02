@@ -1,0 +1,402 @@
+{
+  "userStory": "US-6",
+  "feature": "local-development-environment",
+  "title": "Celery Worker Service for AI Pipeline",
+  "generatedAt": "2025-01-31",
+  "nodes": [
+    {
+      "id": "TASK-6.1",
+      "title": "Create Celery app configuration",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.2",
+      "title": "Configure broker and result backend",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.3",
+      "title": "Implement task retry policy",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.4",
+      "title": "Create sample test task",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.5",
+      "title": "Configure task queues",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.6",
+      "title": "Enable watchdog for auto-reload",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P2",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.7",
+      "title": "Configure concurrency and pool",
+      "type": "backend",
+      "specialty": "performance",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.8",
+      "title": "Define worker service in docker-compose",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.9",
+      "title": "Configure worker environment variables",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.10",
+      "title": "Implement worker health check",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.11",
+      "title": "Document worker management commands",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.12",
+      "title": "Unit test Celery app initialization",
+      "type": "testing",
+      "specialty": "unit",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.13",
+      "title": "Integration test task execution",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.14",
+      "title": "Test task retry behavior",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-6.15",
+      "title": "Test worker auto-reload",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P3",
+      "effort": "2h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-6.1",
+      "to": "TASK-6.2",
+      "type": "blocks",
+      "reason": "Celery app must exist before configuring broker"
+    },
+    {
+      "from": "TASK-6.1",
+      "to": "TASK-6.3",
+      "type": "blocks",
+      "reason": "Celery app must exist before configuring retry policy"
+    },
+    {
+      "from": "TASK-6.1",
+      "to": "TASK-6.4",
+      "type": "blocks",
+      "reason": "Celery app must exist for task registration"
+    },
+    {
+      "from": "TASK-6.1",
+      "to": "TASK-6.6",
+      "type": "blocks",
+      "reason": "Celery app must exist before enabling watchdog"
+    },
+    {
+      "from": "TASK-6.1",
+      "to": "TASK-6.7",
+      "type": "blocks",
+      "reason": "Celery app must exist before configuring concurrency"
+    },
+    {
+      "from": "TASK-6.1",
+      "to": "TASK-6.8",
+      "type": "blocks",
+      "reason": "Celery app must exist to be invoked by worker service"
+    },
+    {
+      "from": "TASK-6.1",
+      "to": "TASK-6.12",
+      "type": "blocks",
+      "reason": "Celery app must exist to test"
+    },
+    {
+      "from": "TASK-6.2",
+      "to": "TASK-6.5",
+      "type": "blocks",
+      "reason": "Broker must be configured before setting up queues"
+    },
+    {
+      "from": "TASK-6.8",
+      "to": "TASK-6.9",
+      "type": "blocks",
+      "reason": "Worker service must exist before configuring environment"
+    },
+    {
+      "from": "TASK-6.8",
+      "to": "TASK-6.10",
+      "type": "blocks",
+      "reason": "Worker service must exist to implement health check"
+    },
+    {
+      "from": "TASK-6.8",
+      "to": "TASK-6.11",
+      "type": "blocks",
+      "reason": "Worker service must exist to document management commands"
+    },
+    {
+      "from": "TASK-6.4",
+      "to": "TASK-6.13",
+      "type": "blocks",
+      "reason": "Sample task must exist to test execution"
+    },
+    {
+      "from": "TASK-6.8",
+      "to": "TASK-6.13",
+      "type": "blocks",
+      "reason": "Worker service must be running to test execution"
+    },
+    {
+      "from": "TASK-6.3",
+      "to": "TASK-6.14",
+      "type": "blocks",
+      "reason": "Retry policy must be configured to test retry behavior"
+    },
+    {
+      "from": "TASK-6.8",
+      "to": "TASK-6.14",
+      "type": "blocks",
+      "reason": "Worker service must be running to test retries"
+    },
+    {
+      "from": "TASK-6.6",
+      "to": "TASK-6.15",
+      "type": "blocks",
+      "reason": "Watchdog must be enabled to test auto-reload"
+    },
+    {
+      "from": "TASK-6.8",
+      "to": "TASK-6.15",
+      "type": "blocks",
+      "reason": "Worker service must be running to test auto-reload"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Foundation",
+      "description": "Core Celery app configuration and task definitions",
+      "estimatedEffort": "8h",
+      "tasks": ["TASK-6.1", "TASK-6.2", "TASK-6.3", "TASK-6.4"]
+    },
+    {
+      "phase": 2,
+      "name": "Worker Service",
+      "description": "Docker Compose service definition and worker configuration",
+      "estimatedEffort": "10h",
+      "tasks": ["TASK-6.8", "TASK-6.9", "TASK-6.5", "TASK-6.6", "TASK-6.7"]
+    },
+    {
+      "phase": 3,
+      "name": "Infrastructure",
+      "description": "Health checks, documentation, and unit tests",
+      "estimatedEffort": "7h",
+      "tasks": ["TASK-6.10", "TASK-6.11", "TASK-6.12"]
+    },
+    {
+      "phase": 4,
+      "name": "Testing and Validation",
+      "description": "Integration tests and validation",
+      "estimatedEffort": "10h",
+      "tasks": ["TASK-6.13", "TASK-6.14", "TASK-6.15"]
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Backend Configuration",
+      "description": "Backend tasks that can run in parallel after Celery app exists",
+      "tasks": ["TASK-6.2", "TASK-6.3", "TASK-6.4", "TASK-6.6", "TASK-6.7"],
+      "canStartAfter": ["TASK-6.1"]
+    },
+    {
+      "group": "Infrastructure Setup",
+      "description": "Infrastructure tasks that can run in parallel with backend config",
+      "tasks": ["TASK-6.8", "TASK-6.12"],
+      "canStartAfter": ["TASK-6.1"]
+    },
+    {
+      "group": "Infrastructure Enhancement",
+      "description": "Infrastructure enhancements after worker service is defined",
+      "tasks": ["TASK-6.9", "TASK-6.10", "TASK-6.11"],
+      "canStartAfter": ["TASK-6.8"]
+    },
+    {
+      "group": "Testing Suite",
+      "description": "All integration tests can run in parallel if workers available",
+      "tasks": ["TASK-6.13", "TASK-6.14", "TASK-6.15"],
+      "canStartAfter": ["TASK-6.8", "TASK-6.4", "TASK-6.3", "TASK-6.6"]
+    }
+  ],
+  "summary": {
+    "totalTasks": 15,
+    "byType": {
+      "backend": 7,
+      "frontend": 0,
+      "testing": 4,
+      "infrastructure": 4
+    },
+    "byPriority": {
+      "P1": 7,
+      "P2": 7,
+      "P3": 1
+    },
+    "totalEffortHours": 35,
+    "totalEffortDays": "4-5 days",
+    "criticalPath": [
+      "TASK-6.1",
+      "TASK-6.8",
+      "TASK-6.13"
+    ],
+    "parallelizationPotential": "High - 2-3 developers can reduce timeline to 2-2.5 days"
+  },
+  "risks": [
+    {
+      "risk": "Auto-reload may cause in-flight task failures",
+      "impact": "Medium",
+      "likelihood": "High",
+      "mitigation": "Configure graceful shutdown with CELERY_TASK_SOFT_TIME_LIMIT=60"
+    },
+    {
+      "risk": "LLM API calls may timeout with default limits",
+      "impact": "High",
+      "likelihood": "Medium",
+      "mitigation": "Increase task time limits to 300s and implement LLM client timeouts"
+    },
+    {
+      "risk": "Watchdog file monitoring fails on Windows Docker Desktop",
+      "impact": "High",
+      "likelihood": "Medium",
+      "mitigation": "Document WSL2 backend requirement and provide manual restart alternative"
+    },
+    {
+      "risk": "Insufficient worker concurrency causes task queue backlog",
+      "impact": "Medium",
+      "likelihood": "Low",
+      "mitigation": "Make concurrency configurable via environment variable"
+    },
+    {
+      "risk": "Memory exhaustion from too many concurrent workers",
+      "impact": "High",
+      "likelihood": "Low",
+      "mitigation": "Set Docker container memory limits and document memory requirements"
+    }
+  ],
+  "dependencies": {
+    "userStories": [
+      {
+        "id": "US-1",
+        "title": "Docker Compose Service Orchestration",
+        "reason": "Must be completed first for docker-compose.yml foundation"
+      },
+      {
+        "id": "US-2",
+        "title": "Database Service with Vector Support",
+        "reason": "Worker needs database access via Django ORM"
+      },
+      {
+        "id": "US-3",
+        "title": "Redis Broker and Cache Service",
+        "reason": "Worker requires Redis broker for task queues"
+      },
+      {
+        "id": "US-4",
+        "title": "Django Backend API Service",
+        "reason": "Worker shares codebase and Docker image with backend"
+      }
+    ],
+    "external": [
+      {
+        "name": "Redis 7+",
+        "reason": "Message broker for Celery task queues"
+      },
+      {
+        "name": "Google AI Studio API",
+        "reason": "LLM operations in AI pipeline tasks"
+      },
+      {
+        "name": "Firecrawl API",
+        "reason": "Web scraping in AI pipeline tasks"
+      }
+    ]
+  },
+  "blockedUserStories": [
+    {
+      "feature": "content-pipeline",
+      "userStories": "All AI pipeline User Stories in Bloc 3",
+      "reason": "Require Celery worker to execute Langgraph agents"
+    }
+  ]
+}

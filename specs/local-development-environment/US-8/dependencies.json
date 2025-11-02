@@ -1,0 +1,374 @@
+{
+  "userStory": "US-8",
+  "feature": "local-development-environment",
+  "title": "Environment Configuration Management",
+  "priority": "P0",
+  "generatedAt": "2025-01-31",
+  "nodes": [
+    {
+      "id": "TASK-8.1",
+      "title": "Install python-decouple dependency",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "0.5h",
+      "status": "todo",
+      "description": "Install the python-decouple library via Poetry to enable secure loading of environment variables in Django.",
+      "filesImpacted": [
+        "backend/pyproject.toml",
+        "backend/poetry.lock"
+      ]
+    },
+    {
+      "id": "TASK-8.2",
+      "title": "Configure Django settings to load environment variables",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "3h",
+      "status": "todo",
+      "description": "Update Django settings files to load all configuration from environment variables using python-decouple instead of hardcoded values.",
+      "filesImpacted": [
+        "backend/veille_tech/settings/base.py",
+        "backend/veille_tech/settings/development.py",
+        "backend/veille_tech/settings/production.py",
+        "backend/config/__init__.py"
+      ]
+    },
+    {
+      "id": "TASK-8.3",
+      "title": "Add environment variable validation at startup",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo",
+      "description": "Implement a startup check that validates all required environment variables are present and correctly formatted before Django initialization.",
+      "filesImpacted": [
+        "backend/veille_tech/apps.py",
+        "backend/veille_tech/config_validator.py",
+        "backend/veille_tech/settings/base.py"
+      ]
+    },
+    {
+      "id": "TASK-8.4",
+      "title": "Create JWT secret generation utility",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P2",
+      "effort": "1h",
+      "status": "todo",
+      "description": "Create a command-line utility script that generates cryptographically secure random secrets for JWT_SECRET_KEY and SECRET_KEY.",
+      "filesImpacted": [
+        "backend/scripts/generate_secrets.py",
+        "backend/README.md"
+      ]
+    },
+    {
+      "id": "TASK-8.5",
+      "title": "Configure Vite to load environment variables",
+      "type": "frontend",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo",
+      "description": "Ensure Vite is properly configured to load environment variables from .env.frontend file with TypeScript type definitions.",
+      "filesImpacted": [
+        "frontend/vite.config.js",
+        "frontend/src/vite-env.d.ts",
+        "frontend/.env.frontend"
+      ]
+    },
+    {
+      "id": "TASK-8.6",
+      "title": "Create environment variable access helper",
+      "type": "frontend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "1.5h",
+      "status": "todo",
+      "description": "Create a centralized utility module for safely accessing environment variables with validation, type conversion, and fallback values.",
+      "filesImpacted": [
+        "frontend/src/config/env.ts",
+        "frontend/src/config/index.ts",
+        "frontend/src/main.tsx"
+      ]
+    },
+    {
+      "id": "TASK-8.7",
+      "title": "Test backend with valid environment configuration",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo",
+      "description": "Create integration tests that verify Django backend correctly loads and uses environment variables with valid .env.backend file.",
+      "filesImpacted": [
+        "backend/tests/test_config.py",
+        "backend/tests/fixtures/.env.test",
+        "backend/pytest.ini"
+      ]
+    },
+    {
+      "id": "TASK-8.8",
+      "title": "Test backend error handling for missing variables",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo",
+      "description": "Create integration tests that verify Django backend fails gracefully with clear error messages when required environment variables are missing.",
+      "filesImpacted": [
+        "backend/tests/test_config_validation.py",
+        "backend/tests/conftest.py"
+      ]
+    },
+    {
+      "id": "TASK-8.9",
+      "title": "Test frontend environment variable loading",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo",
+      "description": "Create tests for frontend environment configuration helper to verify correct loading, parsing, and validation of environment variables.",
+      "filesImpacted": [
+        "frontend/src/config/env.test.ts",
+        "frontend/vitest.config.ts"
+      ]
+    },
+    {
+      "id": "TASK-8.10",
+      "title": "Update setup documentation with environment configuration",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P0",
+      "effort": "2h",
+      "status": "todo",
+      "description": "Update local development setup documentation to include comprehensive instructions for environment configuration.",
+      "filesImpacted": [
+        "docs/setup/00_setup_local_docker.md",
+        "README.md"
+      ]
+    },
+    {
+      "id": "TASK-8.11",
+      "title": "Create environment variable reference documentation",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "1.5h",
+      "status": "todo",
+      "description": "Create comprehensive reference documentation for all environment variables with descriptions, formats, and examples.",
+      "filesImpacted": [
+        "docs/setup/environment_variables.md"
+      ]
+    },
+    {
+      "id": "TASK-8.12",
+      "title": "Verify .env files excluded from Git",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P0",
+      "effort": "1h",
+      "status": "todo",
+      "description": "Verify .env files are properly excluded from Git and add validation to prevent accidental commits of secrets.",
+      "filesImpacted": [
+        ".gitignore",
+        ".github/workflows/validate-secrets.yml",
+        "docs/setup/security_checklist.md"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-8.1",
+      "to": "TASK-8.2",
+      "type": "blocks",
+      "reason": "python-decouple must be installed before configuring Django to use it"
+    },
+    {
+      "from": "TASK-8.2",
+      "to": "TASK-8.3",
+      "type": "blocks",
+      "reason": "Django settings must be configured to load environment variables before validation can be added"
+    },
+    {
+      "from": "TASK-8.3",
+      "to": "TASK-8.7",
+      "type": "blocks",
+      "reason": "Configuration loading and validation must be implemented before testing"
+    },
+    {
+      "from": "TASK-8.3",
+      "to": "TASK-8.8",
+      "type": "blocks",
+      "reason": "Validation logic must be implemented before testing error scenarios"
+    },
+    {
+      "from": "TASK-8.5",
+      "to": "TASK-8.6",
+      "type": "blocks",
+      "reason": "Vite configuration must be set up before creating environment helper"
+    },
+    {
+      "from": "TASK-8.6",
+      "to": "TASK-8.9",
+      "type": "blocks",
+      "reason": "Environment helper must be implemented before testing it"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Backend Configuration Foundation",
+      "duration": "6 hours",
+      "tasks": [
+        "TASK-8.1",
+        "TASK-8.2",
+        "TASK-8.3",
+        "TASK-8.4"
+      ],
+      "description": "Install dependencies, configure Django settings to load environment variables, add validation, and create secret generation utility"
+    },
+    {
+      "phase": 2,
+      "name": "Frontend Configuration",
+      "duration": "2.5 hours",
+      "tasks": [
+        "TASK-8.5",
+        "TASK-8.6"
+      ],
+      "description": "Configure Vite and create environment variable access helper with type safety"
+    },
+    {
+      "phase": 3,
+      "name": "Testing",
+      "duration": "5 hours",
+      "tasks": [
+        "TASK-8.7",
+        "TASK-8.8",
+        "TASK-8.9"
+      ],
+      "description": "Integration tests for valid and invalid configuration scenarios in backend and frontend"
+    },
+    {
+      "phase": 4,
+      "name": "Documentation",
+      "duration": "4.5 hours",
+      "tasks": [
+        "TASK-8.10",
+        "TASK-8.11",
+        "TASK-8.12"
+      ],
+      "description": "Update setup documentation, create environment variable reference, verify Git exclusions (can run in parallel with other phases)"
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Backend Configuration Chain",
+      "tasks": [
+        "TASK-8.1",
+        "TASK-8.2",
+        "TASK-8.3"
+      ],
+      "description": "Sequential backend configuration tasks that must run in order",
+      "canStartAfter": []
+    },
+    {
+      "group": "Backend Utility (Parallel)",
+      "tasks": [
+        "TASK-8.4"
+      ],
+      "description": "Independent utility that can run in parallel with backend chain",
+      "canStartAfter": []
+    },
+    {
+      "group": "Frontend Configuration Chain",
+      "tasks": [
+        "TASK-8.5",
+        "TASK-8.6"
+      ],
+      "description": "Sequential frontend configuration tasks, can run in parallel with backend",
+      "canStartAfter": []
+    },
+    {
+      "group": "Backend Testing",
+      "tasks": [
+        "TASK-8.7",
+        "TASK-8.8"
+      ],
+      "description": "Backend integration tests, requires backend configuration complete",
+      "canStartAfter": [
+        "TASK-8.3"
+      ]
+    },
+    {
+      "group": "Frontend Testing",
+      "tasks": [
+        "TASK-8.9"
+      ],
+      "description": "Frontend integration tests, requires frontend helper complete",
+      "canStartAfter": [
+        "TASK-8.6"
+      ]
+    },
+    {
+      "group": "Documentation (Fully Parallel)",
+      "tasks": [
+        "TASK-8.10",
+        "TASK-8.11",
+        "TASK-8.12"
+      ],
+      "description": "Documentation tasks that can run anytime in parallel",
+      "canStartAfter": []
+    }
+  ],
+  "summary": {
+    "totalTasks": 12,
+    "byType": {
+      "backend": 4,
+      "frontend": 2,
+      "testing": 3,
+      "infrastructure": 3
+    },
+    "byPriority": {
+      "P0": 8,
+      "P1": 3,
+      "P2": 1
+    },
+    "bySpecialty": {
+      "config": 7,
+      "security": 1,
+      "integration": 3,
+      "documentation": 1
+    },
+    "totalEffortHours": 18.5,
+    "totalEffortDays": "2-3 days (1 developer sequential)",
+    "parallelEffortDays": "1.5 days (2 developers)",
+    "effortBreakdown": {
+      "backend": "6.5h (35%)",
+      "frontend": "2.5h (14%)",
+      "testing": "5h (27%)",
+      "infrastructure": "4.5h (24%)"
+    }
+  },
+  "criticalPath": [
+    "TASK-8.1",
+    "TASK-8.2",
+    "TASK-8.3",
+    "TASK-8.7"
+  ],
+  "criticalPathDuration": "7.5 hours",
+  "metadata": {
+    "generatedBy": "Functional Spec Planner",
+    "skills": [
+      "decompose-user-story",
+      "generate-task-documentation"
+    ],
+    "sourceDocument": "specs/local-development-environment/US-8/user-story.md",
+    "featureDocument": "specs/local-development-environment/feature.md",
+    "version": "1.0",
+    "lastUpdated": "2025-01-31"
+  }
+}

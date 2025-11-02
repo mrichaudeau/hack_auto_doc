@@ -105,6 +105,22 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_RESULT_EXPIRES = 3600  # Results expire after 1 hour
+
+# Task retry configuration
+CELERY_TASK_ACKS_LATE = True  # Acknowledge task after completion
+CELERY_TASK_REJECT_ON_WORKER_LOST = True  # Re-queue if worker dies
+CELERY_TASK_DEFAULT_RETRY_DELAY = 10  # 10 seconds
+CELERY_TASK_MAX_RETRIES = 3  # Retry up to 3 times
+
+# Exponential backoff retry configuration
+CELERY_TASK_RETRY_BACKOFF = True  # Enable exponential backoff
+CELERY_TASK_RETRY_BACKOFF_MAX = 600  # Max 10 minutes between retries
+CELERY_TASK_RETRY_JITTER = True  # Add randomness to prevent thundering herd
+
+# Task time limits
+CELERY_TASK_SOFT_TIME_LIMIT = 300  # 5 minutes soft limit (allows cleanup)
+CELERY_TASK_TIME_LIMIT = 600  # 10 minutes hard limit (forced termination)
 
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = config(

@@ -107,9 +107,17 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/app
-      - /app/node_modules
+      - frontend_node_modules:/app/node_modules
     networks:
       - app-network
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     deploy:
       resources:
         limits:
@@ -118,6 +126,8 @@ services:
         reservations:
           cpus: '0.25'
           memory: 256M
+    labels:
+      - "description=React frontend SPA with Vite - Hot module replacement enabled"
     command: npm run dev -- --host 0.0.0.0
 
   # Celery worker for AI pipeline tasks
@@ -189,6 +199,13 @@ volumes:
   # Named volume for Redis data persistence
   redis_data:
     name: veille_tech_redis_data
+    driver: local
+
+  # Named volume for frontend node_modules
+  # Critical performance optimization for Windows/macOS Docker Desktop
+  # Prevents slow file I/O on bind-mounted node_modules
+  frontend_node_modules:
+    name: frontend_node_modules
     driver: local
 
 networks:

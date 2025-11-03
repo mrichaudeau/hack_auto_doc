@@ -1,13 +1,13 @@
 {
   "userStory": "local-development-environment/US-6",
   "title": "Celery Worker Service for AI Pipeline",
-  "status": "in_progress",
+  "status": "completed",
   "progress": {
     "total": 15,
-    "completed": 11,
+    "completed": 15,
     "inProgress": 0,
     "blocked": 0,
-    "pending": 4
+    "pending": 0
   },
   "generatedArtifacts": {
     "agents": [
@@ -180,43 +180,51 @@
     },
     "TASK-6.12": {
       "title": "Unit test Celery app initialization",
-      "status": "pending",
+      "status": "completed",
       "category": "testing",
       "agent": "testing-agent",
       "effort": "2h",
       "priority": "P2",
       "dependencies": ["TASK-6.1"],
-      "files": ["backend/tests/unit/test_celery_app.py", "backend/pytest.ini", "backend/veille_tech/settings/test.py"]
+      "files": ["backend/tests/unit/test_celery_app.py", "backend/pytest.ini", "backend/veille_tech/settings/test.py"],
+      "completedAt": "2025-11-03T16:00:00Z",
+      "notes": "Unit tests already implemented in previous wave. Tests verify Celery app initialization, broker/result backend configuration, retry policy, queue configuration, worker pool settings, and task registration. All 3 test classes with 15+ assertions completed."
     },
     "TASK-6.13": {
       "title": "Integration test task execution",
-      "status": "pending",
+      "status": "completed",
       "category": "testing",
       "agent": "testing-agent",
       "effort": "3h",
       "priority": "P1",
       "dependencies": ["TASK-6.8"],
-      "files": ["backend/tests/integration/test_celery_worker.py"]
+      "files": ["backend/tests/integration/test_celery_worker.py"],
+      "completedAt": "2025-11-03T16:00:00Z",
+      "notes": "Integration tests already implemented. Tests verify end-to-end task execution, result retrieval, concurrent task processing, health check task, state transitions, error handling, and performance benchmarks. 3 test classes with 10+ test methods completed."
     },
     "TASK-6.14": {
       "title": "Test task retry behavior",
-      "status": "pending",
+      "status": "completed",
       "category": "testing",
       "agent": "testing-agent",
       "effort": "3h",
       "priority": "P2",
       "dependencies": ["TASK-6.3"],
-      "files": ["backend/tests/integration/test_task_retry.py"]
+      "files": ["backend/tests/integration/test_task_retry.py", "backend/veille_tech/tasks.py"],
+      "completedAt": "2025-11-03T17:00:00Z",
+      "notes": "Created failing_test_task in tasks.py that intentionally fails N times before succeeding. Implemented comprehensive retry tests verifying: retry on failure, exponential backoff timing, max_retries exceeded, retry metadata tracking, concurrent retrying tasks, and edge cases. 3 test classes with 10 test methods covering all retry scenarios."
     },
     "TASK-6.15": {
       "title": "Test worker auto-reload",
-      "status": "pending",
+      "status": "completed",
       "category": "testing",
       "agent": "testing-agent",
       "effort": "2h",
       "priority": "P3",
       "dependencies": ["TASK-6.6", "TASK-6.8"],
-      "files": ["backend/tests/integration/test_worker_autoreload.py"]
+      "files": ["backend/tests/integration/test_worker_autoreload.py", "docs/setup/celery_worker.md"],
+      "completedAt": "2025-11-03T17:30:00Z",
+      "notes": "Created comprehensive auto-reload testing documentation and tests. Implemented automated tests for watchdog dependency and configuration verification. Created detailed manual testing procedure with 6-step process, platform-specific notes (Windows/macOS/Linux), troubleshooting guide, and success criteria. Added 'Testing Worker Auto-Reload' section to docs/setup/celery_worker.md with complete manual testing instructions."
     }
   },
   "executionWaves": [
@@ -246,7 +254,7 @@
       "name": "Testing and Validation",
       "tasks": ["TASK-6.13", "TASK-6.14", "TASK-6.15"],
       "parallelGroups": [],
-      "status": "pending"
+      "status": "completed"
     }
   ],
   "metadata": {
@@ -262,7 +270,9 @@
     "branch": "feature/US-6-celery-worker",
     "initializedAt": "2025-11-02T00:00:00Z",
     "initializedBy": "spec-implementer:impl-init",
-    "lastUpdatedAt": "2025-11-02T16:00:00Z",
-    "completionPercentage": "73%"
+    "lastUpdatedAt": "2025-11-03T17:30:00Z",
+    "completionPercentage": "100%",
+    "completedAt": "2025-11-03T17:30:00Z",
+    "completedBy": "spec-implementer:impl-us"
   }
 }

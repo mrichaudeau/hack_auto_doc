@@ -835,12 +835,157 @@ workflow.apply_async()
 
 ---
 
+## Testing Worker Auto-Reload
+
+The worker auto-reload feature (watchdog) automatically restarts the worker when source code changes. This is essential for development productivity.
+
+### Manual Testing Procedure
+
+**1. Start worker with visible logs:**
+```bash
+docker-compose up worker
+```
+
+**2. Execute a test task (baseline):**
+```bash
+docker-compose exec backend python manage.py shell
+
+# In shell:
+from veille_tech.tasks import test_task
+result = test_task.delay("Before reload")
+print(result.get())
+# Expected: {'status': 'success', 'message': 'Before reload', ...}
+```
+
+**3. Modify task source code:**
+
+Edit `backend/veille_tech/tasks.py` and add a visible change:
+```python
+# In test_task, change:
+return {
+    'status': 'success',
+    'message': message,  # Original
+    ...
+}
+
+# To:
+return {
+    'status': 'success',
+    'message': f"[RELOADED] {message}",  # Modified
+    ...
+}
+```
+
+Save the file.
+
+**4. Monitor worker logs for reload:**
+
+Within 2-3 seconds, you should see:
+```
+worker_1  | [WARNING] /app/veille_tech/tasks.py changed, reloading...
+worker_1  | [INFO] Stopping worker gracefully...
+worker_1  | [INFO] celery@<hostname> ready.
+```
+
+**5. Verify updated task executes:**
+```bash
+docker-compose exec backend python manage.py shell
+
+# In shell:
+from importlib import reload
+import veille_tech.tasks
+reload(veille_tech.tasks)
+
+from veille_tech.tasks import test_task
+result = test_task.delay("After reload")
+print(result.get())
+# Expected: {'status': 'success', 'message': '[RELOADED] After reload', ...}
+```
+
+**6. Revert changes and verify reload triggers again.**
+
+### Success Criteria
+
+✅ Worker logs show "reloading..." within 3 seconds of file change
+✅ Worker restarts successfully without errors
+✅ Modified task logic executes correctly
+✅ No task execution failures during reload
+
+### Platform-Specific Notes
+
+**Windows (Docker Desktop):**
+- **REQUIRED:** Enable WSL2 backend (Settings → General → Use WSL 2 based engine)
+- Hyper-V backend does NOT support file watching reliably
+- Restart Docker Desktop after enabling WSL2
+
+**macOS (Docker Desktop):**
+- Works well out of the box
+- Slight delay (1-2s) due to osxfs volume performance
+- Consider using `:cached` volume mount for better performance
+
+**Linux (Native Docker):**
+- Best performance (<1s reload time)
+- No special configuration needed
+
+### Troubleshooting Auto-Reload
+
+**Problem: Reload not triggering**
+
+Verify configuration:
+```bash
+# Check watchdog is installed
+docker-compose exec backend poetry show watchdog
+
+# Verify --watchdog flag in worker command
+docker-compose config | grep -A 10 "worker:"
+
+# Check volume mount has read-write access
+docker-compose config | grep -A 5 "volumes:" | grep backend
+# Should show: ./backend:/app:rw
+```
+
+**Problem: Slow reload (>5 seconds)**
+
+Solutions:
+- Add `.dockerignore` to exclude unnecessary files (node_modules, .git)
+- Increase Docker Desktop memory (Settings → Resources → Memory)
+- Enable polling mode (slower but more reliable):
+  ```yaml
+  environment:
+    - WATCHDOG_FORCE_POLLING=true
+  ```
+
+**Problem: Worker crashes during reload**
+
+Check for:
+- Python syntax errors in modified code
+- Long-running tasks blocking shutdown (check soft_time_limit)
+- Database connection issues
+
+Fix:
+```bash
+# View full error logs
+docker-compose logs worker
+
+# Restart worker completely
+docker-compose restart worker
+```
+
+For comprehensive testing documentation, see:
+```bash
+# View full manual testing procedure
+cat backend/tests/integration/test_worker_autoreload.py
+```
+
+---
+
 ## Additional Resources
 
 **Official Documentation:**
 - Celery: https://docs.celeryq.dev/en/stable/
 - Django-Celery: https://docs.celeryq.dev/en/stable/django/
 - Redis: https://redis.io/docs/
+- Watchdog: https://github.com/gorakhargosh/watchdog
 
 **Monitoring Tools:**
 - Flower (Celery monitoring): https://flower.readthedocs.io/
@@ -850,8 +995,9 @@ workflow.apply_async()
 - [Redis Setup Guide](./redis_setup.md)
 - [Django Settings Configuration](../backend/settings.md)
 - [Docker Compose Setup](./00_setup_local_docker.md)
+- [Worker Auto-Reload Testing](../backend/tests/integration/test_worker_autoreload.py)
 
 ---
 
-**Last Updated:** 2025-11-02
-**Version:** 1.0.0
+**Last Updated:** 2025-11-03
+**Version:** 1.1.0

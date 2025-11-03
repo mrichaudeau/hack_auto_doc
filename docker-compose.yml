@@ -139,6 +139,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env.backend
+    environment:
+      - PYTHONUNBUFFERED=1
     volumes:
       - ./backend:/app
     networks:
@@ -148,6 +150,14 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "poetry", "run", "python", "manage.py", "celery_health_check"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     deploy:
       resources:
         limits:
@@ -156,7 +166,9 @@ services:
         reservations:
           cpus: '0.5'
           memory: 1G
-    command: celery -A config worker -l info
+    labels:
+      - "description=Celery worker for AI pipeline - Processes content collection, synthesis, and embeddings"
+    command: poetry run celery -A veille_tech worker --loglevel=info --watchdog --concurrency=${CELERY_WORKER_CONCURRENCY:-4}
 
   # Celery Beat scheduler for recurring tasks
   scheduler:
@@ -167,6 +179,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env.backend
+    environment:
+      - PYTHONUNBUFFERED=1
     volumes:
       - ./backend:/app
     networks:
@@ -186,7 +200,9 @@ services:
         reservations:
           cpus: '0.25'
           memory: 256M
-    command: celery -A config beat -l info
+    labels:
+      - "description=Celery Beat scheduler - Manages recurring AI pipeline tasks"
+    command: poetry run celery -A veille_tech beat --loglevel=info
 
 volumes:
   # Named volume for PostgreSQL data persistence

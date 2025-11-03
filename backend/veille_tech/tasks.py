@@ -112,3 +112,71 @@ def health_check_task(self) -> Dict[str, Any]:
         'timestamp': datetime.utcnow().isoformat(),
         'worker': worker
     }
+
+
+@shared_task(
+    bind=True,
+    max_retries=3,
+    default_retry_delay=5,
+    name='veille_tech.tasks.failing_test_task'
+)
+def failing_test_task(self, fail_count: int = 2) -> Dict[str, Any]:
+    """
+    Test task that fails N times before succeeding (for retry testing).
+
+    This task is designed for testing retry behavior:
+    - Fails on first N attempts
+    - Succeeds after fail_count retries
+    - Uses exponential backoff
+    - Logs all retry attempts
+
+    Args:
+        self: Task instance (provided by bind=True)
+        fail_count: Number of times to fail before succeeding (default: 2)
+
+    Returns:
+        dict: Task execution result with:
+            - status: 'success' (only after retries)
+            - retries: Number of retry attempts made
+            - fail_count: Configured failure threshold
+
+    Raises:
+        Exception: Intentional failure to trigger retry (before reaching fail_count)
+    """
+    task_id = self.request.id
+    retry_count = self.request.retries
+
+    logger.info(
+        f"Executing failing_test_task [task_id={task_id}] "
+        f"[retry={retry_count}/{self.max_retries}] "
+        f"[fail_count={fail_count}]"
+    )
+
+    # Fail if we haven't reached the fail_count threshold yet
+    if retry_count < fail_count:
+        error_msg = f"Intentional failure (retry {retry_count}/{fail_count})"
+        logger.warning(
+            f"failing_test_task intentionally failing "
+            f"[task_id={task_id}] [retry={retry_count}] [reason={error_msg}]"
+        )
+
+        # Retry with exponential backoff
+        countdown = 5 * (2 ** retry_count)  # 5s, 10s, 20s, 40s...
+
+        raise self.retry(
+            exc=Exception(error_msg),
+            countdown=countdown
+        )
+
+    # Success after enough retries
+    logger.info(
+        f"failing_test_task succeeded after {retry_count} retries "
+        f"[task_id={task_id}]"
+    )
+
+    return {
+        'status': 'success',
+        'retries': retry_count,
+        'fail_count': fail_count,
+        'task_id': task_id
+    }

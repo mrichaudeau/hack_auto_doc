@@ -202,11 +202,11 @@
   ],
   "progress": {
     "totalTasks": 12,
-    "completed": 8,
+    "completed": 9,
     "inProgress": 0,
-    "pending": 4,
+    "pending": 3,
     "blocked": 0,
-    "percentComplete": 66.67
+    "percentComplete": 75.00
   },
   "currentWave": 3,
   "executionWaves": [

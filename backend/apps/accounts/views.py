@@ -102,7 +102,7 @@ from .tasks import send_verification_email, send_welcome_email
         )
     }
 )
-@method_decorator(ratelimit(key='ip', rate='5/h', method='POST', block=False), name='dispatch')
+@method_decorator(ratelimit(key='ip', rate='30/h', method='POST', block=False), name='dispatch')
 class UserRegistrationView(generics.CreateAPIView):
     """
     API endpoint for user registration.

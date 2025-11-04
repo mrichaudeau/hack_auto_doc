@@ -253,7 +253,9 @@ docker-compose exec backend python manage.py migrate core
 
 ### Migration Verification Checklist
 
-After applying migrations, verify everything is working:
+After applying migrations, verify everything is working correctly. For a comprehensive verification process, see the [Migration Verification Checklist](./migration_checklist.md).
+
+**Quick verification commands:**
 
 - [ ] **All migrations applied**
   ```bash
@@ -284,6 +286,8 @@ After applying migrations, verify everything is working:
   docker-compose exec db psql -U postgres -d veille_tech -c "SELECT '[1,2,3]'::vector;"
   # Should return vector representation
   ```
+
+For a complete verification workflow with detailed troubleshooting, see [Migration Verification Checklist](./migration_checklist.md).
 
 ### Troubleshooting
 

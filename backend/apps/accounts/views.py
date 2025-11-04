@@ -8,6 +8,7 @@ from rest_framework.permissions import AllowAny
 from django.utils.translation import gettext as _
 from django_ratelimit.decorators import ratelimit
 from django.utils.decorators import method_decorator
+from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample
 
 from .models import CustomUser, EmailVerificationToken
 from .serializers import (
@@ -19,6 +20,88 @@ from .serializers import (
 from .tasks import send_verification_email, send_welcome_email
 
 
+@extend_schema(
+    tags=['Authentication'],
+    summary='Register new user account',
+    description="""
+    Register a new user account with email and password.
+
+    **Flow:**
+    1. User submits registration data
+    2. System validates input (email format, password strength)
+    3. User account created (inactive until email verification)
+    4. Verification email sent asynchronously
+    5. User data returned with success message
+
+    **Rate Limiting:**
+    - 5 requests per hour per IP address
+    - Returns 429 Too Many Requests when limit exceeded
+
+    **Security:**
+    - Passwords hashed with Argon2
+    - Email must be unique
+    - Password requirements: min 8 chars, uppercase, lowercase, number
+    """,
+    request=UserRegistrationSerializer,
+    responses={
+        201: OpenApiResponse(
+            response=UserSerializer,
+            description='User registered successfully',
+            examples=[
+                OpenApiExample(
+                    'Success Response',
+                    value={
+                        'id': '550e8400-e29b-41d4-a716-446655440000',
+                        'email': 'user@example.com',
+                        'first_name': 'John',
+                        'last_name': 'Doe',
+                        'is_active': False,
+                        'is_email_verified': False,
+                        'message': 'Registration successful. Please check your email to verify your account.'
+                    }
+                )
+            ]
+        ),
+        400: OpenApiResponse(
+            description='Validation error',
+            examples=[
+                OpenApiExample(
+                    'Invalid Email',
+                    value={'email': ['Enter a valid email address.']}
+                ),
+                OpenApiExample(
+                    'Weak Password',
+                    value={'password': ['Password must contain at least 8 characters, including uppercase, lowercase, and numbers.']}
+                ),
+                OpenApiExample(
+                    'Password Mismatch',
+                    value={'password_confirm': ['Passwords do not match.']}
+                )
+            ]
+        ),
+        409: OpenApiResponse(
+            description='Duplicate email',
+            examples=[
+                OpenApiExample(
+                    'Email Already Exists',
+                    value={'email': ['An account with this email already exists.']}
+                )
+            ]
+        ),
+        429: OpenApiResponse(
+            description='Rate limit exceeded',
+            examples=[
+                OpenApiExample(
+                    'Too Many Requests',
+                    value={
+                        'error': 'Too many registration attempts. Please try again later.',
+                        'detail': 'Rate limit exceeded: 5 attempts per hour allowed.'
+                    }
+                )
+            ]
+        )
+    }
+)
 @method_decorator(ratelimit(key='ip', rate='5/h', method='POST', block=False), name='dispatch')
 class UserRegistrationView(generics.CreateAPIView):
     """

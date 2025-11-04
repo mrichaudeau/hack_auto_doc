@@ -18,6 +18,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from core.views import health_check
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
 
 # Import admin customization
 from . import admin as custom_admin
@@ -27,4 +32,9 @@ urlpatterns = [
     path('api/health/', health_check, name='health_check'),
     path('api/', include('rest_framework.urls')),
     path('api/auth/', include('apps.accounts.urls')),  # Authentication endpoints
+
+    # API Documentation
+    path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='api-schema'), name='api-docs'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='api-schema'), name='api-redoc'),
 ]

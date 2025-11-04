@@ -346,6 +346,48 @@ STATICFILES_FINDERS = [
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Django REST Framework Configuration
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+}
+
+# drf-spectacular API Documentation Configuration
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Tech Watch Platform API',
+    'DESCRIPTION': 'AI-powered Technology Watch Platform - REST API Documentation',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': r'/api/',
+    'SERVERS': [
+        {'url': 'http://localhost:8000', 'description': 'Local Development'},
+        {'url': 'http://localhost:3000', 'description': 'Frontend Development'},
+    ],
+    'TAGS': [
+        {'name': 'Authentication', 'description': 'User authentication and registration endpoints'},
+        {'name': 'Accounts', 'description': 'User account management'},
+    ],
+    'CONTACT': {
+        'name': 'Tech Watch Platform Team',
+        'email': 'support@techwatch.local',
+    },
+    'LICENSE': {
+        'name': 'Proprietary',
+    },
+}
+
 # AI/ML API Keys
 GOOGLE_AI_STUDIO_API_KEY = config('GOOGLE_AI_STUDIO_API_KEY')
 FIRECRAWL_API_KEY = config('FIRECRAWL_API_KEY')

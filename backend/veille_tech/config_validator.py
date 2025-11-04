@@ -216,6 +216,8 @@ SKIP_VALIDATION_COMMANDS = [
     'help',
     'showmigrations',
     'sqlmigrate',
+    'verify_migrations',
+    'setup_database',
 ]
 
 
@@ -223,8 +225,13 @@ def should_validate() -> bool:
     """
     Determine if configuration validation should run.
 
-    Skips validation for management commands that don't need external services.
+    Skips validation for management commands that don't need external services
+    and for pytest test execution.
     """
+    # Skip validation when running tests
+    if 'pytest' in sys.modules or 'PYTEST_CURRENT_TEST' in os.environ:
+        return False
+
     if len(sys.argv) > 1:
         command = sys.argv[1]
         if command in SKIP_VALIDATION_COMMANDS:

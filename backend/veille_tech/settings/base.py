@@ -16,16 +16,23 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv(
 
 # Application definition
 INSTALLED_APPS = [
+    # Project apps - core must be first for infrastructure migrations (pgvector)
+    'apps.core',  # Core infrastructure app (pgvector extension, cross-cutting concerns)
+
+    # Main application
     'veille_tech.apps.VeilleTechConfig',  # Main app with config validation
+
+    # Django built-in apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third-party apps
     'rest_framework',
     'corsheaders',
-    'core',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +67,42 @@ TEMPLATES = [
 WSGI_APPLICATION = 'veille_tech.wsgi.application'
 
 # Database configuration
+# ============================================
+# PostgreSQL Configuration for Migrations
+# ============================================
+# This configuration is optimized for database migrations and production use.
+#
+# Connection Pooling (CONN_MAX_AGE):
+#   - Set to 60 seconds for persistent connections
+#   - Reduces overhead of creating new connections for each request
+#   - IMPORTANT: Connection pooling improves migration performance significantly
+#
+# Connection Health Checks (conn_health_checks):
+#   - Enabled to verify connection validity before reuse
+#   - Prevents "server closed the connection unexpectedly" errors
+#   - Critical for long-running migrations and background tasks
+#
+# Atomic Requests (ATOMIC_REQUESTS):
+#   - Enabled below for transaction safety
+#   - Each request wrapped in database transaction
+#   - Automatic rollback on exceptions
+#   - IMPORTANT: Ensures data consistency during migrations
+#
+# Migration Privilege Requirements:
+#   - pgvector extension creation requires SUPERUSER privilege
+#   - Grant with: ALTER USER veille_tech_user WITH SUPERUSER;
+#   - For production: Use restricted privilege user for app, superuser for migrations only
+#   - See migration 0001_enable_pgvector.py for extension setup
+#
+# Environment Variables:
+#   - DATABASE_URL (recommended): Full connection string (parsed by dj-database-url)
+#     Example: postgresql://user:password@host:port/database
+#   - Alternative: Individual variables (POSTGRES_USER, POSTGRES_PASSWORD, etc.)
+#
+# Connection String Format:
+#   postgresql://[user[:password]@][host][:port][/dbname][?param1=value1&...]
+
+# Database configuration using individual variables
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

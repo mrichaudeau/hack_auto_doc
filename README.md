@@ -140,15 +140,23 @@ docker-compose exec db psql -U veille_tech_user -d veille_tech_db -c "SELECT ver
 docker-compose exec db psql -U veille_tech_user -d veille_tech_db -c "SELECT extname, extversion FROM pg_extension WHERE extname = 'vector';"
 ```
 
-#### Run Django Migrations
+#### Django Migration Commands
 
 ```bash
-# Apply all migrations
+# Apply all pending migrations
 docker-compose exec backend python manage.py migrate
+
+# Check migration status (applied vs pending)
+docker-compose exec backend python manage.py showmigrations
 
 # Create new migration after model changes
 docker-compose exec backend python manage.py makemigrations
+
+# Rollback to specific migration (use with caution)
+docker-compose exec backend python manage.py migrate core zero
 ```
+
+See [Migration Workflow Documentation](docs/setup/00_setup_local_docker.md#database-migrations) for detailed migration procedures.
 
 #### Backup Database
 

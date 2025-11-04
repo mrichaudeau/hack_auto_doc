@@ -2,24 +2,43 @@
 Test settings for veille_tech project.
 
 This configuration optimizes for fast test execution by:
-- Using in-memory SQLite database
+- Using in-memory SQLite database (or PostgreSQL for integration tests)
 - Enabling Celery eager mode (synchronous task execution)
-- Disabling migrations
+- Disabling migrations for unit tests (enabled for integration tests)
 - Using fast password hashing
 - Using separate Redis database for tests (DB 15)
 """
 
+import os
 from .base import *
 
-# Use in-memory SQLite database for faster tests
-# For integration tests requiring PostgreSQL features, override in conftest.py
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
-        'ATOMIC_REQUESTS': True,
+# Database configuration for tests
+# Use PostgreSQL for integration tests (migrations, pgvector)
+# SQLite for simple unit tests (can be overridden per-test)
+if os.environ.get('USE_POSTGRESQL_FOR_TESTS', 'false').lower() == 'true':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('POSTGRES_DB', 'veille_tech_db'),
+            'USER': os.environ.get('POSTGRES_USER', 'veille_tech_user'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '6bH5XeIihanBBCUAUU8YBcMAX2WkH+dB'),
+            'HOST': os.environ.get('POSTGRES_HOST', 'db'),
+            'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+            'ATOMIC_REQUESTS': True,
+            'TEST': {
+                'NAME': 'test_veille_tech_db',
+            },
+        }
     }
-}
+else:
+    # Use in-memory SQLite database for faster unit tests
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+            'ATOMIC_REQUESTS': True,
+        }
+    }
 
 # Celery Configuration for Tests
 # Run tasks synchronously in tests (no worker needed for unit tests)
@@ -42,16 +61,23 @@ CACHES = {
     }
 }
 
-# Disable migrations for faster test database setup
-class DisableMigrations:
-    """Disable migrations during test execution."""
-    def __contains__(self, item):
-        return True
+# Migration configuration for tests
+# Enable migrations for integration tests requiring pgvector
+# Disable for unit tests for speed
+if os.environ.get('USE_POSTGRESQL_FOR_TESTS', 'false').lower() == 'true':
+    # Enable migrations for integration tests
+    MIGRATION_MODULES = {}
+else:
+    # Disable migrations for faster test database setup (unit tests)
+    class DisableMigrations:
+        """Disable migrations during test execution."""
+        def __contains__(self, item):
+            return True
 
-    def __getitem__(self, item):
-        return None
+        def __getitem__(self, item):
+            return None
 
-MIGRATION_MODULES = DisableMigrations()
+    MIGRATION_MODULES = DisableMigrations()
 
 # Speed up password hashing in tests (NEVER use in production)
 PASSWORD_HASHERS = [
@@ -99,3 +125,9 @@ SESSION_COOKIE_SECURE = False
 
 # Make tests run faster by using weaker security
 SECRET_KEY = 'test-secret-key-not-for-production'
+
+# Disable environment validation for tests
+# Tests don't need external API keys (Google AI, Firecrawl)
+os.environ.setdefault('GOOGLE_AI_STUDIO_API_KEY', 'test-key-for-pytest')
+os.environ.setdefault('FIRECRAWL_API_KEY', 'test-key-for-pytest')
+os.environ.setdefault('JWT_SECRET_KEY', 'test-jwt-secret-key-for-pytest-minimum-50-characters-long')

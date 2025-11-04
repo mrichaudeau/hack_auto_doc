@@ -1,0 +1,450 @@
+{
+  "userStory": "US-11",
+  "userStoryTitle": "Service Health Monitoring and Logs",
+  "feature": "local-development-environment",
+  "priority": "P1",
+  "generatedAt": "2025-01-04",
+  "nodes": [
+    {
+      "id": "TASK-11.1",
+      "title": "Create Django health check endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo",
+      "files": [
+        "backend/veille_tech/views.py",
+        "backend/veille_tech/urls.py"
+      ]
+    },
+    {
+      "id": "TASK-11.2",
+      "title": "Implement database connection health check",
+      "type": "backend",
+      "specialty": "database",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo",
+      "files": [
+        "backend/veille_tech/views.py"
+      ]
+    },
+    {
+      "id": "TASK-11.3",
+      "title": "Implement Redis connection health check",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo",
+      "files": [
+        "backend/veille_tech/views.py"
+      ]
+    },
+    {
+      "id": "TASK-11.4",
+      "title": "Configure PostgreSQL health check in docker-compose.yml",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo",
+      "files": [
+        "docker-compose.yml"
+      ]
+    },
+    {
+      "id": "TASK-11.5",
+      "title": "Configure Redis health check in docker-compose.yml",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo",
+      "files": [
+        "docker-compose.yml"
+      ]
+    },
+    {
+      "id": "TASK-11.6",
+      "title": "Configure backend health check in docker-compose.yml",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo",
+      "files": [
+        "docker-compose.yml",
+        "backend/Dockerfile"
+      ]
+    },
+    {
+      "id": "TASK-11.7",
+      "title": "Update service dependencies with health check conditions",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo",
+      "files": [
+        "docker-compose.yml"
+      ]
+    },
+    {
+      "id": "TASK-11.8",
+      "title": "Configure Docker log rotation and retention",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "1.5h",
+      "status": "todo",
+      "files": [
+        "docker-compose.yml"
+      ]
+    },
+    {
+      "id": "TASK-11.9",
+      "title": "Optimize health check parameters (intervals, timeouts)",
+      "type": "infrastructure",
+      "specialty": "performance",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo",
+      "files": [
+        "docker-compose.yml"
+      ]
+    },
+    {
+      "id": "TASK-11.10",
+      "title": "Document logging commands and health monitoring workflow",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo",
+      "files": [
+        "docs/setup/00_setup_local_docker.md"
+      ]
+    },
+    {
+      "id": "TASK-11.11",
+      "title": "Write unit tests for health check endpoint",
+      "type": "testing",
+      "specialty": "unit",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo",
+      "files": [
+        "backend/veille_tech/tests/test_health.py"
+      ]
+    },
+    {
+      "id": "TASK-11.12",
+      "title": "Write integration tests for Docker health checks",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo",
+      "files": [
+        "tests/integration/test_health_checks.py"
+      ]
+    },
+    {
+      "id": "TASK-11.13",
+      "title": "Test health check failure scenarios",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo",
+      "files": [
+        "tests/integration/test_health_failures.py"
+      ]
+    },
+    {
+      "id": "TASK-11.14",
+      "title": "Verify log rotation and retention functionality",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo",
+      "files": [
+        "tests/integration/test_logging.py"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-11.1",
+      "to": "TASK-11.2",
+      "type": "blocks",
+      "reason": "Health endpoint must exist before adding database check"
+    },
+    {
+      "from": "TASK-11.1",
+      "to": "TASK-11.3",
+      "type": "blocks",
+      "reason": "Health endpoint must exist before adding Redis check"
+    },
+    {
+      "from": "TASK-11.1",
+      "to": "TASK-11.6",
+      "type": "blocks",
+      "reason": "Backend health check configuration requires functioning endpoint"
+    },
+    {
+      "from": "TASK-11.4",
+      "to": "TASK-11.6",
+      "type": "blocks",
+      "reason": "Backend depends on database health check"
+    },
+    {
+      "from": "TASK-11.5",
+      "to": "TASK-11.6",
+      "type": "blocks",
+      "reason": "Backend depends on Redis health check"
+    },
+    {
+      "from": "TASK-11.4",
+      "to": "TASK-11.7",
+      "type": "blocks",
+      "reason": "Service dependencies require database health check"
+    },
+    {
+      "from": "TASK-11.5",
+      "to": "TASK-11.7",
+      "type": "blocks",
+      "reason": "Service dependencies require Redis health check"
+    },
+    {
+      "from": "TASK-11.6",
+      "to": "TASK-11.7",
+      "type": "blocks",
+      "reason": "Service dependencies require backend health check"
+    },
+    {
+      "from": "TASK-11.4",
+      "to": "TASK-11.9",
+      "type": "blocks",
+      "reason": "Optimization requires existing database health check"
+    },
+    {
+      "from": "TASK-11.5",
+      "to": "TASK-11.9",
+      "type": "blocks",
+      "reason": "Optimization requires existing Redis health check"
+    },
+    {
+      "from": "TASK-11.6",
+      "to": "TASK-11.9",
+      "type": "blocks",
+      "reason": "Optimization requires existing backend health check"
+    },
+    {
+      "from": "TASK-11.8",
+      "to": "TASK-11.10",
+      "type": "blocks",
+      "reason": "Documentation requires log rotation to be configured"
+    },
+    {
+      "from": "TASK-11.1",
+      "to": "TASK-11.11",
+      "type": "blocks",
+      "reason": "Unit tests require health endpoint implementation"
+    },
+    {
+      "from": "TASK-11.2",
+      "to": "TASK-11.11",
+      "type": "blocks",
+      "reason": "Unit tests require database health check implementation"
+    },
+    {
+      "from": "TASK-11.3",
+      "to": "TASK-11.11",
+      "type": "blocks",
+      "reason": "Unit tests require Redis health check implementation"
+    },
+    {
+      "from": "TASK-11.4",
+      "to": "TASK-11.12",
+      "type": "blocks",
+      "reason": "Integration tests require database health check configuration"
+    },
+    {
+      "from": "TASK-11.5",
+      "to": "TASK-11.12",
+      "type": "blocks",
+      "reason": "Integration tests require Redis health check configuration"
+    },
+    {
+      "from": "TASK-11.6",
+      "to": "TASK-11.12",
+      "type": "blocks",
+      "reason": "Integration tests require backend health check configuration"
+    },
+    {
+      "from": "TASK-11.7",
+      "to": "TASK-11.12",
+      "type": "blocks",
+      "reason": "Integration tests require service dependency orchestration"
+    },
+    {
+      "from": "TASK-11.12",
+      "to": "TASK-11.13",
+      "type": "blocks",
+      "reason": "Failure tests build on integration test framework"
+    },
+    {
+      "from": "TASK-11.8",
+      "to": "TASK-11.14",
+      "type": "blocks",
+      "reason": "Log rotation tests require configuration to be in place"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Foundation",
+      "description": "Create health endpoints and configure infrastructure health checks",
+      "estimatedEffort": "5h",
+      "tasks": ["TASK-11.1", "TASK-11.4", "TASK-11.5"],
+      "parallelizable": true
+    },
+    {
+      "phase": 2,
+      "name": "Health Check Integration",
+      "description": "Implement connectivity checks and log rotation",
+      "estimatedEffort": "7h",
+      "tasks": ["TASK-11.2", "TASK-11.3", "TASK-11.6", "TASK-11.8"],
+      "parallelizable": true
+    },
+    {
+      "phase": 3,
+      "name": "Orchestration",
+      "description": "Configure service dependencies and document workflows",
+      "estimatedEffort": "4h",
+      "tasks": ["TASK-11.7", "TASK-11.10"],
+      "parallelizable": true
+    },
+    {
+      "phase": 4,
+      "name": "Testing",
+      "description": "Unit tests and integration tests",
+      "estimatedEffort": "9h",
+      "tasks": ["TASK-11.11", "TASK-11.12", "TASK-11.14"],
+      "parallelizable": true
+    },
+    {
+      "phase": 5,
+      "name": "Optimization",
+      "description": "Fine-tune health check parameters and test failure scenarios",
+      "estimatedEffort": "5h",
+      "tasks": ["TASK-11.9", "TASK-11.13"],
+      "parallelizable": false
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Foundation",
+      "description": "Initial health check setup across all services",
+      "tasks": ["TASK-11.1", "TASK-11.4", "TASK-11.5"],
+      "canStartAfter": [],
+      "estimatedEffort": "5h"
+    },
+    {
+      "group": "Backend Health Logic",
+      "description": "Database and Redis connectivity checks",
+      "tasks": ["TASK-11.2", "TASK-11.3"],
+      "canStartAfter": ["TASK-11.1"],
+      "estimatedEffort": "4h"
+    },
+    {
+      "group": "Independent Infrastructure",
+      "description": "Log rotation configuration (independent path)",
+      "tasks": ["TASK-11.8"],
+      "canStartAfter": [],
+      "estimatedEffort": "1.5h"
+    },
+    {
+      "group": "Testing Suite",
+      "description": "Unit tests and log rotation tests (parallel paths)",
+      "tasks": ["TASK-11.11", "TASK-11.14"],
+      "canStartAfter": ["TASK-11.1", "TASK-11.2", "TASK-11.3", "TASK-11.8"],
+      "estimatedEffort": "5h"
+    }
+  ],
+  "criticalPath": [
+    {
+      "task": "TASK-11.1",
+      "effort": "3h",
+      "cumulative": "3h"
+    },
+    {
+      "task": "TASK-11.6",
+      "effort": "2h",
+      "cumulative": "5h"
+    },
+    {
+      "task": "TASK-11.7",
+      "effort": "2h",
+      "cumulative": "7h"
+    },
+    {
+      "task": "TASK-11.12",
+      "effort": "4h",
+      "cumulative": "11h"
+    },
+    {
+      "task": "TASK-11.13",
+      "effort": "3h",
+      "cumulative": "14h"
+    },
+    {
+      "task": "TASK-11.9",
+      "effort": "2h",
+      "cumulative": "16h"
+    },
+    {
+      "task": "TASK-11.10",
+      "effort": "1h",
+      "cumulative": "17h"
+    }
+  ],
+  "summary": {
+    "totalTasks": 14,
+    "byType": {
+      "backend": 3,
+      "infrastructure": 7,
+      "testing": 4
+    },
+    "bySpecialty": {
+      "api": 2,
+      "database": 1,
+      "config": 5,
+      "performance": 1,
+      "documentation": 1,
+      "unit": 1,
+      "integration": 3
+    },
+    "byPriority": {
+      "P1": 12,
+      "P2": 2
+    },
+    "totalEffortHours": 30.5,
+    "totalEffortDays": "4 days (1 developer)",
+    "criticalPathHours": 17,
+    "parallelizationPotential": "2-3 days (2 developers)"
+  },
+  "metadata": {
+    "generator": "Functional Spec Planner - Task Documentation Generator",
+    "version": "1.0",
+    "sourceDocument": "specs/local-development-environment/US-11/user-story.md",
+    "dependencies": {
+      "upstreamUserStories": ["US-1", "US-2", "US-3", "US-4"],
+      "downstreamUserStories": []
+    }
+  }
+}

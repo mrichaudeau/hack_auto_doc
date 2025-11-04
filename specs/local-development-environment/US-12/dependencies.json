@@ -1,0 +1,289 @@
+{
+  "userStory": "US-12",
+  "userStoryTitle": "Development Workflow Documentation",
+  "feature": "local-development-environment",
+  "generatedAt": "2025-01-27",
+  "nodes": [
+    {
+      "id": "TASK-12.1",
+      "title": "Create main setup guide structure",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-12.2",
+      "title": "Document prerequisites and system requirements",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-12.3",
+      "title": "Write step-by-step installation instructions",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-12.4",
+      "title": "Create port mapping and service access table",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-12.5",
+      "title": "Document common Docker Compose commands",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-12.6",
+      "title": "Document database management commands",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-12.7",
+      "title": "Document testing commands",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-12.8",
+      "title": "Create troubleshooting section",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-12.9",
+      "title": "Create architecture diagram",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-12.10",
+      "title": "Update README.md with setup guide link",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-12.11",
+      "title": "Create quick reference command cheatsheet",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-12.12",
+      "title": "Test documentation with new developer",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-12.1",
+      "to": "TASK-12.2",
+      "type": "blocks",
+      "reason": "File structure must exist before adding prerequisites content"
+    },
+    {
+      "from": "TASK-12.2",
+      "to": "TASK-12.3",
+      "type": "blocks",
+      "reason": "Prerequisites must be documented before installation steps"
+    },
+    {
+      "from": "TASK-12.3",
+      "to": "TASK-12.4",
+      "type": "blocks",
+      "reason": "Installation must be documented before service access details"
+    },
+    {
+      "from": "TASK-12.4",
+      "to": "TASK-12.5",
+      "type": "blocks",
+      "reason": "Service access must be documented before common commands"
+    },
+    {
+      "from": "TASK-12.5",
+      "to": "TASK-12.6",
+      "type": "blocks",
+      "reason": "Common commands provide foundation for database commands"
+    },
+    {
+      "from": "TASK-12.6",
+      "to": "TASK-12.7",
+      "type": "blocks",
+      "reason": "Database commands must be documented before testing commands"
+    },
+    {
+      "from": "TASK-12.7",
+      "to": "TASK-12.8",
+      "type": "blocks",
+      "reason": "Core workflow must be documented before troubleshooting"
+    },
+    {
+      "from": "TASK-12.3",
+      "to": "TASK-12.9",
+      "type": "blocks",
+      "reason": "Installation details inform architecture diagram"
+    },
+    {
+      "from": "TASK-12.8",
+      "to": "TASK-12.10",
+      "type": "blocks",
+      "reason": "Main documentation must be complete before updating README"
+    },
+    {
+      "from": "TASK-12.5",
+      "to": "TASK-12.11",
+      "type": "blocks",
+      "reason": "Common commands must exist before creating quick reference"
+    },
+    {
+      "from": "TASK-12.6",
+      "to": "TASK-12.11",
+      "type": "blocks",
+      "reason": "Database commands must exist before creating quick reference"
+    },
+    {
+      "from": "TASK-12.7",
+      "to": "TASK-12.11",
+      "type": "blocks",
+      "reason": "Testing commands must exist before creating quick reference"
+    },
+    {
+      "from": "TASK-12.10",
+      "to": "TASK-12.12",
+      "type": "blocks",
+      "reason": "All documentation must be complete before user testing"
+    },
+    {
+      "from": "TASK-12.11",
+      "to": "TASK-12.12",
+      "type": "blocks",
+      "reason": "Quick reference must exist before user testing"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Foundation Documentation",
+      "description": "Create structure, prerequisites, and installation steps",
+      "tasks": ["TASK-12.1", "TASK-12.2", "TASK-12.3", "TASK-12.4"],
+      "estimatedEffort": "6h",
+      "executionMode": "sequential"
+    },
+    {
+      "phase": 2,
+      "name": "Command Documentation",
+      "description": "Document common commands, database management, and testing",
+      "tasks": ["TASK-12.5", "TASK-12.6", "TASK-12.7"],
+      "estimatedEffort": "5h",
+      "executionMode": "sequential"
+    },
+    {
+      "phase": 3,
+      "name": "Advanced Documentation",
+      "description": "Troubleshooting, architecture diagram, README update, quick reference",
+      "tasks": ["TASK-12.8", "TASK-12.9", "TASK-12.10", "TASK-12.11"],
+      "estimatedEffort": "5h",
+      "executionMode": "mixed"
+    },
+    {
+      "phase": 4,
+      "name": "Validation",
+      "description": "Test documentation with new developer",
+      "tasks": ["TASK-12.12"],
+      "estimatedEffort": "3h",
+      "executionMode": "sequential"
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Advanced Documentation",
+      "tasks": ["TASK-12.8", "TASK-12.9"],
+      "canStartAfter": ["TASK-12.7", "TASK-12.3"],
+      "description": "Troubleshooting and architecture diagram can be created in parallel"
+    },
+    {
+      "group": "Final Documentation Updates",
+      "tasks": ["TASK-12.10", "TASK-12.11"],
+      "canStartAfter": ["TASK-12.8", "TASK-12.7"],
+      "description": "README update and quick reference can be created in parallel once core documentation is complete"
+    }
+  ],
+  "criticalPath": [
+    "TASK-12.1",
+    "TASK-12.2",
+    "TASK-12.3",
+    "TASK-12.4",
+    "TASK-12.5",
+    "TASK-12.6",
+    "TASK-12.7",
+    "TASK-12.8",
+    "TASK-12.10",
+    "TASK-12.12"
+  ],
+  "criticalPathDuration": "17h",
+  "summary": {
+    "totalTasks": 12,
+    "byType": {
+      "infrastructure": 11,
+      "testing": 1
+    },
+    "bySpecialty": {
+      "documentation": 11,
+      "integration": 1
+    },
+    "byPriority": {
+      "P1": 12
+    },
+    "totalEffortHours": 19,
+    "totalEffortDays": "2-3 days",
+    "phases": 4,
+    "parallelizationOpportunities": 2
+  },
+  "metadata": {
+    "generatedBy": "Functional Spec Planner - generate-task-documentation skill",
+    "generatedAt": "2025-01-27",
+    "userStory": "US-12",
+    "feature": "local-development-environment",
+    "priority": "P1",
+    "estimatedEffort": "1 Story Point"
+  }
+}

@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',  # django-allauth middleware
+    # 'allauth.account.middleware.AccountMiddleware',  # TODO: Re-enable for SSO (Bloc 1 - Microsoft Entra ID)
 ]
 
 ROOT_URLCONF = 'veille_tech.urls'

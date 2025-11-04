@@ -27,6 +27,7 @@ django-ratelimit = "^4.1"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3"
 pytest-django = "^4.9"
+factory-boy = "^3.3"
 black = "^24.10"
 flake8 = "^7.1"
 ipython = "^8.31"

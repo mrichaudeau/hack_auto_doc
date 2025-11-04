@@ -102,21 +102,24 @@ WSGI_APPLICATION = 'veille_tech.wsgi.application'
 # Connection String Format:
 #   postgresql://[user[:password]@][host][:port][/dbname][?param1=value1&...]
 
-# Database configuration using individual variables
+# Try DATABASE_URL first (recommended), fall back to individual variables
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('POSTGRES_DB', default='veille_tech_db'),
-        'USER': config('POSTGRES_USER', default='veille_tech_user'),
-        'PASSWORD': config('POSTGRES_PASSWORD', default='postgres'),
-        'HOST': config('DB_HOST', default='db'),
-        'PORT': config('DB_PORT', default='5432', cast=int),
-        'CONN_MAX_AGE': config('DB_CONN_MAX_AGE', default=600, cast=int),
-        'OPTIONS': {
-            'connect_timeout': 10,
-        }
-    }
+    'default': dj_database_url.config(
+        default=f"postgresql://{config('POSTGRES_USER', default='veille_tech_user')}:"
+                f"{config('POSTGRES_PASSWORD', default='postgres')}@"
+                f"{config('POSTGRES_HOST', default='db')}:"
+                f"{config('POSTGRES_PORT', default='5432')}/"
+                f"{config('POSTGRES_DB', default='veille_tech_db')}",
+        conn_max_age=60,  # 60 seconds connection pooling
+        conn_health_checks=True,  # Verify connection validity before reuse
+        ssl_require=False,  # Set to True in production for encrypted connections
+    )
 }
+
+# Atomic Requests - Transaction Safety
+# Wraps each request in a database transaction for data consistency
+# Critical for migration safety and preventing partial data updates
+DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 # Test database
 if 'test' in sys.argv:

@@ -1,0 +1,416 @@
+{
+  "userStory": "US-2",
+  "userStoryTitle": "Email Verification",
+  "feature": "authentication",
+  "generatedAt": "2025-01-27",
+  "nodes": [
+    {
+      "id": "TASK-2.1",
+      "title": "Create EmailVerificationToken Model",
+      "type": "backend",
+      "specialty": "database",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.2",
+      "title": "Add Email Verification Fields to User Model",
+      "type": "backend",
+      "specialty": "database",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.3",
+      "title": "Implement Token Generation Utility",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.4",
+      "title": "Create Email Verification API Endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.5",
+      "title": "Create Resend Verification Email API Endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.6",
+      "title": "Implement Email Service Integration",
+      "type": "backend",
+      "specialty": "email",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.7",
+      "title": "Implement Rate Limiting for Resend Endpoint",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.8",
+      "title": "Add Verification Check to Login Endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.9",
+      "title": "Create Periodic Token Cleanup Task",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.10",
+      "title": "Create Email Verification Page Component",
+      "type": "frontend",
+      "specialty": "page",
+      "priority": "P1",
+      "effort": "5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.11",
+      "title": "Create Resend Verification Email Form Component",
+      "type": "frontend",
+      "specialty": "component",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.12",
+      "title": "Create API Service for Verification Endpoints",
+      "type": "frontend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.13",
+      "title": "Unit Tests for EmailVerificationToken Model",
+      "type": "testing",
+      "specialty": "unit",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.14",
+      "title": "Integration Tests for Verification Endpoint",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.15",
+      "title": "Integration Tests for Resend Verification Endpoint",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.16",
+      "title": "End-to-End Test for Complete Verification Flow",
+      "type": "testing",
+      "specialty": "e2e",
+      "priority": "P1",
+      "effort": "5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.17",
+      "title": "Security Tests for Verification System",
+      "type": "testing",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.18",
+      "title": "Configure Email Templates and Branding",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-2.19",
+      "title": "API Documentation for Verification Endpoints",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-2.1",
+      "to": "TASK-2.4",
+      "type": "blocks",
+      "reason": "EmailVerificationToken model must exist before creating verification API endpoint"
+    },
+    {
+      "from": "TASK-2.1",
+      "to": "TASK-2.6",
+      "type": "blocks",
+      "reason": "EmailVerificationToken model must exist before email service can create tokens"
+    },
+    {
+      "from": "TASK-2.1",
+      "to": "TASK-2.9",
+      "type": "blocks",
+      "reason": "EmailVerificationToken model must exist before cleanup task can delete tokens"
+    },
+    {
+      "from": "TASK-2.1",
+      "to": "TASK-2.13",
+      "type": "blocks",
+      "reason": "Model must exist before writing unit tests for it"
+    },
+    {
+      "from": "TASK-2.2",
+      "to": "TASK-2.4",
+      "type": "blocks",
+      "reason": "User verification fields must exist before verification endpoint can set them"
+    },
+    {
+      "from": "TASK-2.2",
+      "to": "TASK-2.8",
+      "type": "blocks",
+      "reason": "User verification fields must exist before login can check them"
+    },
+    {
+      "from": "TASK-2.3",
+      "to": "TASK-2.5",
+      "type": "blocks",
+      "reason": "Token generation utility must exist before resend endpoint can generate tokens"
+    },
+    {
+      "from": "TASK-2.3",
+      "to": "TASK-2.6",
+      "type": "blocks",
+      "reason": "Token generation utility must exist before email service can generate tokens"
+    },
+    {
+      "from": "TASK-2.6",
+      "to": "TASK-2.5",
+      "type": "blocks",
+      "reason": "Email service must exist before resend endpoint can send emails"
+    },
+    {
+      "from": "TASK-2.6",
+      "to": "TASK-2.18",
+      "type": "blocks",
+      "reason": "Email service must exist before templates can be customized"
+    },
+    {
+      "from": "TASK-2.7",
+      "to": "TASK-2.5",
+      "type": "blocks",
+      "reason": "Rate limiting must exist before resend endpoint can enforce limits"
+    },
+    {
+      "from": "TASK-2.4",
+      "to": "TASK-2.10",
+      "type": "blocks",
+      "reason": "Verification API endpoint must exist before frontend page can call it"
+    },
+    {
+      "from": "TASK-2.4",
+      "to": "TASK-2.14",
+      "type": "blocks",
+      "reason": "Verification endpoint must exist before writing integration tests"
+    },
+    {
+      "from": "TASK-2.4",
+      "to": "TASK-2.19",
+      "type": "blocks",
+      "reason": "Verification endpoint must exist before documenting it"
+    },
+    {
+      "from": "TASK-2.5",
+      "to": "TASK-2.11",
+      "type": "blocks",
+      "reason": "Resend endpoint must exist before frontend form can call it"
+    },
+    {
+      "from": "TASK-2.5",
+      "to": "TASK-2.15",
+      "type": "blocks",
+      "reason": "Resend endpoint must exist before writing integration tests"
+    },
+    {
+      "from": "TASK-2.5",
+      "to": "TASK-2.19",
+      "type": "blocks",
+      "reason": "Resend endpoint must exist before documenting it"
+    },
+    {
+      "from": "TASK-2.10",
+      "to": "TASK-2.16",
+      "type": "blocks",
+      "reason": "Verification page must exist before E2E test can navigate to it"
+    },
+    {
+      "from": "TASK-2.11",
+      "to": "TASK-2.16",
+      "type": "blocks",
+      "reason": "Resend form must exist before E2E test can use it"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Database Foundation",
+      "description": "Create database models and fields for email verification",
+      "tasks": ["TASK-2.1", "TASK-2.2"],
+      "estimatedEffort": "5h",
+      "executionMode": "parallel"
+    },
+    {
+      "phase": 2,
+      "name": "Security & Utilities",
+      "description": "Implement token generation, email service, and rate limiting",
+      "tasks": ["TASK-2.3", "TASK-2.6", "TASK-2.7"],
+      "estimatedEffort": "9h",
+      "executionMode": "sequential_with_parallel"
+    },
+    {
+      "phase": 3,
+      "name": "Backend API",
+      "description": "Create verification and resend API endpoints, add login check",
+      "tasks": ["TASK-2.4", "TASK-2.5", "TASK-2.8"],
+      "estimatedEffort": "10h",
+      "executionMode": "sequential"
+    },
+    {
+      "phase": 4,
+      "name": "Frontend",
+      "description": "Build verification page, resend form, and API services",
+      "tasks": ["TASK-2.10", "TASK-2.11", "TASK-2.12"],
+      "estimatedEffort": "11h",
+      "executionMode": "parallel_with_phase_5"
+    },
+    {
+      "phase": 5,
+      "name": "Testing",
+      "description": "Unit, integration, E2E, and security tests",
+      "tasks": ["TASK-2.13", "TASK-2.14", "TASK-2.15", "TASK-2.16", "TASK-2.17"],
+      "estimatedEffort": "19h",
+      "executionMode": "mixed"
+    },
+    {
+      "phase": 6,
+      "name": "Infrastructure & Polish",
+      "description": "Cleanup task, email templates, and API documentation",
+      "tasks": ["TASK-2.9", "TASK-2.18", "TASK-2.19"],
+      "estimatedEffort": "8h",
+      "executionMode": "parallel"
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Phase 1 - Database Models",
+      "tasks": ["TASK-2.1", "TASK-2.2", "TASK-2.3"],
+      "canStartAfter": [],
+      "description": "All three database/utility tasks can start immediately and run in parallel"
+    },
+    {
+      "group": "Phase 2 - Email and Rate Limiting",
+      "tasks": ["TASK-2.6", "TASK-2.7"],
+      "canStartAfter": ["TASK-2.1", "TASK-2.3"],
+      "description": "Email service and rate limiting can be developed in parallel once token generation exists"
+    },
+    {
+      "group": "Phase 4 & Early Phase 5 - Frontend and Testing",
+      "tasks": ["TASK-2.10", "TASK-2.11", "TASK-2.12", "TASK-2.13", "TASK-2.14", "TASK-2.15"],
+      "canStartAfter": ["TASK-2.4", "TASK-2.5"],
+      "description": "Frontend and testing can proceed in parallel once backend APIs are complete"
+    },
+    {
+      "group": "Phase 6 - Infrastructure Tasks",
+      "tasks": ["TASK-2.9", "TASK-2.18", "TASK-2.19"],
+      "canStartAfter": ["TASK-2.6", "TASK-2.4", "TASK-2.5"],
+      "description": "Infrastructure tasks are independent and can run in parallel"
+    }
+  ],
+  "criticalPath": [
+    "TASK-2.1",
+    "TASK-2.4",
+    "TASK-2.10",
+    "TASK-2.16"
+  ],
+  "criticalPathDuration": "17h",
+  "summary": {
+    "totalTasks": 19,
+    "byType": {
+      "backend": 9,
+      "frontend": 3,
+      "testing": 5,
+      "infrastructure": 2
+    },
+    "bySpecialty": {
+      "database": 2,
+      "security": 2,
+      "api": 3,
+      "email": 1,
+      "config": 1,
+      "page": 1,
+      "component": 1,
+      "unit": 1,
+      "integration": 2,
+      "e2e": 1,
+      "documentation": 2
+    },
+    "byPriority": {
+      "P1": 16,
+      "P2": 3
+    },
+    "totalEffortHours": 62,
+    "totalEffortDays": "7-8 days",
+    "phases": 6,
+    "parallelizationOpportunities": 4
+  },
+  "metadata": {
+    "generatedBy": "Functional Spec Planner - generate-task-documentation skill",
+    "generatedAt": "2025-01-27",
+    "userStory": "US-2",
+    "feature": "authentication",
+    "priority": "P0",
+    "estimatedEffort": "5 Story Points"
+  }
+}

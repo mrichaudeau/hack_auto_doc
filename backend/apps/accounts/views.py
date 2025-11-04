@@ -119,6 +119,7 @@ class UserRegistrationView(generics.CreateAPIView):
     """
     queryset = CustomUser.objects.all()
     serializer_class = UserRegistrationSerializer
+    authentication_classes = []  # Disable authentication for registration
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
@@ -160,6 +161,7 @@ class EmailVerificationView(generics.GenericAPIView):
     - Returns success message
     """
     serializer_class = EmailVerificationSerializer
+    authentication_classes = []  # Disable authentication for email verification
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
@@ -196,6 +198,7 @@ class ResendVerificationEmailView(generics.GenericAPIView):
     - Returns success message
     """
     serializer_class = ResendVerificationEmailSerializer
+    authentication_classes = []  # Disable authentication for resending verification
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):

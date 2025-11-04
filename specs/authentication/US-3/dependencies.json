@@ -1,0 +1,531 @@
+{
+  "userStory": "US-3",
+  "userStoryTitle": "Standard User Login",
+  "feature": "authentication",
+  "generatedAt": "2025-01-04",
+  "nodes": [
+    {
+      "id": "TASK-3.1",
+      "title": "Create LoginAuditLog Model",
+      "type": "backend",
+      "specialty": "database",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.2",
+      "title": "Configure JWT Authentication",
+      "type": "backend",
+      "specialty": "configuration",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.3",
+      "title": "Implement Redis-Based Rate Limiting",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.4",
+      "title": "Create Custom Authentication Backend",
+      "type": "backend",
+      "specialty": "authentication",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.5",
+      "title": "Implement Login API Endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.6",
+      "title": "Implement Security Logging",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.7",
+      "title": "Create Token Refresh Endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.8",
+      "title": "Create Login Form Component",
+      "type": "frontend",
+      "specialty": "ui",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.9",
+      "title": "Implement Login API Integration",
+      "type": "frontend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.10",
+      "title": "Implement Token Storage",
+      "type": "frontend",
+      "specialty": "state-management",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.11",
+      "title": "Create Auth Context Provider",
+      "type": "frontend",
+      "specialty": "state-management",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.12",
+      "title": "Implement API Interceptor for JWT",
+      "type": "frontend",
+      "specialty": "infrastructure",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.13",
+      "title": "Create Protected Route Component",
+      "type": "frontend",
+      "specialty": "navigation",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.14",
+      "title": "Unit Tests for LoginAuditLog Model",
+      "type": "testing",
+      "specialty": "backend",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.15",
+      "title": "Unit Tests for Rate Limiting",
+      "type": "testing",
+      "specialty": "backend",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.16",
+      "title": "Integration Tests for Login API",
+      "type": "testing",
+      "specialty": "backend",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.17",
+      "title": "Security Tests for Authentication",
+      "type": "testing",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.18",
+      "title": "Frontend Unit Tests for Login Form",
+      "type": "testing",
+      "specialty": "frontend",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.19",
+      "title": "Frontend Integration Tests for Auth Flow",
+      "type": "testing",
+      "specialty": "frontend",
+      "priority": "P2",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.20",
+      "title": "Performance Tests for Login Endpoint",
+      "type": "testing",
+      "specialty": "performance",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.21",
+      "title": "Configure Redis for Rate Limiting",
+      "type": "infrastructure",
+      "specialty": "configuration",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.22",
+      "title": "Create Login Documentation",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.23",
+      "title": "Update Environment Configuration",
+      "type": "infrastructure",
+      "specialty": "configuration",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-3.24",
+      "title": "Create Login Troubleshooting Guide",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-3.1",
+      "to": "TASK-3.4",
+      "type": "blocks",
+      "reason": "LoginAuditLog model must exist before authentication backend can log attempts"
+    },
+    {
+      "from": "TASK-3.1",
+      "to": "TASK-3.6",
+      "type": "blocks",
+      "reason": "LoginAuditLog model must exist for security logging service"
+    },
+    {
+      "from": "TASK-3.1",
+      "to": "TASK-3.14",
+      "type": "blocks",
+      "reason": "Model must exist before writing tests"
+    },
+    {
+      "from": "TASK-3.2",
+      "to": "TASK-3.5",
+      "type": "blocks",
+      "reason": "JWT configuration must be complete before login endpoint can generate tokens"
+    },
+    {
+      "from": "TASK-3.2",
+      "to": "TASK-3.7",
+      "type": "blocks",
+      "reason": "JWT configuration required for token refresh endpoint"
+    },
+    {
+      "from": "TASK-3.2",
+      "to": "TASK-3.23",
+      "type": "blocks",
+      "reason": "JWT configuration defines environment variables to document"
+    },
+    {
+      "from": "TASK-3.3",
+      "to": "TASK-3.5",
+      "type": "blocks",
+      "reason": "Rate limiting decorator must exist before applying to login endpoint"
+    },
+    {
+      "from": "TASK-3.3",
+      "to": "TASK-3.15",
+      "type": "blocks",
+      "reason": "Rate limiting implementation must exist before writing tests"
+    },
+    {
+      "from": "TASK-3.4",
+      "to": "TASK-3.5",
+      "type": "blocks",
+      "reason": "Custom authentication backend must exist for login endpoint to authenticate users"
+    },
+    {
+      "from": "TASK-3.5",
+      "to": "TASK-3.9",
+      "type": "blocks",
+      "reason": "Login API endpoint must exist before frontend can integrate with it"
+    },
+    {
+      "from": "TASK-3.5",
+      "to": "TASK-3.16",
+      "type": "blocks",
+      "reason": "Login endpoint must be implemented before writing integration tests"
+    },
+    {
+      "from": "TASK-3.5",
+      "to": "TASK-3.17",
+      "type": "blocks",
+      "reason": "Login endpoint must be implemented before writing security tests"
+    },
+    {
+      "from": "TASK-3.5",
+      "to": "TASK-3.20",
+      "type": "blocks",
+      "reason": "Login endpoint must be implemented before performance testing"
+    },
+    {
+      "from": "TASK-3.5",
+      "to": "TASK-3.22",
+      "type": "blocks",
+      "reason": "Login endpoint implementation informs API documentation"
+    },
+    {
+      "from": "TASK-3.7",
+      "to": "TASK-3.12",
+      "type": "blocks",
+      "reason": "Token refresh endpoint must exist for API interceptor to call during refresh"
+    },
+    {
+      "from": "TASK-3.8",
+      "to": "TASK-3.9",
+      "type": "blocks",
+      "reason": "Login form component must exist before integrating with API"
+    },
+    {
+      "from": "TASK-3.8",
+      "to": "TASK-3.18",
+      "type": "blocks",
+      "reason": "Login form component must exist before writing tests"
+    },
+    {
+      "from": "TASK-3.9",
+      "to": "TASK-3.10",
+      "type": "blocks",
+      "reason": "API integration returns tokens that need to be stored"
+    },
+    {
+      "from": "TASK-3.10",
+      "to": "TASK-3.11",
+      "type": "blocks",
+      "reason": "Token storage utilities needed by AuthContext for saving tokens"
+    },
+    {
+      "from": "TASK-3.10",
+      "to": "TASK-3.12",
+      "type": "blocks",
+      "reason": "Token storage utilities needed by API interceptor to retrieve tokens"
+    },
+    {
+      "from": "TASK-3.11",
+      "to": "TASK-3.13",
+      "type": "blocks",
+      "reason": "AuthContext provides authentication state for protected route checks"
+    },
+    {
+      "from": "TASK-3.11",
+      "to": "TASK-3.19",
+      "type": "blocks",
+      "reason": "AuthContext needed for auth flow integration tests"
+    },
+    {
+      "from": "TASK-3.12",
+      "to": "TASK-3.19",
+      "type": "blocks",
+      "reason": "API interceptor needed for auth flow integration tests"
+    },
+    {
+      "from": "TASK-3.22",
+      "to": "TASK-3.24",
+      "type": "blocks",
+      "reason": "API documentation provides context for troubleshooting guide"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Backend Foundation",
+      "tasks": ["TASK-3.1", "TASK-3.2", "TASK-3.3", "TASK-3.21"],
+      "canStartImmediately": true,
+      "parallelizable": true,
+      "description": "Foundation tasks with no dependencies that can run in parallel"
+    },
+    {
+      "phase": 2,
+      "name": "Backend Core",
+      "tasks": ["TASK-3.4", "TASK-3.6", "TASK-3.5", "TASK-3.7"],
+      "canStartImmediately": false,
+      "parallelizable": false,
+      "description": "Core backend implementation requiring Phase 1 completion",
+      "dependencies": ["Phase 1"]
+    },
+    {
+      "phase": 3,
+      "name": "Frontend Foundation",
+      "tasks": ["TASK-3.8"],
+      "canStartImmediately": true,
+      "parallelizable": true,
+      "description": "Frontend UI components with no backend dependency"
+    },
+    {
+      "phase": 4,
+      "name": "Frontend Integration",
+      "tasks": ["TASK-3.9", "TASK-3.10", "TASK-3.11", "TASK-3.12", "TASK-3.13"],
+      "canStartImmediately": false,
+      "parallelizable": false,
+      "description": "Frontend integration with backend API and authentication flow",
+      "dependencies": ["Phase 2", "Phase 3"]
+    },
+    {
+      "phase": 5,
+      "name": "Testing",
+      "tasks": ["TASK-3.14", "TASK-3.15", "TASK-3.16", "TASK-3.17", "TASK-3.18", "TASK-3.19", "TASK-3.20"],
+      "canStartImmediately": false,
+      "parallelizable": true,
+      "description": "Comprehensive testing suite covering all components",
+      "dependencies": ["Phase 2", "Phase 4"]
+    },
+    {
+      "phase": 6,
+      "name": "Documentation",
+      "tasks": ["TASK-3.22", "TASK-3.23", "TASK-3.24"],
+      "canStartImmediately": false,
+      "parallelizable": true,
+      "description": "API documentation, environment configuration, and troubleshooting guides",
+      "dependencies": ["Phase 2"]
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Backend Foundation",
+      "tasks": ["TASK-3.1", "TASK-3.2", "TASK-3.3", "TASK-3.21"],
+      "canStartAfter": [],
+      "description": "All backend foundation tasks can run in parallel"
+    },
+    {
+      "group": "Frontend Foundation",
+      "tasks": ["TASK-3.8"],
+      "canStartAfter": [],
+      "description": "Frontend UI development can start immediately and run parallel with backend"
+    },
+    {
+      "group": "Backend Testing",
+      "tasks": ["TASK-3.14", "TASK-3.15", "TASK-3.16", "TASK-3.17", "TASK-3.20"],
+      "canStartAfter": ["TASK-3.5"],
+      "description": "All backend tests can run in parallel after implementation"
+    },
+    {
+      "group": "Frontend Testing",
+      "tasks": ["TASK-3.18", "TASK-3.19"],
+      "canStartAfter": ["TASK-3.11", "TASK-3.12"],
+      "description": "Frontend tests can run in parallel after implementation"
+    },
+    {
+      "group": "Documentation",
+      "tasks": ["TASK-3.22", "TASK-3.23", "TASK-3.24"],
+      "canStartAfter": ["TASK-3.5"],
+      "description": "All documentation tasks can run in parallel after API implementation"
+    }
+  ],
+  "criticalPath": [
+    "TASK-3.2",
+    "TASK-3.3",
+    "TASK-3.4",
+    "TASK-3.5",
+    "TASK-3.9",
+    "TASK-3.10",
+    "TASK-3.11",
+    "TASK-3.12"
+  ],
+  "summary": {
+    "totalTasks": 24,
+    "byType": {
+      "backend": 7,
+      "frontend": 6,
+      "testing": 7,
+      "infrastructure": 4
+    },
+    "byPriority": {
+      "P1": 17,
+      "P2": 7
+    },
+    "totalEffortHours": 74,
+    "totalEffortDays": "9-10 days (1 full-stack dev)",
+    "parallelEffortDays": "6-7 days (2 devs: backend + frontend)",
+    "estimatedDurationWithTesting": "5-6 days (3 devs: backend + frontend + testing)"
+  },
+  "dependencies": {
+    "externalUserStories": [
+      "US-1: User Registration (CustomUser model must exist)",
+      "US-2: Email Verification (is_email_verified flag must exist)"
+    ],
+    "services": [
+      "Redis (from US-1 Docker Compose setup)",
+      "PostgreSQL (from US-1 Docker Compose setup)"
+    ]
+  },
+  "risks": [
+    {
+      "risk": "Rate Limiting Bottleneck",
+      "impact": "High",
+      "probability": "Medium",
+      "mitigation": "Use Redis connection pooling, implement graceful degradation, monitor performance"
+    },
+    {
+      "risk": "Token Refresh Race Condition",
+      "impact": "High",
+      "probability": "Medium",
+      "mitigation": "Implement request queuing during refresh, use boolean flag to prevent concurrent refreshes"
+    },
+    {
+      "risk": "Timing Attack on Authentication",
+      "impact": "High",
+      "probability": "Low",
+      "mitigation": "Constant-time password comparison, same error messages, timing tests"
+    },
+    {
+      "risk": "LoginAuditLog Table Growth",
+      "impact": "Medium",
+      "probability": "High",
+      "mitigation": "Implement data retention policy, database indexes, monitor table size"
+    },
+    {
+      "risk": "CORS Misconfiguration",
+      "impact": "Medium",
+      "probability": "Medium",
+      "mitigation": "Configure CORS properly, use environment variables, test early"
+    }
+  ],
+  "performanceTargets": {
+    "loginEndpointP95Latency": "< 300ms",
+    "loginEndpointP99Latency": "< 500ms",
+    "rateLimitCapacity": "100 concurrent users",
+    "tokenRefreshLatency": "< 100ms"
+  }
+}

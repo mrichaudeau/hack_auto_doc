@@ -1,0 +1,445 @@
+{
+  "userStory": "US-4",
+  "userStoryTitle": "JWT Token Refresh",
+  "feature": "authentication",
+  "generatedAt": "2025-01-27",
+  "nodes": [
+    {
+      "id": "TASK-4.1",
+      "title": "Configure djangorestframework-simplejwt",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.2",
+      "title": "Create Token Refresh API Endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.3",
+      "title": "Implement Token Blacklisting Logic",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.4",
+      "title": "Add Rate Limiting for Refresh Endpoint",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.5",
+      "title": "Create Token Refresh Audit Logging",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.6",
+      "title": "Update Login Endpoint with Token Expiry",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.7",
+      "title": "Configure Redis for Token Blacklist",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.8",
+      "title": "Create HTTP Interceptor for Token Refresh",
+      "type": "frontend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.9",
+      "title": "Implement Token Storage Logic",
+      "type": "frontend",
+      "specialty": "component",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.10",
+      "title": "Add Automatic Retry on 401",
+      "type": "frontend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.11",
+      "title": "Create Token Expiry Monitoring",
+      "type": "frontend",
+      "specialty": "component",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.12",
+      "title": "Unit Tests for Token Validation",
+      "type": "testing",
+      "specialty": "unit",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.13",
+      "title": "Integration Tests for Refresh Endpoint",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.14",
+      "title": "E2E Tests for Automatic Refresh Flow",
+      "type": "testing",
+      "specialty": "e2e",
+      "priority": "P1",
+      "effort": "5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.15",
+      "title": "Security Tests for Token Tampering",
+      "type": "testing",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.16",
+      "title": "Performance Tests for Concurrent Refresh",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.17",
+      "title": "Document Token Refresh Flow",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-4.18",
+      "title": "Add Monitoring for Token Refresh",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-4.1",
+      "to": "TASK-4.2",
+      "type": "blocks",
+      "reason": "JWT configuration must be complete before creating refresh endpoint"
+    },
+    {
+      "from": "TASK-4.1",
+      "to": "TASK-4.3",
+      "type": "blocks",
+      "reason": "JWT configuration with blacklist app must exist before implementing blacklisting logic"
+    },
+    {
+      "from": "TASK-4.1",
+      "to": "TASK-4.6",
+      "type": "blocks",
+      "reason": "JWT configuration must exist to calculate token expiry times in login response"
+    },
+    {
+      "from": "TASK-4.2",
+      "to": "TASK-4.4",
+      "type": "blocks",
+      "reason": "Refresh endpoint must exist before applying rate limiting to it"
+    },
+    {
+      "from": "TASK-4.2",
+      "to": "TASK-4.5",
+      "type": "blocks",
+      "reason": "Refresh endpoint must exist before adding audit logging to it"
+    },
+    {
+      "from": "TASK-4.2",
+      "to": "TASK-4.8",
+      "type": "blocks",
+      "reason": "Refresh endpoint must exist before frontend can call it via interceptor"
+    },
+    {
+      "from": "TASK-4.2",
+      "to": "TASK-4.12",
+      "type": "blocks",
+      "reason": "Token validation logic must exist before writing unit tests for it"
+    },
+    {
+      "from": "TASK-4.2",
+      "to": "TASK-4.13",
+      "type": "blocks",
+      "reason": "Refresh endpoint must exist before writing integration tests for it"
+    },
+    {
+      "from": "TASK-4.2",
+      "to": "TASK-4.15",
+      "type": "blocks",
+      "reason": "Token refresh endpoint must exist before testing security vulnerabilities"
+    },
+    {
+      "from": "TASK-4.2",
+      "to": "TASK-4.16",
+      "type": "blocks",
+      "reason": "Refresh endpoint must exist before performance testing it"
+    },
+    {
+      "from": "TASK-4.2",
+      "to": "TASK-4.17",
+      "type": "blocks",
+      "reason": "Refresh endpoint must exist before documenting it"
+    },
+    {
+      "from": "TASK-4.3",
+      "to": "TASK-4.7",
+      "type": "blocks",
+      "reason": "Token blacklisting logic must exist before configuring Redis for blacklist caching"
+    },
+    {
+      "from": "TASK-4.3",
+      "to": "TASK-4.12",
+      "type": "blocks",
+      "reason": "Blacklisting logic must exist before testing blacklist validation"
+    },
+    {
+      "from": "TASK-4.3",
+      "to": "TASK-4.15",
+      "type": "blocks",
+      "reason": "Blacklisting logic must exist before testing blacklist security"
+    },
+    {
+      "from": "TASK-4.4",
+      "to": "TASK-4.16",
+      "type": "blocks",
+      "reason": "Rate limiting must exist before testing its effectiveness under load"
+    },
+    {
+      "from": "TASK-4.5",
+      "to": "TASK-4.18",
+      "type": "blocks",
+      "reason": "Audit logging must exist before setting up monitoring dashboards"
+    },
+    {
+      "from": "TASK-4.8",
+      "to": "TASK-4.10",
+      "type": "blocks",
+      "reason": "HTTP interceptor foundation must exist before enhancing with automatic retry logic"
+    },
+    {
+      "from": "TASK-4.8",
+      "to": "TASK-4.14",
+      "type": "blocks",
+      "reason": "HTTP interceptor must exist before testing automatic refresh flow end-to-end"
+    },
+    {
+      "from": "TASK-4.8",
+      "to": "TASK-4.17",
+      "type": "blocks",
+      "reason": "HTTP interceptor must exist before documenting frontend integration"
+    },
+    {
+      "from": "TASK-4.9",
+      "to": "TASK-4.11",
+      "type": "blocks",
+      "reason": "Token storage with expiry tracking must exist before monitoring expiry"
+    },
+    {
+      "from": "TASK-4.10",
+      "to": "TASK-4.14",
+      "type": "blocks",
+      "reason": "Automatic retry logic must be complete before testing E2E refresh flow"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Backend Foundation",
+      "description": "Configure JWT, create refresh endpoint, implement blacklisting",
+      "tasks": ["TASK-4.1", "TASK-4.2", "TASK-4.3"],
+      "estimatedEffort": "12h",
+      "executionMode": "sequential"
+    },
+    {
+      "phase": 2,
+      "name": "Security & Performance",
+      "description": "Add rate limiting, audit logging, Redis configuration",
+      "tasks": ["TASK-4.4", "TASK-4.5", "TASK-4.7"],
+      "estimatedEffort": "8h",
+      "executionMode": "parallel"
+    },
+    {
+      "phase": 3,
+      "name": "Frontend Integration",
+      "description": "Update login endpoint, implement token storage, HTTP interceptor, automatic retry",
+      "tasks": ["TASK-4.6", "TASK-4.9", "TASK-4.8", "TASK-4.10"],
+      "estimatedEffort": "14h",
+      "executionMode": "mixed"
+    },
+    {
+      "phase": 4,
+      "name": "Testing",
+      "description": "Unit, integration, E2E, security, and performance tests",
+      "tasks": ["TASK-4.12", "TASK-4.13", "TASK-4.15", "TASK-4.14", "TASK-4.16"],
+      "estimatedEffort": "18h",
+      "executionMode": "parallel_with_sequential"
+    },
+    {
+      "phase": 5,
+      "name": "Infrastructure & Polish",
+      "description": "Documentation, monitoring, proactive token refresh",
+      "tasks": ["TASK-4.11", "TASK-4.17", "TASK-4.18"],
+      "estimatedEffort": "7h",
+      "executionMode": "parallel"
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Phase 1 - Backend Foundation",
+      "tasks": ["TASK-4.1", "TASK-4.2", "TASK-4.3"],
+      "canStartAfter": [],
+      "description": "Sequential execution - JWT config, then endpoint, then blacklisting"
+    },
+    {
+      "group": "Phase 2 - Security Features",
+      "tasks": ["TASK-4.4", "TASK-4.5"],
+      "canStartAfter": ["TASK-4.2"],
+      "description": "Rate limiting and audit logging can be developed in parallel after refresh endpoint exists"
+    },
+    {
+      "group": "Phase 2 - Redis Configuration",
+      "tasks": ["TASK-4.7"],
+      "canStartAfter": ["TASK-4.3"],
+      "description": "Redis configuration depends on blacklisting logic"
+    },
+    {
+      "group": "Phase 3 - Login Enhancement & Token Storage",
+      "tasks": ["TASK-4.6", "TASK-4.9"],
+      "canStartAfter": ["TASK-4.1"],
+      "description": "Login enhancement and token storage can start after JWT configuration"
+    },
+    {
+      "group": "Phase 3 - HTTP Interceptor",
+      "tasks": ["TASK-4.8"],
+      "canStartAfter": ["TASK-4.2"],
+      "description": "HTTP interceptor depends on refresh endpoint"
+    },
+    {
+      "group": "Phase 3 - Automatic Retry",
+      "tasks": ["TASK-4.10"],
+      "canStartAfter": ["TASK-4.8"],
+      "description": "Automatic retry enhances HTTP interceptor"
+    },
+    {
+      "group": "Phase 4 - Core Testing",
+      "tasks": ["TASK-4.12", "TASK-4.13", "TASK-4.15"],
+      "canStartAfter": ["TASK-4.2", "TASK-4.3"],
+      "description": "Unit, integration, and security tests can run in parallel once backend is complete"
+    },
+    {
+      "group": "Phase 4 - E2E Testing",
+      "tasks": ["TASK-4.14"],
+      "canStartAfter": ["TASK-4.10"],
+      "description": "E2E tests require complete frontend integration"
+    },
+    {
+      "group": "Phase 4 - Performance Testing",
+      "tasks": ["TASK-4.16"],
+      "canStartAfter": ["TASK-4.4"],
+      "description": "Performance tests require rate limiting implementation"
+    },
+    {
+      "group": "Phase 5 - Infrastructure",
+      "tasks": ["TASK-4.11", "TASK-4.17", "TASK-4.18"],
+      "canStartAfter": ["TASK-4.9", "TASK-4.8", "TASK-4.5"],
+      "description": "Documentation, monitoring, and proactive refresh can run in parallel"
+    }
+  ],
+  "criticalPath": [
+    "TASK-4.1",
+    "TASK-4.2",
+    "TASK-4.8",
+    "TASK-4.10",
+    "TASK-4.14"
+  ],
+  "criticalPathDuration": "21h",
+  "summary": {
+    "totalTasks": 18,
+    "byType": {
+      "backend": 7,
+      "frontend": 4,
+      "testing": 5,
+      "infrastructure": 2
+    },
+    "bySpecialty": {
+      "config": 3,
+      "api": 4,
+      "security": 2,
+      "component": 2,
+      "unit": 1,
+      "integration": 2,
+      "e2e": 1,
+      "documentation": 1
+    },
+    "byPriority": {
+      "P1": 15,
+      "P2": 3
+    },
+    "totalEffortHours": 59,
+    "totalEffortDays": "7-8 days",
+    "phases": 5,
+    "parallelizationOpportunities": 10
+  },
+  "metadata": {
+    "generatedBy": "Functional Spec Planner - generate-task-documentation skill",
+    "generatedAt": "2025-01-27",
+    "userStory": "US-4",
+    "feature": "authentication",
+    "priority": "P0",
+    "estimatedEffort": "7-8 days"
+  }
+}

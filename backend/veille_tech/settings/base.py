@@ -304,18 +304,17 @@ PASSWORD_HASHERS = [
 ]
 
 # Password validation
+# Custom validators implementing US-1 requirements:
+# - Min 8 chars, uppercase, lowercase, number, special char (recommended)
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'apps.accounts.validators.PasswordStrengthValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 

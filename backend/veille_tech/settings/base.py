@@ -282,6 +282,27 @@ CORS_ALLOW_HEADERS = [
 # Custom user model using email as username
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+# Django-allauth configuration for email-based authentication
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Use email for authentication
+ACCOUNT_EMAIL_REQUIRED = True  # Email is required
+ACCOUNT_USERNAME_REQUIRED = False  # Disable username requirement
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # No username field
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Email verification is required
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False  # Don't ask for email twice
+ACCOUNT_UNIQUE_EMAIL = True  # Enforce unique emails
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False  # Don't auto-login after verification
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1  # Token expires in 24 hours
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5  # Max login attempts
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300  # Lockout for 5 minutes after max attempts
+
+# Password hashing - Argon2 (OWASP recommended)
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',  # Primary hasher
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',  # Fallback
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',  # Fallback
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',  # Fallback
+]
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {

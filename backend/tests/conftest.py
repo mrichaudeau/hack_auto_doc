@@ -12,6 +12,24 @@ import pytest
 from typing import Generator
 import redis
 from django.contrib.auth.models import User
+import os
+
+
+def pytest_configure(config):
+    """
+    Configure pytest environment variables before Django initializes.
+
+    Sets environment variable to signal integration tests, which will be
+    picked up by test settings module to configure PostgreSQL instead of SQLite.
+    """
+    # Check if we're running integration tests by inspecting markers
+    markexpr = config.getoption('markexpr', default='')
+    keyword = config.getoption('keyword', default='')
+    m_option = config.getoption('-m', default='')
+
+    # If integration tests are being run, use PostgreSQL
+    if 'integration' in markexpr or 'integration' in keyword or 'integration' in m_option:
+        os.environ['USE_POSTGRESQL_FOR_TESTS'] = 'true'
 
 
 @pytest.fixture(scope='session')

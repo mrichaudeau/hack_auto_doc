@@ -144,11 +144,11 @@
       "category": "testing",
       "priority": "P3",
       "effort": "2h",
-      "status": "pending",
+      "status": "completed",
       "assignedAgent": "migration-testing-agent",
       "dependencies": ["TASK-9.2"],
-      "startedAt": null,
-      "completedAt": null
+      "startedAt": "2025-11-05T04:00:00Z",
+      "completedAt": "2025-11-05T05:30:00Z"
     }
   },
   "generatedAgents": [
@@ -202,11 +202,11 @@
   ],
   "progress": {
     "totalTasks": 12,
-    "completed": 6,
+    "completed": 7,
     "inProgress": 0,
-    "pending": 6,
+    "pending": 5,
     "blocked": 0,
-    "percentComplete": 50.0
+    "percentComplete": 58.33
   },
   "currentWave": 3,
   "executionWaves": [

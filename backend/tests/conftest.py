@@ -6,6 +6,13 @@ This module provides reusable fixtures for:
 - Redis client with test database
 - Database fixtures
 - Mock configurations for external services
+
+IMPORTANT: For integration tests that require PostgreSQL (migrations, pgvector),
+set the environment variable before running pytest:
+    USE_POSTGRESQL_FOR_TESTS=true pytest -m integration
+
+Or use docker-compose with environment variable:
+    docker-compose exec -e USE_POSTGRESQL_FOR_TESTS=true backend pytest -m integration
 """
 
 import pytest
@@ -13,23 +20,33 @@ from typing import Generator
 import redis
 from django.contrib.auth.models import User
 import os
+import sys
 
 
 def pytest_configure(config):
     """
-    Configure pytest environment variables before Django initializes.
+    Configure pytest environment for integration tests.
 
-    Sets environment variable to signal integration tests, which will be
-    picked up by test settings module to configure PostgreSQL instead of SQLite.
+    Note: Environment variable USE_POSTGRESQL_FOR_TESTS must be set
+    BEFORE pytest starts to properly configure database backend.
     """
-    # Check if we're running integration tests by inspecting markers
+    # Check if we're running integration tests
     markexpr = config.getoption('markexpr', default='')
     keyword = config.getoption('keyword', default='')
     m_option = config.getoption('-m', default='')
 
-    # If integration tests are being run, use PostgreSQL
-    if 'integration' in markexpr or 'integration' in keyword or 'integration' in m_option:
-        os.environ['USE_POSTGRESQL_FOR_TESTS'] = 'true'
+    # Warn if running integration tests without PostgreSQL configured
+    if ('integration' in markexpr or 'integration' in keyword or 'integration' in m_option):
+        if os.environ.get('USE_POSTGRESQL_FOR_TESTS', '').lower() != 'true':
+            print("\n" + "="*70, file=sys.stderr)
+            print("WARNING: Running integration tests without PostgreSQL!", file=sys.stderr)
+            print("="*70, file=sys.stderr)
+            print("Integration tests require PostgreSQL for migrations and pgvector.", file=sys.stderr)
+            print("Set environment variable before running tests:", file=sys.stderr)
+            print("  USE_POSTGRESQL_FOR_TESTS=true pytest -m integration", file=sys.stderr)
+            print("Or with docker-compose:", file=sys.stderr)
+            print("  docker-compose exec -e USE_POSTGRESQL_FOR_TESTS=true backend pytest -m integration", file=sys.stderr)
+            print("="*70 + "\n", file=sys.stderr)
 
 
 @pytest.fixture(scope='session')

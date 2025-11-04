@@ -1,0 +1,306 @@
+{
+  "userStory": "US-10",
+  "userStoryTitle": "Superuser Creation for Admin Access",
+  "feature": "local-development-environment",
+  "generatedAt": "2025-01-27",
+  "nodes": [
+    {
+      "id": "TASK-10.1",
+      "title": "Verify Django Admin configuration",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.2",
+      "title": "Configure password validators",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.3",
+      "title": "Create optional non-interactive management command",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.4",
+      "title": "Verify admin site model registrations",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.5",
+      "title": "Document superuser creation in setup guide",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.6",
+      "title": "Add troubleshooting section for common issues",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.7",
+      "title": "Update CLAUDE.md with admin commands",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.8",
+      "title": "Create quick reference for admin access",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.9",
+      "title": "Test interactive superuser creation workflow",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.10",
+      "title": "Test non-interactive creation with env vars",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.11",
+      "title": "Test password validation rules",
+      "type": "testing",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.12",
+      "title": "Test Django Admin login and access",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.13",
+      "title": "Test cross-platform superuser creation",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-10.14",
+      "title": "Test error scenarios",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-10.1",
+      "to": "TASK-10.2",
+      "type": "blocks",
+      "reason": "Django Admin must be configured before setting up password validation"
+    },
+    {
+      "from": "TASK-10.2",
+      "to": "TASK-10.3",
+      "type": "blocks",
+      "reason": "Password validation must be in place before creating management command"
+    },
+    {
+      "from": "TASK-10.1",
+      "to": "TASK-10.4",
+      "type": "blocks",
+      "reason": "Admin configuration must exist before verifying model registrations"
+    },
+    {
+      "from": "TASK-10.2",
+      "to": "TASK-10.5",
+      "type": "blocks",
+      "reason": "Password validation must be configured before documenting creation process"
+    },
+    {
+      "from": "TASK-10.5",
+      "to": "TASK-10.6",
+      "type": "blocks",
+      "reason": "Main documentation must exist before adding troubleshooting section"
+    },
+    {
+      "from": "TASK-10.5",
+      "to": "TASK-10.7",
+      "type": "blocks",
+      "reason": "Main documentation must exist before updating CLAUDE.md"
+    },
+    {
+      "from": "TASK-10.5",
+      "to": "TASK-10.8",
+      "type": "blocks",
+      "reason": "Main documentation must exist before creating quick reference"
+    },
+    {
+      "from": "TASK-10.5",
+      "to": "TASK-10.9",
+      "type": "blocks",
+      "reason": "Documentation provides reference for testing"
+    },
+    {
+      "from": "TASK-10.3",
+      "to": "TASK-10.10",
+      "type": "blocks",
+      "reason": "Management command must exist to test non-interactive creation"
+    },
+    {
+      "from": "TASK-10.2",
+      "to": "TASK-10.11",
+      "type": "blocks",
+      "reason": "Password validators must be configured to test validation"
+    },
+    {
+      "from": "TASK-10.9",
+      "to": "TASK-10.12",
+      "type": "blocks",
+      "reason": "Superuser must be created to test admin access"
+    },
+    {
+      "from": "TASK-10.12",
+      "to": "TASK-10.13",
+      "type": "blocks",
+      "reason": "Admin access must work before cross-platform testing"
+    },
+    {
+      "from": "TASK-10.9",
+      "to": "TASK-10.14",
+      "type": "blocks",
+      "reason": "Basic creation must work to test error scenarios"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Backend Configuration",
+      "description": "Verify Django Admin and configure password validation",
+      "tasks": ["TASK-10.1", "TASK-10.2", "TASK-10.3"],
+      "estimatedEffort": "4h",
+      "executionMode": "sequential"
+    },
+    {
+      "phase": 2,
+      "name": "Admin Registration",
+      "description": "Verify admin site model registrations",
+      "tasks": ["TASK-10.4"],
+      "estimatedEffort": "1h",
+      "executionMode": "parallel_with_phase_3"
+    },
+    {
+      "phase": 3,
+      "name": "Documentation",
+      "description": "Comprehensive documentation and guides",
+      "tasks": ["TASK-10.5", "TASK-10.6", "TASK-10.7", "TASK-10.8"],
+      "estimatedEffort": "5h",
+      "executionMode": "sequential"
+    },
+    {
+      "phase": 4,
+      "name": "Testing",
+      "description": "Integration and security tests",
+      "tasks": ["TASK-10.9", "TASK-10.10", "TASK-10.11", "TASK-10.12", "TASK-10.13", "TASK-10.14"],
+      "estimatedEffort": "12h",
+      "executionMode": "mixed"
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Phase 2 with early Phase 3",
+      "tasks": ["TASK-10.4", "TASK-10.5"],
+      "canStartAfter": ["TASK-10.1"],
+      "description": "Admin registration verification can run in parallel with documentation start"
+    },
+    {
+      "group": "Early testing tasks",
+      "tasks": ["TASK-10.9", "TASK-10.11"],
+      "canStartAfter": ["TASK-10.5", "TASK-10.2"],
+      "description": "Interactive creation and password validation tests can run in parallel"
+    },
+    {
+      "group": "Final testing tasks",
+      "tasks": ["TASK-10.13", "TASK-10.14"],
+      "canStartAfter": ["TASK-10.12", "TASK-10.9"],
+      "description": "Cross-platform and error scenario tests can run in parallel"
+    }
+  ],
+  "criticalPath": [
+    "TASK-10.1",
+    "TASK-10.2",
+    "TASK-10.5",
+    "TASK-10.9",
+    "TASK-10.12",
+    "TASK-10.13"
+  ],
+  "criticalPathDuration": "11h",
+  "summary": {
+    "totalTasks": 14,
+    "byType": {
+      "backend": 4,
+      "infrastructure": 4,
+      "testing": 6
+    },
+    "bySpecialty": {
+      "config": 3,
+      "security": 2,
+      "documentation": 4,
+      "integration": 5
+    },
+    "byPriority": {
+      "P1": 14
+    },
+    "totalEffortHours": 22,
+    "totalEffortDays": "3 days",
+    "phases": 4,
+    "parallelizationOpportunities": 3
+  },
+  "metadata": {
+    "generatedBy": "Functional Spec Planner - generate-task-documentation skill",
+    "generatedAt": "2025-01-27",
+    "userStory": "US-10",
+    "feature": "local-development-environment",
+    "priority": "P1",
+    "estimatedEffort": "1 Story Point"
+  }
+}

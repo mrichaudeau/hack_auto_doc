@@ -1,0 +1,96 @@
+{
+  "userStory": "US-12",
+  "userStoryTitle": "Development Workflow Documentation",
+  "feature": "local-development-environment",
+  "branch": "feature/US-12-development-workflow-documentation",
+  "startedAt": "2025-01-27T10:00:00Z",
+  "lastUpdated": "2025-01-27T10:00:00Z",
+  "status": "initialized",
+  "tasks": {
+    "TASK-12.1": {"status": "pending", "title": "Create main setup guide structure"},
+    "TASK-12.2": {"status": "pending", "title": "Document prerequisites and system requirements"},
+    "TASK-12.3": {"status": "pending", "title": "Write step-by-step installation instructions"},
+    "TASK-12.4": {"status": "pending", "title": "Create port mapping and service access table"},
+    "TASK-12.5": {"status": "pending", "title": "Document common Docker Compose commands"},
+    "TASK-12.6": {"status": "pending", "title": "Document database management commands"},
+    "TASK-12.7": {"status": "pending", "title": "Document testing commands"},
+    "TASK-12.8": {"status": "pending", "title": "Create troubleshooting section"},
+    "TASK-12.9": {"status": "pending", "title": "Create architecture diagram"},
+    "TASK-12.10": {"status": "pending", "title": "Update README.md with setup guide link"},
+    "TASK-12.11": {"status": "pending", "title": "Create quick reference command cheatsheet"},
+    "TASK-12.12": {"status": "pending", "title": "Test documentation with new developer"}
+  },
+  "generatedAgents": [
+    {
+      "name": "infrastructure-agent",
+      "category": "infrastructure",
+      "path": ".claude/spec-implementer-generated/agents/infrastructure-agent.md",
+      "assignedTasks": ["TASK-12.1", "TASK-12.2", "TASK-12.3", "TASK-12.4", "TASK-12.5", "TASK-12.6", "TASK-12.7", "TASK-12.8", "TASK-12.9", "TASK-12.10", "TASK-12.11", "TASK-12.12"],
+      "technologies": ["Markdown", "Mermaid", "Docker Compose", "Git"],
+      "skills": ["developer-documentation"],
+      "createdAt": "2025-01-27T10:00:00Z"
+    }
+  ],
+  "generatedSkills": [
+    {
+      "name": "developer-documentation",
+      "capability": "infrastructure",
+      "path": ".claude/spec-implementer-generated/skills/developer-documentation/SKILL.md",
+      "technologies": ["Markdown", "Mermaid", "Docker Compose", "Git"],
+      "applicableTasks": ["TASK-12.1", "TASK-12.2", "TASK-12.3", "TASK-12.4", "TASK-12.5", "TASK-12.6", "TASK-12.7", "TASK-12.8", "TASK-12.9", "TASK-12.10", "TASK-12.11", "TASK-12.12"],
+      "description": "Provides guidance for creating comprehensive developer documentation, setup guides, troubleshooting sections, architecture diagrams, and command reference materials",
+      "createdAt": "2025-01-27T10:00:00Z"
+    }
+  ],
+  "progress": {
+    "totalTasks": 12,
+    "completed": 0,
+    "inProgress": 0,
+    "pending": 12,
+    "blocked": 0,
+    "percentComplete": 0
+  },
+  "currentWave": 1,
+  "executionWaves": [
+    {
+      "wave": 1,
+      "tasks": ["TASK-12.1"],
+      "description": "Foundation - Create main setup guide structure"
+    },
+    {
+      "wave": 2,
+      "tasks": ["TASK-12.2"],
+      "description": "Prerequisites and system requirements"
+    },
+    {
+      "wave": 3,
+      "tasks": ["TASK-12.3", "TASK-12.4"],
+      "description": "Installation instructions and service access table (can run in parallel)"
+    },
+    {
+      "wave": 4,
+      "tasks": ["TASK-12.5"],
+      "description": "Common Docker Compose commands"
+    },
+    {
+      "wave": 5,
+      "tasks": ["TASK-12.6", "TASK-12.7", "TASK-12.9"],
+      "description": "Database commands, testing commands, and architecture diagram (can run in parallel)"
+    },
+    {
+      "wave": 6,
+      "tasks": ["TASK-12.8"],
+      "description": "Troubleshooting section"
+    },
+    {
+      "wave": 7,
+      "tasks": ["TASK-12.10", "TASK-12.11"],
+      "description": "README update and quick reference (can run in parallel)"
+    },
+    {
+      "wave": 8,
+      "tasks": ["TASK-12.12"],
+      "description": "Test documentation with new developer"
+    }
+  ]
+}

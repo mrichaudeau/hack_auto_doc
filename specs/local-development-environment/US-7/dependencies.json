@@ -1,0 +1,376 @@
+{
+  "userStory": "US-7",
+  "userStoryTitle": "Celery Beat Scheduler Service",
+  "feature": "local-development-environment",
+  "generatedAt": "2025-01-27",
+  "nodes": [
+    {
+      "id": "TASK-7.1",
+      "title": "Install django-celery-beat dependency",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.2",
+      "title": "Add django_celery_beat to INSTALLED_APPS",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.3",
+      "title": "Configure DatabaseScheduler in Celery app",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.4",
+      "title": "Create database migrations for django-celery-beat",
+      "type": "backend",
+      "specialty": "database",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.5",
+      "title": "Configure Celery Beat settings",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.6",
+      "title": "Create sample periodic task for testing",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.7",
+      "title": "Register django-celery-beat admin interface",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.8",
+      "title": "Define scheduler service in docker-compose.yml",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.9",
+      "title": "Configure scheduler environment variables",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.10",
+      "title": "Set up scheduler service dependencies",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.11",
+      "title": "Configure scheduler restart policy and resource limits",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.12",
+      "title": "Add scheduler to docker-compose documentation",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.13",
+      "title": "Create unit tests for Celery Beat configuration",
+      "type": "testing",
+      "specialty": "unit",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.14",
+      "title": "Create integration tests for scheduler service startup",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.15",
+      "title": "Test periodic task dispatch and execution",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.16",
+      "title": "Test schedule persistence across restarts",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.17",
+      "title": "Test Django Admin schedule management",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-7.18",
+      "title": "Test cross-platform scheduler compatibility",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-7.1",
+      "to": "TASK-7.2",
+      "type": "blocks",
+      "reason": "Package must be installed before adding to INSTALLED_APPS"
+    },
+    {
+      "from": "TASK-7.2",
+      "to": "TASK-7.3",
+      "type": "blocks",
+      "reason": "App must be registered before configuring DatabaseScheduler"
+    },
+    {
+      "from": "TASK-7.3",
+      "to": "TASK-7.4",
+      "type": "blocks",
+      "reason": "DatabaseScheduler must be configured before running migrations"
+    },
+    {
+      "from": "TASK-7.4",
+      "to": "TASK-7.5",
+      "type": "blocks",
+      "reason": "Migrations must exist before configuring Beat settings"
+    },
+    {
+      "from": "TASK-7.4",
+      "to": "TASK-7.6",
+      "type": "blocks",
+      "reason": "Database tables must exist before creating periodic tasks"
+    },
+    {
+      "from": "TASK-7.4",
+      "to": "TASK-7.7",
+      "type": "blocks",
+      "reason": "Models must exist before registering admin interface"
+    },
+    {
+      "from": "TASK-7.4",
+      "to": "TASK-7.8",
+      "type": "blocks",
+      "reason": "Backend configuration must be complete before defining Docker service"
+    },
+    {
+      "from": "TASK-7.8",
+      "to": "TASK-7.9",
+      "type": "blocks",
+      "reason": "Service must be defined before configuring environment variables"
+    },
+    {
+      "from": "TASK-7.9",
+      "to": "TASK-7.10",
+      "type": "blocks",
+      "reason": "Environment must be configured before setting up dependencies"
+    },
+    {
+      "from": "TASK-7.10",
+      "to": "TASK-7.11",
+      "type": "blocks",
+      "reason": "Dependencies must be configured before setting restart policy"
+    },
+    {
+      "from": "TASK-7.11",
+      "to": "TASK-7.12",
+      "type": "blocks",
+      "reason": "Service must be fully configured before documenting"
+    },
+    {
+      "from": "TASK-7.5",
+      "to": "TASK-7.13",
+      "type": "blocks",
+      "reason": "Settings must be configured before testing configuration"
+    },
+    {
+      "from": "TASK-7.11",
+      "to": "TASK-7.14",
+      "type": "blocks",
+      "reason": "Service must be operational before testing startup"
+    },
+    {
+      "from": "TASK-7.14",
+      "to": "TASK-7.15",
+      "type": "blocks",
+      "reason": "Startup must work before testing dispatch"
+    },
+    {
+      "from": "TASK-7.15",
+      "to": "TASK-7.16",
+      "type": "blocks",
+      "reason": "Dispatch must work before testing persistence"
+    },
+    {
+      "from": "TASK-7.16",
+      "to": "TASK-7.17",
+      "type": "blocks",
+      "reason": "Persistence must work before testing admin management"
+    },
+    {
+      "from": "TASK-7.17",
+      "to": "TASK-7.18",
+      "type": "blocks",
+      "reason": "Admin management must work before cross-platform validation"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Backend Configuration",
+      "description": "Install and configure django-celery-beat with DatabaseScheduler",
+      "tasks": ["TASK-7.1", "TASK-7.2", "TASK-7.3", "TASK-7.4"],
+      "estimatedEffort": "5h",
+      "executionMode": "sequential"
+    },
+    {
+      "phase": 2,
+      "name": "Configuration & Testing Setup",
+      "description": "Configure Beat settings, create sample tasks, register admin",
+      "tasks": ["TASK-7.5", "TASK-7.6", "TASK-7.7"],
+      "estimatedEffort": "6h",
+      "executionMode": "parallel"
+    },
+    {
+      "phase": 3,
+      "name": "Infrastructure",
+      "description": "Define Docker service, configure environment, dependencies, and resource limits",
+      "tasks": ["TASK-7.8", "TASK-7.9", "TASK-7.10", "TASK-7.11"],
+      "estimatedEffort": "9h",
+      "executionMode": "sequential"
+    },
+    {
+      "phase": 4,
+      "name": "Documentation",
+      "description": "Update docker-compose and project documentation",
+      "tasks": ["TASK-7.12"],
+      "estimatedEffort": "2h",
+      "executionMode": "sequential"
+    },
+    {
+      "phase": 5,
+      "name": "Testing",
+      "description": "Unit tests, integration tests, and cross-platform validation",
+      "tasks": ["TASK-7.13", "TASK-7.14", "TASK-7.15", "TASK-7.16", "TASK-7.17", "TASK-7.18"],
+      "estimatedEffort": "20h",
+      "executionMode": "mixed"
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Phase 2 Configuration",
+      "tasks": ["TASK-7.5", "TASK-7.6", "TASK-7.7"],
+      "canStartAfter": ["TASK-7.4"],
+      "description": "Beat settings, sample tasks, and admin can be configured in parallel"
+    },
+    {
+      "group": "Unit Tests",
+      "tasks": ["TASK-7.13"],
+      "canStartAfter": ["TASK-7.5"],
+      "description": "Unit tests can run as soon as configuration is complete"
+    }
+  ],
+  "criticalPath": [
+    "TASK-7.1",
+    "TASK-7.2",
+    "TASK-7.3",
+    "TASK-7.4",
+    "TASK-7.8",
+    "TASK-7.9",
+    "TASK-7.10",
+    "TASK-7.11",
+    "TASK-7.14",
+    "TASK-7.15",
+    "TASK-7.16",
+    "TASK-7.17",
+    "TASK-7.18"
+  ],
+  "criticalPathDuration": "35h",
+  "summary": {
+    "totalTasks": 18,
+    "byType": {
+      "backend": 7,
+      "infrastructure": 5,
+      "testing": 6
+    },
+    "bySpecialty": {
+      "config": 11,
+      "database": 1,
+      "documentation": 1,
+      "unit": 1,
+      "integration": 5
+    },
+    "byPriority": {
+      "P1": 18
+    },
+    "totalEffortHours": 42,
+    "totalEffortDays": "5-6 days",
+    "phases": 5,
+    "parallelizationOpportunities": 2
+  },
+  "metadata": {
+    "generatedBy": "Functional Spec Planner - generate-task-documentation skill",
+    "generatedAt": "2025-01-27",
+    "userStory": "US-7",
+    "feature": "local-development-environment",
+    "priority": "P1",
+    "estimatedEffort": "2 Story Points"
+  }
+}

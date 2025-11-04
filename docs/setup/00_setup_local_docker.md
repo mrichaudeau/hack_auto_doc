@@ -57,6 +57,238 @@ Le conteneur `backend` est lancé, mais la base de données doit être initialis
     docker-compose exec backend python manage.py createsuperuser
     ```
 
+## Database Migrations
+
+### Overview
+
+Django migrations manage the database schema evolution over time. The migration system:
+- Creates and modifies database tables, indexes, and constraints
+- Enables database extensions (pgvector for vector embeddings)
+- Tracks migration history in `django_migrations` table
+- Provides rollback capability for schema changes
+- Ensures idempotent operations (safe to re-run)
+
+### Initial Database Setup
+
+When setting up the development environment for the first time:
+
+```bash
+# 1. Start database service first
+docker-compose up -d db
+
+# 2. Wait for database to be healthy (5-10 seconds)
+docker-compose ps db
+# Status should show "healthy"
+
+# 3. Apply all migrations
+docker-compose exec backend python manage.py migrate
+
+# Expected output:
+# Operations to perform:
+#   Apply all migrations: admin, auth, contenttypes, core, sessions
+# Running migrations:
+#   Applying contenttypes.0001_initial... OK
+#   Applying auth.0001_initial... OK
+#   Applying admin.0001_initial... OK
+#   Applying admin.0002_logentry_remove_auto_add... OK
+#   Applying admin.0003_logentry_add_action_flag_choices... OK
+#   Applying contenttypes.0002_remove_content_type_name... OK
+#   Applying auth.0002_alter_permission_name_max_length... OK
+#   Applying auth.0003_alter_user_email_max_length... OK
+#   Applying auth.0004_alter_user_username_opts... OK
+#   Applying auth.0005_alter_user_last_login_null... OK
+#   Applying auth.0006_require_contenttypes_0002... OK
+#   Applying auth.0007_alter_validators_add_error_messages... OK
+#   Applying auth.0008_alter_user_username_max_length... OK
+#   Applying auth.0009_alter_user_last_name_max_length... OK
+#   Applying auth.0010_alter_group_name_max_length... OK
+#   Applying auth.0011_update_proxy_permissions... OK
+#   Applying auth.0012_alter_user_first_name_max_length... OK
+#   Applying core.0001_enable_pgvector... OK
+#   Applying sessions.0001_initial... OK
+```
+
+**Important:** The migration `core.0001_enable_pgvector` requires database SUPERUSER privileges. The default PostgreSQL user in docker-compose.yml has these privileges.
+
+### Checking Migration Status
+
+View which migrations have been applied and which are pending:
+
+```bash
+# Show all migrations with status
+docker-compose exec backend python manage.py showmigrations
+
+# Example output:
+# admin
+#  [X] 0001_initial
+#  [X] 0002_logentry_remove_auto_add
+#  [X] 0003_logentry_add_action_flag_choices
+# auth
+#  [X] 0001_initial
+#  [X] 0002_alter_permission_name_max_length
+#  ...
+# core
+#  [X] 0001_enable_pgvector
+# sessions
+#  [X] 0001_initial
+
+# Show pending migrations only (unapplied)
+docker-compose exec backend python manage.py showmigrations --plan
+```
+
+**Legend:**
+- `[X]` - Migration applied
+- `[ ]` - Migration pending (not yet applied)
+
+### Applying New Migrations
+
+When pulling code with new migrations from the repository:
+
+```bash
+# 1. Check for new migrations
+docker-compose exec backend python manage.py showmigrations
+
+# 2. Apply all pending migrations
+docker-compose exec backend python manage.py migrate
+
+# 3. Verify all migrations applied successfully
+docker-compose exec backend python manage.py showmigrations
+# All items should show [X]
+```
+
+**Tip:** You can apply migrations for a specific app:
+```bash
+# Apply only core app migrations
+docker-compose exec backend python manage.py migrate core
+
+# Apply up to a specific migration
+docker-compose exec backend python manage.py migrate core 0001_enable_pgvector
+```
+
+### Verifying pgvector Extension
+
+After applying migrations, verify that the pgvector extension is enabled:
+
+```bash
+# Check extension is installed
+docker-compose exec db psql -U postgres -d veille_tech -c "SELECT extname, extversion FROM pg_extension WHERE extname='vector';"
+
+# Expected output:
+#  extname | extversion
+# ---------+------------
+#  vector  | 0.5.1
+# (1 row)
+
+# Test vector operations
+docker-compose exec db psql -U postgres -d veille_tech -c "SELECT '[1,2,3]'::vector;"
+
+# Expected output:
+#   vector
+# ---------
+#  [1,2,3]
+# (1 row)
+```
+
+### Creating New Migrations
+
+When you modify Django models, create new migrations:
+
+```bash
+# Create migrations for all apps with changes
+docker-compose exec backend python manage.py makemigrations
+
+# Create migration for specific app
+docker-compose exec backend python manage.py makemigrations core
+
+# Create empty migration (for custom SQL)
+docker-compose exec backend python manage.py makemigrations --empty core --name my_custom_migration
+
+# View SQL that will be executed (without applying)
+docker-compose exec backend python manage.py sqlmigrate core 0001
+```
+
+**Best Practices:**
+- Always review generated migrations before committing
+- Test migrations on a fresh database before pushing to repository
+- Use descriptive names for custom migrations
+- Include docstrings explaining complex migrations
+
+### Rolling Back Migrations
+
+**WARNING:** Rollback operations can delete data. Always backup before rolling back in production.
+
+```bash
+# Rollback all migrations for an app
+docker-compose exec backend python manage.py migrate core zero
+
+# Rollback to a specific migration
+docker-compose exec backend python manage.py migrate core 0001_enable_pgvector
+
+# Fake a migration (mark as applied without running SQL)
+docker-compose exec backend python manage.py migrate core 0001_enable_pgvector --fake
+```
+
+**Example: Rolling back pgvector extension**
+```bash
+# This will remove the pgvector extension from the database
+docker-compose exec backend python manage.py migrate core zero
+
+# Verify extension removed
+docker-compose exec db psql -U postgres -d veille_tech -c "SELECT extname FROM pg_extension WHERE extname='vector';"
+# Should return: (0 rows)
+
+# Re-apply migration
+docker-compose exec backend python manage.py migrate core
+```
+
+**When to use rollback:**
+- Development: Testing migration changes
+- Development: Resolving migration conflicts
+- Production: Emergency rollback (rare, prefer forward fixes)
+
+**When NOT to rollback:**
+- If data loss would occur
+- If other apps depend on the migration
+- If migration has been deployed to production
+
+### Migration Verification Checklist
+
+After applying migrations, verify everything is working:
+
+- [ ] **All migrations applied**
+  ```bash
+  docker-compose exec backend python manage.py showmigrations
+  # All items should show [X]
+  ```
+
+- [ ] **pgvector extension enabled**
+  ```bash
+  docker-compose exec db psql -U postgres -d veille_tech -c "SELECT extname FROM pg_extension WHERE extname='vector';"
+  # Should return: vector
+  ```
+
+- [ ] **Migration history recorded**
+  ```bash
+  docker-compose exec db psql -U postgres -d veille_tech -c "SELECT COUNT(*) FROM django_migrations;"
+  # Should return count > 0
+  ```
+
+- [ ] **Database connection works**
+  ```bash
+  docker-compose exec backend python manage.py shell -c "from django.db import connection; connection.ensure_connection(); print('Connected')"
+  # Should print: Connected
+  ```
+
+- [ ] **Vector operations work**
+  ```bash
+  docker-compose exec db psql -U postgres -d veille_tech -c "SELECT '[1,2,3]'::vector;"
+  # Should return vector representation
+  ```
+
+### Troubleshooting
+
+For common migration issues and resolutions, see the [Migration Troubleshooting Guide](./troubleshooting.md#database-migrations).
+
 ## 5. Configuration et Usage de la Base de Données PostgreSQL
 
 ### 5.1. Vue d'Ensemble

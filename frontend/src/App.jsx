@@ -1,27 +1,33 @@
-import { useState } from 'react'
-import './App.css'
+/**
+ * Main Application Component
+ *
+ * Configures routing for the Technology Watch Platform
+ */
+
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
+import HomePage from './pages/HomePage';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Plateforme de Veille Technologique IA</h1>
-        <p>
-          Système de surveillance technologique alimenté par l'IA
-        </p>
-        <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>
-            count is {count}
-          </button>
-          <p>
-            Modifiez <code>src/App.jsx</code> et enregistrez pour tester le HMR
-          </p>
-        </div>
-      </header>
-    </div>
-  )
+    <Router>
+      <Routes>
+        {/* Home Page */}
+        <Route path="/" element={<HomePage />} />
+
+        {/* Authentication Routes */}
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
+
+        {/* Redirect unknown routes to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

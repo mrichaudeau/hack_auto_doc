@@ -1,0 +1,510 @@
+{
+  "userStory": "US-5",
+  "userStoryTitle": "Password Reset Request",
+  "feature": "authentication",
+  "generatedAt": "2025-01-04",
+  "nodes": [
+    {
+      "id": "TASK-5.1",
+      "title": "Create PasswordResetToken Model",
+      "type": "backend",
+      "specialty": "database",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.2",
+      "title": "Implement Token Generation Service",
+      "type": "backend",
+      "specialty": "service",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.3",
+      "title": "Implement Reset Request Rate Limiting",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.4",
+      "title": "Create Password Reset Email Template",
+      "type": "backend",
+      "specialty": "email",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.5",
+      "title": "Implement Async Email Sending Task",
+      "type": "backend",
+      "specialty": "celery",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.6",
+      "title": "Implement Password Reset Request API Endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.7",
+      "title": "Implement Token Cleanup Task",
+      "type": "backend",
+      "specialty": "celery",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.8",
+      "title": "Create Password Reset Request Form Component",
+      "type": "frontend",
+      "specialty": "ui",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.9",
+      "title": "Create Password Reset Success Page",
+      "type": "frontend",
+      "specialty": "ui",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.10",
+      "title": "Implement Reset Request API Integration",
+      "type": "frontend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.11",
+      "title": "Add Forgot Password Link to Login Page",
+      "type": "frontend",
+      "specialty": "navigation",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.12",
+      "title": "Implement Password Reset Request Flow",
+      "type": "frontend",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.13",
+      "title": "Unit Tests for PasswordResetToken Model",
+      "type": "testing",
+      "specialty": "backend",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.14",
+      "title": "Unit Tests for Token Generation Service",
+      "type": "testing",
+      "specialty": "backend",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.15",
+      "title": "Unit Tests for Rate Limiting",
+      "type": "testing",
+      "specialty": "backend",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.16",
+      "title": "Integration Tests for Password Reset API",
+      "type": "testing",
+      "specialty": "backend",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.17",
+      "title": "Security Tests for Reset Flow",
+      "type": "testing",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.18",
+      "title": "Frontend Unit Tests for Reset Form",
+      "type": "testing",
+      "specialty": "frontend",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.19",
+      "title": "End-to-End Tests for Reset Request Flow",
+      "type": "testing",
+      "specialty": "e2e",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.20",
+      "title": "Configure Celery for Email Tasks",
+      "type": "infrastructure",
+      "specialty": "configuration",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.21",
+      "title": "Create Password Reset API Documentation",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.22",
+      "title": "Update Environment Configuration",
+      "type": "infrastructure",
+      "specialty": "configuration",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-5.23",
+      "title": "Create Password Reset Troubleshooting Guide",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-5.1",
+      "to": "TASK-5.2",
+      "type": "blocks",
+      "reason": "PasswordResetToken model must exist before token generation service can create tokens"
+    },
+    {
+      "from": "TASK-5.1",
+      "to": "TASK-5.7",
+      "type": "blocks",
+      "reason": "Model must exist before cleanup task can delete tokens"
+    },
+    {
+      "from": "TASK-5.1",
+      "to": "TASK-5.13",
+      "type": "blocks",
+      "reason": "Model must exist before writing tests"
+    },
+    {
+      "from": "TASK-5.2",
+      "to": "TASK-5.6",
+      "type": "blocks",
+      "reason": "Token generation service must exist for API endpoint to generate tokens"
+    },
+    {
+      "from": "TASK-5.2",
+      "to": "TASK-5.14",
+      "type": "blocks",
+      "reason": "Token generation service must exist before writing tests"
+    },
+    {
+      "from": "TASK-5.3",
+      "to": "TASK-5.6",
+      "type": "blocks",
+      "reason": "Rate limiting must be implemented before applying to API endpoint"
+    },
+    {
+      "from": "TASK-5.3",
+      "to": "TASK-5.15",
+      "type": "blocks",
+      "reason": "Rate limiting must exist before writing tests"
+    },
+    {
+      "from": "TASK-5.4",
+      "to": "TASK-5.5",
+      "type": "blocks",
+      "reason": "Email template must exist before async email task can render and send emails"
+    },
+    {
+      "from": "TASK-5.5",
+      "to": "TASK-5.6",
+      "type": "blocks",
+      "reason": "Async email task must exist for API endpoint to enqueue emails"
+    },
+    {
+      "from": "TASK-5.5",
+      "to": "TASK-5.22",
+      "type": "blocks",
+      "reason": "Email task configuration informs environment variable documentation"
+    },
+    {
+      "from": "TASK-5.6",
+      "to": "TASK-5.10",
+      "type": "blocks",
+      "reason": "API endpoint must exist before frontend can integrate with it"
+    },
+    {
+      "from": "TASK-5.6",
+      "to": "TASK-5.16",
+      "type": "blocks",
+      "reason": "API endpoint must be implemented before writing integration tests"
+    },
+    {
+      "from": "TASK-5.6",
+      "to": "TASK-5.17",
+      "type": "blocks",
+      "reason": "API endpoint must be implemented before writing security tests"
+    },
+    {
+      "from": "TASK-5.6",
+      "to": "TASK-5.21",
+      "type": "blocks",
+      "reason": "API endpoint implementation informs documentation"
+    },
+    {
+      "from": "TASK-5.8",
+      "to": "TASK-5.10",
+      "type": "blocks",
+      "reason": "Form component must exist before integrating with API"
+    },
+    {
+      "from": "TASK-5.8",
+      "to": "TASK-5.11",
+      "type": "blocks",
+      "reason": "Form component route must exist before adding navigation link"
+    },
+    {
+      "from": "TASK-5.8",
+      "to": "TASK-5.18",
+      "type": "blocks",
+      "reason": "Form component must exist before writing tests"
+    },
+    {
+      "from": "TASK-5.9",
+      "to": "TASK-5.12",
+      "type": "blocks",
+      "reason": "Success page must exist for flow to navigate to it"
+    },
+    {
+      "from": "TASK-5.10",
+      "to": "TASK-5.12",
+      "type": "blocks",
+      "reason": "API integration must exist for flow to call API"
+    },
+    {
+      "from": "TASK-5.12",
+      "to": "TASK-5.19",
+      "type": "blocks",
+      "reason": "Complete flow must exist before writing E2E tests"
+    },
+    {
+      "from": "TASK-5.21",
+      "to": "TASK-5.23",
+      "type": "blocks",
+      "reason": "API documentation provides context for troubleshooting guide"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Backend Foundation",
+      "tasks": ["TASK-5.1", "TASK-5.3", "TASK-5.4", "TASK-5.20"],
+      "canStartImmediately": true,
+      "parallelizable": true,
+      "description": "Foundation tasks with no dependencies that can run in parallel"
+    },
+    {
+      "phase": 2,
+      "name": "Backend Core",
+      "tasks": ["TASK-5.2", "TASK-5.5", "TASK-5.6", "TASK-5.7"],
+      "canStartImmediately": false,
+      "parallelizable": false,
+      "description": "Core backend implementation requiring Phase 1 completion",
+      "dependencies": ["Phase 1"]
+    },
+    {
+      "phase": 3,
+      "name": "Frontend Foundation",
+      "tasks": ["TASK-5.8", "TASK-5.9"],
+      "canStartImmediately": true,
+      "parallelizable": true,
+      "description": "Frontend UI components with no backend dependency"
+    },
+    {
+      "phase": 4,
+      "name": "Frontend Integration",
+      "tasks": ["TASK-5.10", "TASK-5.11", "TASK-5.12"],
+      "canStartImmediately": false,
+      "parallelizable": false,
+      "description": "Frontend integration with backend API",
+      "dependencies": ["Phase 2", "Phase 3"]
+    },
+    {
+      "phase": 5,
+      "name": "Testing",
+      "tasks": ["TASK-5.13", "TASK-5.14", "TASK-5.15", "TASK-5.16", "TASK-5.17", "TASK-5.18", "TASK-5.19"],
+      "canStartImmediately": false,
+      "parallelizable": true,
+      "description": "Comprehensive testing suite covering all components",
+      "dependencies": ["Phase 2", "Phase 4"]
+    },
+    {
+      "phase": 6,
+      "name": "Documentation",
+      "tasks": ["TASK-5.21", "TASK-5.22", "TASK-5.23"],
+      "canStartImmediately": false,
+      "parallelizable": true,
+      "description": "API documentation, environment configuration, and troubleshooting guides",
+      "dependencies": ["Phase 2"]
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Backend Foundation",
+      "tasks": ["TASK-5.1", "TASK-5.3", "TASK-5.4", "TASK-5.20"],
+      "canStartAfter": [],
+      "description": "All backend foundation tasks can run in parallel"
+    },
+    {
+      "group": "Frontend Foundation",
+      "tasks": ["TASK-5.8", "TASK-5.9"],
+      "canStartAfter": [],
+      "description": "Frontend UI development can start immediately and run parallel with backend"
+    },
+    {
+      "group": "Backend Testing",
+      "tasks": ["TASK-5.13", "TASK-5.14", "TASK-5.15", "TASK-5.16", "TASK-5.17"],
+      "canStartAfter": ["TASK-5.6"],
+      "description": "All backend tests can run in parallel after implementation"
+    },
+    {
+      "group": "Frontend Testing",
+      "tasks": ["TASK-5.18", "TASK-5.19"],
+      "canStartAfter": ["TASK-5.12"],
+      "description": "Frontend tests can run in parallel after implementation"
+    },
+    {
+      "group": "Documentation",
+      "tasks": ["TASK-5.21", "TASK-5.22", "TASK-5.23"],
+      "canStartAfter": ["TASK-5.6"],
+      "description": "All documentation tasks can run in parallel after API implementation"
+    }
+  ],
+  "criticalPath": [
+    "TASK-5.1",
+    "TASK-5.2",
+    "TASK-5.6",
+    "TASK-5.10",
+    "TASK-5.12"
+  ],
+  "summary": {
+    "totalTasks": 23,
+    "byType": {
+      "backend": 7,
+      "frontend": 5,
+      "testing": 7,
+      "infrastructure": 4
+    },
+    "byPriority": {
+      "P1": 15,
+      "P2": 8
+    },
+    "totalEffortHours": 64,
+    "totalEffortDays": "8 days (1 full-stack dev)",
+    "parallelEffortDays": "6 days (2 devs: backend + frontend)",
+    "estimatedDurationWithTesting": "5 days (3 devs: backend + frontend + testing)"
+  },
+  "dependencies": {
+    "externalUserStories": [
+      "US-1: Standard User Registration (users must exist first)",
+      "US-6: Password Reset Completion (blocked by this story)"
+    ],
+    "services": [
+      "Redis (rate limiting, Celery broker)",
+      "SMTP Server (email sending)",
+      "Celery Worker (async tasks)"
+    ]
+  },
+  "risks": [
+    {
+      "risk": "Email Delivery Failures",
+      "impact": "High",
+      "probability": "Medium",
+      "mitigation": "Use transactional email service, implement Celery retry logic, monitor delivery rates"
+    },
+    {
+      "risk": "SMTP Service Downtime",
+      "impact": "High",
+      "probability": "Low",
+      "mitigation": "Choose reliable SMTP provider, configure Celery queuing, monitor service health"
+    },
+    {
+      "risk": "User Enumeration Despite Prevention",
+      "impact": "Medium",
+      "probability": "Low",
+      "mitigation": "Generic success message, rate limiting, async email sending, security testing"
+    },
+    {
+      "risk": "Rate Limiting Too Aggressive",
+      "impact": "Medium",
+      "probability": "Medium",
+      "mitigation": "Configurable rate limit, monitor violations, clear error messages"
+    },
+    {
+      "risk": "Token Database Bloat",
+      "impact": "Low",
+      "probability": "High",
+      "mitigation": "Automatic cleanup task runs daily, database indexes, monitor table size"
+    }
+  ],
+  "performanceTargets": {
+    "apiEndpointP95Latency": "< 300ms",
+    "emailSendingTime": "< 60 seconds",
+    "rateLimitCheckLatency": "< 10ms",
+    "tokenExpiryTime": "60 minutes"
+  },
+  "securityConsiderations": [
+    "No user enumeration (same response always)",
+    "Cryptographically random tokens",
+    "Rate limiting enforced (3 per email per hour)",
+    "Tokens expire in 60 minutes",
+    "Single-use enforcement (is_used flag)",
+    "SMTP credentials secured (never in code)"
+  ]
+}

@@ -19,6 +19,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv(
 INSTALLED_APPS = [
     # Project apps - core must be first for infrastructure migrations (pgvector)
     'apps.core',  # Core infrastructure app (pgvector extension, cross-cutting concerns)
+    'apps.accounts.apps.AccountsConfig',  # User accounts and authentication
 
     # Main application
     'veille_tech.apps.VeilleTechConfig',  # Main app with config validation
@@ -33,7 +34,12 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_spectacular',
     'corsheaders',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -45,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'allauth.account.middleware.AccountMiddleware',  # TODO: Re-enable for SSO (Bloc 1 - Microsoft Entra ID)
 ]
 
 ROOT_URLCONF = 'veille_tech.urls'
@@ -143,6 +150,12 @@ CACHES = {
         }
     }
 }
+
+# Rate Limiting Configuration (django-ratelimit)
+# Uses Redis cache for distributed rate limiting across multiple backend instances
+RATELIMIT_USE_CACHE = 'default'  # Use default Redis cache (DB 1)
+RATELIMIT_ENABLE = config('RATELIMIT_ENABLE', default=True, cast=bool)  # Can disable in tests
+RATELIMIT_VIEW = 'veille_tech.views.ratelimit_error_view'  # Custom 429 response view
 
 # Celery Configuration (Redis DB 0)
 CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://redis:6379/0')
@@ -271,19 +284,43 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
+# Authentication
+# Custom user model using email as username
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# Django-allauth configuration for email-based authentication
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Use email for authentication
+ACCOUNT_EMAIL_REQUIRED = True  # Email is required
+ACCOUNT_USERNAME_REQUIRED = False  # Disable username requirement
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # No username field
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Email verification is required
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False  # Don't ask for email twice
+ACCOUNT_UNIQUE_EMAIL = True  # Enforce unique emails
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False  # Don't auto-login after verification
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1  # Token expires in 24 hours
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5  # Max login attempts
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300  # Lockout for 5 minutes after max attempts
+
+# Password hashing - Argon2 (OWASP recommended)
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',  # Primary hasher
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',  # Fallback
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',  # Fallback
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',  # Fallback
+]
+
 # Password validation
+# Custom validators implementing US-1 requirements:
+# - Min 8 chars, uppercase, lowercase, number, special char (recommended)
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'apps.accounts.validators.PasswordStrengthValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
@@ -308,6 +345,48 @@ STATICFILES_FINDERS = [
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Django REST Framework Configuration
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+}
+
+# drf-spectacular API Documentation Configuration
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Tech Watch Platform API',
+    'DESCRIPTION': 'AI-powered Technology Watch Platform - REST API Documentation',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': r'/api/',
+    'SERVERS': [
+        {'url': 'http://localhost:8000', 'description': 'Local Development'},
+        {'url': 'http://localhost:3000', 'description': 'Frontend Development'},
+    ],
+    'TAGS': [
+        {'name': 'Authentication', 'description': 'User authentication and registration endpoints'},
+        {'name': 'Accounts', 'description': 'User account management'},
+    ],
+    'CONTACT': {
+        'name': 'Tech Watch Platform Team',
+        'email': 'support@techwatch.local',
+    },
+    'LICENSE': {
+        'name': 'Proprietary',
+    },
+}
 
 # AI/ML API Keys
 GOOGLE_AI_STUDIO_API_KEY = config('GOOGLE_AI_STUDIO_API_KEY')

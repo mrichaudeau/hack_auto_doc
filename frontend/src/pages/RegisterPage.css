@@ -1,0 +1,150 @@
+/**
+ * Registration Page Styles
+ */
+
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.register-container {
+  width: 100%;
+  max-width: 36rem;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  padding: 2.5rem;
+}
+
+/* Header */
+
+.register-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.register-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.register-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Footer */
+
+.register-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.footer-text {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.footer-link {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+/* Additional Information */
+
+.register-info {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.info-text {
+  font-size: 0.8125rem;
+  color: #9ca3af;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+  .register-page {
+    padding: 1rem;
+  }
+
+  .register-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .register-title {
+    font-size: 1.75rem;
+  }
+
+  .register-subtitle {
+    font-size: 0.9375rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .register-page {
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
+
+  .register-container {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+
+  .register-title {
+    font-size: 1.5rem;
+  }
+
+  .register-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .footer-text {
+    font-size: 0.875rem;
+  }
+
+  .info-text {
+    font-size: 0.75rem;
+  }
+}
+
+/* Print Styles */
+
+@media print {
+  .register-page {
+    background: #ffffff;
+    min-height: auto;
+  }
+
+  .register-container {
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .register-footer,
+  .register-info {
+    display: none;
+  }
+}

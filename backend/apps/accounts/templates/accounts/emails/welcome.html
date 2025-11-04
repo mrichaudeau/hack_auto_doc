@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Tech Watch Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 0 0 5px 5px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 20px 0;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
+        .feature {
+            background-color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #4CAF50;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Welcome to Tech Watch!</h1>
+    </div>
+    <div class="content">
+        <h2>Hello {{ user.first_name }}!</h2>
+
+        <p>Congratulations! Your email has been verified and your account is now active.</p>
+
+        <p>You can now access all the features of Tech Watch Platform:</p>
+
+        <div class="feature">
+            <strong>Subscribe to Technology Subjects</strong>
+            <p>Choose from various technology topics to monitor</p>
+        </div>
+
+        <div class="feature">
+            <strong>AI-Powered Content Analysis</strong>
+            <p>Get relevant and synthesized technology reports</p>
+        </div>
+
+        <div class="feature">
+            <strong>Personalized Recommendations</strong>
+            <p>Discover new subjects based on your interests</p>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="{{ frontend_url }}" class="button">Get Started</a>
+        </div>
+
+        <p>If you have any questions, feel free to reach out to our support team.</p>
+
+        <p>Best regards,<br>The Tech Watch Team</p>
+    </div>
+    <div class="footer">
+        <p>This is an automated email. Please do not reply to this message.</p>
+        <p>&copy; 2025 Tech Watch Platform. All rights reserved.</p>
+    </div>
+</body>
+</html>

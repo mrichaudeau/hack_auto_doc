@@ -6,6 +6,8 @@ from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.utils.translation import gettext as _
+from django_ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
 
 from .models import CustomUser, EmailVerificationToken
 from .serializers import (
@@ -17,6 +19,7 @@ from .serializers import (
 from .tasks import send_verification_email, send_welcome_email
 
 
+@method_decorator(ratelimit(key='ip', rate='5/h', method='POST', block=False), name='dispatch')
 class UserRegistrationView(generics.CreateAPIView):
     """
     API endpoint for user registration.
@@ -25,12 +28,24 @@ class UserRegistrationView(generics.CreateAPIView):
     - Creates new user account
     - Sends verification email
     - Returns user data with success message
+
+    Rate Limiting: 5 requests per hour per IP address
+    - Prevents abuse and brute force attacks
+    - Returns 429 Too Many Requests when limit exceeded
+    - Uses Redis for distributed rate limiting
     """
     queryset = CustomUser.objects.all()
     serializer_class = UserRegistrationSerializer
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
+        # Check if rate limit was exceeded
+        if getattr(request, 'limited', False):
+            return Response({
+                'error': _('Too many registration attempts. Please try again later.'),
+                'detail': _('Rate limit exceeded: 5 attempts per hour allowed.')
+            }, status=status.HTTP_429_TOO_MANY_REQUESTS)
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 

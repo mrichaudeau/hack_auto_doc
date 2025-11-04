@@ -151,6 +151,12 @@ CACHES = {
     }
 }
 
+# Rate Limiting Configuration (django-ratelimit)
+# Uses Redis cache for distributed rate limiting across multiple backend instances
+RATELIMIT_USE_CACHE = 'default'  # Use default Redis cache (DB 1)
+RATELIMIT_ENABLE = config('RATELIMIT_ENABLE', default=True, cast=bool)  # Can disable in tests
+RATELIMIT_VIEW = 'veille_tech.views.ratelimit_error_view'  # Custom 429 response view
+
 # Celery Configuration (Redis DB 0)
 CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://redis:6379/0')
 CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='redis://redis:6379/0')

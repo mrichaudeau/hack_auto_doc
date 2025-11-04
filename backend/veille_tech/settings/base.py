@@ -19,6 +19,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv(
 INSTALLED_APPS = [
     # Project apps - core must be first for infrastructure migrations (pgvector)
     'apps.core',  # Core infrastructure app (pgvector extension, cross-cutting concerns)
+    'apps.accounts.apps.AccountsConfig',  # User accounts and authentication
 
     # Main application
     'veille_tech.apps.VeilleTechConfig',  # Main app with config validation
@@ -33,7 +34,12 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_spectacular',
     'corsheaders',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -45,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',  # django-allauth middleware
 ]
 
 ROOT_URLCONF = 'veille_tech.urls'
@@ -270,6 +277,10 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+# Authentication
+# Custom user model using email as username
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

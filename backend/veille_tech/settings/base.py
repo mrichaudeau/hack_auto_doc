@@ -257,6 +257,26 @@ CELERY_WORKER_CONCURRENCY = config('CELERY_WORKER_CONCURRENCY', default=4, cast=
 # Recommended: 100-1000 for long-running workers with potential memory leaks
 CELERY_WORKER_MAX_TASKS_PER_CHILD = config('CELERY_WORKER_MAX_TASKS_PER_CHILD', default=100, cast=int)
 
+# Celery Beat Periodic Task Schedule
+# Defines scheduled tasks that run at specific intervals or times
+# Requires Celery Beat scheduler to be running (docker-compose service: scheduler)
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    # Clean up expired verification tokens daily at 2:00 AM UTC
+    # Prevents database bloat from expired/used email verification tokens
+    # Deletes tokens that are:
+    #   - Used (is_used=True) AND older than 7 days
+    #   - Expired (expires_at < now) at any age
+    'cleanup-expired-verification-tokens': {
+        'task': 'accounts.cleanup_expired_verification_tokens',
+        'schedule': crontab(hour=2, minute=0),  # Daily at 2:00 AM UTC
+        'options': {
+            'expires': 3600,  # Task expires if not executed within 1 hour
+        }
+    },
+}
+
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',

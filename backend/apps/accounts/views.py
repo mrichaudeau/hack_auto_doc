@@ -471,10 +471,18 @@ class ResendVerificationEmailView(generics.GenericAPIView):
         # Increment counter BEFORE sending email (prevent race conditions)
         increment_resend_counter(email)
 
-        # Create new verification token
-        token = EmailVerificationToken.create_token(user)
+        # Use atomic transaction to invalidate old tokens and create new one
+        with transaction.atomic():
+            # Invalidate all unused tokens for this user
+            EmailVerificationToken.objects.filter(
+                user=user,
+                is_used=False
+            ).update(is_used=True)
 
-        # Send verification email asynchronously
+            # Create new verification token
+            token = EmailVerificationToken.create_token(user)
+
+        # Send verification email asynchronously (after successful commit)
         send_verification_email.delay(str(user.id), str(token.token))
 
         # Calculate remaining attempts for response

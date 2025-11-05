@@ -201,3 +201,97 @@ def send_password_reset_email(self, user_id, reset_token):
         logger.error(f"Failed to send password reset email to user {user_id}: {str(exc)}")
         # Retry with exponential backoff
         raise self.retry(exc=exc)
+
+
+@shared_task(
+    name='accounts.cleanup_expired_verification_tokens',
+    bind=True,
+    max_retries=3,
+    default_retry_delay=60
+)
+def cleanup_expired_verification_tokens(self, dry_run=False):
+    """
+    Clean up expired and old used email verification tokens.
+
+    Runs daily to prevent database bloat from expired tokens.
+    Deletes tokens that are either:
+    - Already used (is_used=True) AND created_at < 7 days ago
+    - Expired (expires_at < now)
+
+    Args:
+        dry_run (bool): If True, only count tokens without deleting
+
+    Returns:
+        dict: Statistics about the cleanup operation with keys:
+            - deleted (int): Number of tokens deleted (0 if dry_run)
+            - would_delete (int): Number of tokens that would be deleted (only if dry_run)
+            - expired_count (int): Number of expired tokens
+            - used_count (int): Number of old used tokens
+            - dry_run (bool): Whether this was a dry run
+            - timestamp (str): ISO timestamp of cleanup (only if not dry_run)
+    """
+    from django.utils import timezone
+    from datetime import timedelta
+    from django.db.models import Q
+    from .models import EmailVerificationToken
+
+    logger.info("Starting cleanup of expired verification tokens")
+
+    try:
+        now = timezone.now()
+        seven_days_ago = now - timedelta(days=7)
+
+        # Find used tokens older than 7 days
+        old_used_tokens = EmailVerificationToken.objects.filter(
+            is_used=True,
+            created_at__lt=seven_days_ago
+        )
+
+        # Find expired tokens (any age)
+        expired_tokens = EmailVerificationToken.objects.filter(
+            expires_at__lt=now
+        )
+
+        # Count by type for detailed logging
+        expired_count = expired_tokens.filter(is_used=False).count()
+        used_count = old_used_tokens.count()
+
+        # Combine queries (OR condition) - union of both sets
+        tokens_to_delete = old_used_tokens | expired_tokens
+
+        total_count = tokens_to_delete.count()
+
+        if dry_run:
+            logger.info(f"[DRY RUN] Would delete {total_count} verification tokens "
+                       f"(expired: {expired_count}, old used: {used_count})")
+            return {
+                'deleted': 0,
+                'would_delete': total_count,
+                'expired_count': expired_count,
+                'used_count': used_count,
+                'dry_run': True
+            }
+
+        if total_count > 0:
+            # Bulk delete for efficiency
+            deleted_count, _ = tokens_to_delete.delete()
+            logger.info(
+                f"Deleted {deleted_count} verification tokens "
+                f"(expired: {expired_count}, old used: {used_count})"
+            )
+        else:
+            deleted_count = 0
+            logger.info("No expired or old used verification tokens to delete")
+
+        return {
+            'deleted': deleted_count,
+            'expired_count': expired_count,
+            'used_count': used_count,
+            'dry_run': False,
+            'timestamp': now.isoformat()
+        }
+
+    except Exception as exc:
+        logger.error(f"Error during token cleanup: {exc}", exc_info=True)
+        # Retry with exponential backoff (60s, 120s, 180s)
+        raise self.retry(exc=exc, countdown=60)

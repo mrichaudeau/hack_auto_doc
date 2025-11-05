@@ -57,7 +57,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
-        extra_fields.setdefault('is_verified', True)
+        extra_fields.setdefault('is_email_verified', True)
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError(_('Superuser must have is_staff=True.'))
@@ -81,7 +81,8 @@ class CustomUser(AbstractUser):
         first_name (str): User's first name
         last_name (str): User's last name
         is_active (bool): Whether the account is active (email verified)
-        is_verified (bool): Whether the email has been verified
+        is_email_verified (bool): Whether the email has been verified
+        email_verified_at (datetime): When the email was verified
         date_joined (datetime): When the account was created
         last_login (datetime): Last login timestamp
     """
@@ -111,7 +112,7 @@ class CustomUser(AbstractUser):
     username = None
 
     # Email verification status
-    is_verified = models.BooleanField(
+    is_email_verified = models.BooleanField(
         _('email verified'),
         default=False,
         help_text=_("Designates whether this user's email has been verified.")
@@ -137,7 +138,7 @@ class CustomUser(AbstractUser):
         indexes = [
             models.Index(fields=['email'], name='idx_user_email'),
             models.Index(fields=['is_active'], name='idx_user_active'),
-            models.Index(fields=['is_verified'], name='idx_user_verified'),
+            models.Index(fields=['is_email_verified'], name='idx_user_verified'),
         ]
 
     def __str__(self):
@@ -155,20 +156,15 @@ class CustomUser(AbstractUser):
         """Return the short name for the user."""
         return self.first_name or self.email.split('@')[0]
 
-    @property
-    def is_email_verified(self):
-        """Check if email has been verified."""
-        return self.is_verified
-
     def verify_email(self):
         """
         Mark the user's email as verified and activate the account.
         """
         from django.utils import timezone
-        self.is_verified = True
+        self.is_email_verified = True
         self.is_active = True
         self.email_verified_at = timezone.now()
-        self.save(update_fields=['is_verified', 'is_active', 'email_verified_at'])
+        self.save(update_fields=['is_email_verified', 'is_active', 'email_verified_at'])
 
 
 class EmailVerificationToken(models.Model):

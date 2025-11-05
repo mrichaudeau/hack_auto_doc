@@ -15,15 +15,15 @@ class CustomUserAdmin(UserAdmin):
     Admin interface for CustomUser model.
     """
     model = CustomUser
-    list_display = ('email', 'first_name', 'last_name', 'is_verified', 'is_active', 'date_joined')
-    list_filter = ('is_verified', 'is_active', 'is_staff', 'is_superuser', 'date_joined')
+    list_display = ('email', 'first_name', 'last_name', 'is_email_verified', 'is_active', 'date_joined')
+    list_filter = ('is_email_verified', 'is_active', 'is_staff', 'is_superuser', 'date_joined')
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('-date_joined',)
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name')}),
-        (_('Verification'), {'fields': ('is_verified', 'email_verified_at')}),
+        (_('Verification'), {'fields': ('is_email_verified', 'email_verified_at')}),
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),

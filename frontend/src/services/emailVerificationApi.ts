@@ -7,7 +7,7 @@
  * @module emailVerificationApi
  */
 
-import axios, { AxiosError, AxiosInstance } from 'axios';
+import axios, { AxiosError } from 'axios';
 
 // ============================================================================
 // Type Definitions
@@ -85,7 +85,7 @@ export class EmailVerificationError extends Error {
  * Configured axios instance for email verification API calls
  * Uses environment variable for base URL with fallback to localhost
  */
-const apiClient: AxiosInstance = axios.create({
+const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
   timeout: 10000, // 10 seconds
   headers: {

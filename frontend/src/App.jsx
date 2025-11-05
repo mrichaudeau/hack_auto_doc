@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import VerifyEmailPage from './pages/VerifyEmailPage';
+import ResendVerificationPage from './pages/ResendVerificationPage';
 import HomePage from './pages/HomePage';
 import './App.css';
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
+        <Route path="/resend-verification" element={<ResendVerificationPage />} />
 
         {/* Redirect unknown routes to home */}
         <Route path="*" element={<Navigate to="/" replace />} />

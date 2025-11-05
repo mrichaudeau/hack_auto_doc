@@ -1,0 +1,19 @@
+Tech Watch Platform - Email Verification
+=========================================
+
+Welcome {{ user.first_name }}!
+
+Thank you for registering with Tech Watch Platform. To complete your registration, please verify your email address by clicking the link below:
+
+{{ verification_url }}
+
+IMPORTANT: This verification link will expire in {{ expiry_hours }} hours.
+
+If you did not create an account, you can safely ignore this email.
+
+Best regards,
+The Tech Watch Team
+
+---
+This is an automated email. Please do not reply to this message.
+(c) 2025 Tech Watch Platform. All rights reserved.

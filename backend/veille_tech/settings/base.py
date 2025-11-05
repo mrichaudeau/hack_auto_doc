@@ -407,6 +407,10 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@techwatch.local')
 
+# Frontend URL for email links
+# Used to generate verification and password reset links in emails
+FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000')
+
 # Logging configuration
 LOG_LEVEL = config('LOG_LEVEL', default='INFO')
 LOGGING = {

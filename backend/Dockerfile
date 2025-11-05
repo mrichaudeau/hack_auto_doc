@@ -20,8 +20,9 @@ RUN pip install --no-cache-dir poetry==${POETRY_VERSION}
 WORKDIR /app
 
 # Copy dependency files and install dependencies
+# Install both main and dev dependencies for development/testing
 COPY pyproject.toml poetry.lock ./
-RUN poetry install --only main --no-root
+RUN poetry install --no-root
 
 # ============================================
 # Stage 2: Runtime - Minimal production image

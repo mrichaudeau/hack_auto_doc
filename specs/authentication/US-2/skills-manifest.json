@@ -1,0 +1,143 @@
+{
+  "userStory": "US-2",
+  "feature": "authentication",
+  "generatedAt": "2025-11-05T08:30:00Z",
+  "skills": [
+    {
+      "name": "django-database-operations",
+      "capability": "backend",
+      "path": ".claude/spec-implementer-generated/skills/django-database-operations/SKILL.md",
+      "technologies": ["Django 4.2+", "Django ORM", "PostgreSQL 15+", "Python 3.11+"],
+      "applicableTasks": ["TASK-2.1", "TASK-2.2"],
+      "description": "Provides guidance for creating Django models, migrations, and database schema design including fields, indexes, and relationships"
+    },
+    {
+      "name": "security-implementation",
+      "capability": "backend",
+      "path": ".claude/spec-implementer-generated/skills/security-implementation/SKILL.md",
+      "technologies": ["Python secrets module", "Redis", "Django"],
+      "applicableTasks": ["TASK-2.3", "TASK-2.7"],
+      "description": "Provides guidance for implementing security features including cryptographically secure token generation and Redis-backed rate limiting"
+    },
+    {
+      "name": "django-api-development",
+      "capability": "backend",
+      "path": ".claude/spec-implementer-generated/skills/django-api-development/SKILL.md",
+      "technologies": ["Django REST Framework", "Python 3.11+", "PostgreSQL"],
+      "applicableTasks": ["TASK-2.4", "TASK-2.5", "TASK-2.8"],
+      "description": "Provides guidance for developing REST API endpoints with Django REST Framework including views, serializers, error handling, and response formatting"
+    },
+    {
+      "name": "email-integration",
+      "capability": "backend",
+      "path": ".claude/spec-implementer-generated/skills/email-integration/SKILL.md",
+      "technologies": ["Django Email Backend", "SMTP", "Celery"],
+      "applicableTasks": ["TASK-2.6"],
+      "description": "Provides guidance for integrating email service with Django including SMTP configuration, email template rendering, and async email sending"
+    },
+    {
+      "name": "celery-worker-configuration",
+      "capability": "backend",
+      "path": ".claude/spec-implementer-generated/skills/celery-worker-configuration/SKILL.md",
+      "technologies": ["Celery 5.2+", "Celery Beat", "Redis", "Django"],
+      "applicableTasks": ["TASK-2.9"],
+      "description": "Provides guidance for creating Celery periodic tasks with Celery Beat including task definition, scheduling, and error handling"
+    },
+    {
+      "name": "react-component-development",
+      "capability": "frontend",
+      "path": ".claude/spec-implementer-generated/skills/react-component-development/SKILL.md",
+      "technologies": ["React 18+", "TypeScript", "React Router", "CSS Modules"],
+      "applicableTasks": ["TASK-2.10", "TASK-2.11"],
+      "description": "Provides guidance for building React page components and form components with hooks, routing, state management, and responsive design"
+    },
+    {
+      "name": "api-service-integration",
+      "capability": "frontend",
+      "path": ".claude/spec-implementer-generated/skills/api-service-integration/SKILL.md",
+      "technologies": ["Axios", "React", "TypeScript"],
+      "applicableTasks": ["TASK-2.12"],
+      "description": "Provides guidance for creating type-safe API client services for React applications with error handling and response parsing"
+    },
+    {
+      "name": "django-testing",
+      "capability": "testing",
+      "path": ".claude/spec-implementer-generated/skills/django-testing/SKILL.md",
+      "technologies": ["pytest", "pytest-django", "Django Test Client", "unittest.mock"],
+      "applicableTasks": ["TASK-2.13", "TASK-2.14", "TASK-2.15", "TASK-2.17"],
+      "description": "Provides guidance for writing unit tests, integration tests, and security tests for Django applications with pytest"
+    },
+    {
+      "name": "integration-testing",
+      "capability": "testing",
+      "path": ".claude/spec-implementer-generated/skills/integration-testing/SKILL.md",
+      "technologies": ["Playwright", "React Testing Library", "Jest"],
+      "applicableTasks": ["TASK-2.16"],
+      "description": "Provides guidance for writing end-to-end tests for complete user workflows using Playwright or Cypress"
+    },
+    {
+      "name": "developer-documentation",
+      "capability": "infrastructure",
+      "path": ".claude/spec-implementer-generated/skills/developer-documentation/SKILL.md",
+      "technologies": ["Markdown", "OpenAPI/Swagger", "drf-spectacular"],
+      "applicableTasks": ["TASK-2.18", "TASK-2.19"],
+      "description": "Provides guidance for creating technical documentation including email templates, API documentation, and developer guides"
+    }
+  ],
+  "summary": {
+    "totalSkills": 10,
+    "capabilitiesCovered": [
+      "django-database-operations",
+      "security-implementation",
+      "django-api-development",
+      "email-integration",
+      "celery-worker-configuration",
+      "react-component-development",
+      "api-service-integration",
+      "django-testing",
+      "integration-testing",
+      "developer-documentation"
+    ],
+    "totalTasksCovered": 19,
+    "byCapability": {
+      "backend": 5,
+      "frontend": 2,
+      "testing": 2,
+      "infrastructure": 1
+    },
+    "reuseFromPreviousUS": true,
+    "newSkillsGenerated": 0,
+    "existingSkillsReused": 10
+  },
+  "technologyStack": {
+    "backend": {
+      "framework": "Django 4.2+",
+      "restFramework": "Django REST Framework 3.14+",
+      "language": "Python 3.11+",
+      "database": "PostgreSQL 15+",
+      "cache": "Redis 7+",
+      "security": "Python secrets module, Argon2",
+      "async": "Celery 5.2+ with Celery Beat",
+      "email": "Django Email Backend with SMTP",
+      "testing": "pytest, pytest-django, unittest.mock"
+    },
+    "frontend": {
+      "framework": "React 18+",
+      "language": "TypeScript",
+      "routing": "React Router",
+      "httpClient": "Axios",
+      "styling": "CSS Modules",
+      "testing": "React Testing Library, Jest, Playwright"
+    },
+    "infrastructure": {
+      "email": "SMTP (SendGrid, AWS SES, or similar)",
+      "documentation": "Markdown, drf-spectacular (OpenAPI/Swagger)"
+    }
+  },
+  "notes": [
+    "All required capability skills already exist from US-1 implementation",
+    "No new skills needed to be generated for US-2",
+    "Skills are reusable across User Stories within the same feature",
+    "Task-to-skill mapping updated to reflect US-2 requirements"
+  ]
+}

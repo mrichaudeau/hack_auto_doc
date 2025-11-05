@@ -97,7 +97,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', ''),
             is_active=False,  # Account inactive until email verified
-            is_verified=False,
+            is_email_verified=False,
         )
 
         return user
@@ -114,7 +114,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'email', 'first_name', 'last_name', 'full_name',
-                  'is_active', 'is_verified', 'date_joined')
+                  'is_active', 'is_email_verified', 'date_joined')
         read_only_fields = fields
 
     def get_full_name(self, obj):
@@ -184,7 +184,7 @@ class ResendVerificationEmailSerializer(serializers.Serializer):
                 "No account found with this email address."
             )
 
-        if user.is_verified:
+        if user.is_email_verified:
             raise serializers.ValidationError(
                 "This email address is already verified."
             )

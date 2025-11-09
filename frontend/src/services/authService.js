@@ -3,9 +3,19 @@
  *
  * Handles all authentication-related API calls including registration,
  * login, email verification, and password reset.
+ *
+ * Updated for TASK-3.10: Now uses tokenStorage utilities for better
+ * error handling and token management.
  */
 
 import apiClient from './apiClient';
+import {
+  saveTokens,
+  getAccessToken,
+  getUserData,
+  clearTokens,
+  isAuthenticated as checkAuthenticated,
+} from '../utils/tokenStorage';
 
 const authService = {
   /**
@@ -88,16 +98,12 @@ const authService = {
     try {
       const response = await apiClient.post('/api/auth/login/', { email, password });
 
-      // Store tokens in localStorage
+      // Store tokens using tokenStorage utilities (TASK-3.10)
       // API returns: { access_token, refresh_token, user }
-      if (response.data.access_token) {
-        localStorage.setItem('access_token', response.data.access_token);
-      }
-      if (response.data.refresh_token) {
-        localStorage.setItem('refresh_token', response.data.refresh_token);
-      }
-      if (response.data.user) {
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+      const { access_token, refresh_token, user } = response.data;
+
+      if (access_token && refresh_token) {
+        saveTokens(access_token, refresh_token, user);
       }
 
       return response.data;
@@ -151,31 +157,40 @@ const authService = {
 
   /**
    * Logout current user
-   * Clears tokens from localStorage
+   * Clears tokens using tokenStorage utilities (TASK-3.10)
    */
   logout() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
+    clearTokens();
   },
 
   /**
    * Check if user is authenticated
+   * Uses tokenStorage utilities with JWT expiration check (TASK-3.10)
    *
-   * @returns {boolean} True if user has valid token
+   * @returns {boolean} True if user has valid, non-expired token
    */
   isAuthenticated() {
-    return !!localStorage.getItem('access_token');
+    return checkAuthenticated();
   },
 
   /**
-   * Get current user data from localStorage
+   * Get current user data from storage
+   * Uses tokenStorage utilities (TASK-3.10)
    *
    * @returns {Object|null} User data or null
    */
   getCurrentUser() {
-    const userStr = localStorage.getItem('user');
-    return userStr ? JSON.parse(userStr) : null;
+    return getUserData();
+  },
+
+  /**
+   * Get access token
+   * Uses tokenStorage utilities (TASK-3.10)
+   *
+   * @returns {string|null} Access token or null
+   */
+  getAccessToken() {
+    return getAccessToken();
   },
 };
 

@@ -219,9 +219,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
     Serializer for user profile information (US-3: Standard User Login, TASK-3.5).
 
     Used in login response to return basic user information.
-    Includes is_sso_user flag for Microsoft Entra ID SSO users.
+    Note: is_sso_user will be added in future User Story for Microsoft Entra ID SSO.
     """
     class Meta:
         model = CustomUser
-        fields = ['id', 'email', 'first_name', 'last_name', 'is_sso_user']
+        fields = ['id', 'email', 'first_name', 'last_name']
         read_only_fields = fields

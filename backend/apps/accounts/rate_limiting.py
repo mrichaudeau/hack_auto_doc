@@ -557,3 +557,50 @@ def get_remaining_login_attempts(ip_address: str) -> int:
             exc_info=True
         )
         return LOGIN_MAX_ATTEMPTS
+
+
+def rate_limit(limit: int, window: int):
+    """
+    Decorator for rate limiting Django REST Framework views.
+
+    Args:
+        limit: Maximum number of attempts allowed
+        window: Time window in seconds
+
+    Returns:
+        Decorated function with rate limiting applied
+
+    Example:
+        @rate_limit(limit=5, window=300)
+        def post(self, request):
+            # View logic here
+            pass
+    """
+    from functools import wraps
+    from rest_framework.response import Response
+    from rest_framework import status
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(self, request, *args, **kwargs):
+            # Get IP address from request
+            ip_address = request.META.get('HTTP_X_FORWARDED_FOR')
+            if ip_address:
+                ip_address = ip_address.split(',')[0].strip()
+            else:
+                ip_address = request.META.get('REMOTE_ADDR', '')
+
+            # Check rate limit
+            is_limited, retry_after = check_login_rate_limit(ip_address)
+
+            if is_limited:
+                return Response({
+                    'error': 'Too many login attempts. Please try again later.',
+                    'retry_after': retry_after
+                }, status=status.HTTP_429_TOO_MANY_REQUESTS)
+
+            # Call the original function
+            return func(self, request, *args, **kwargs)
+
+        return wrapper
+    return decorator

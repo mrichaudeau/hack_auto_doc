@@ -331,6 +331,12 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',  # Fallback
 ]
 
+# Authentication backends
+# US-3: Email-based authentication with email verification enforcement
+AUTHENTICATION_BACKENDS = [
+    'apps.accounts.backends.EmailBackend',  # Custom email-based authentication backend
+]
+
 # Password validation
 # Custom validators implementing US-1 requirements:
 # - Min 8 chars, uppercase, lowercase, number, special char (recommended)
@@ -475,9 +481,30 @@ LOG_LEVEL = config('LOG_LEVEL', default='INFO')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+        },
+        'security_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR / 'logs' / 'security.log',
+            'maxBytes': 10485760,  # 10MB
+            'backupCount': 10,
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'accounts.security': {
+            'handlers': ['security_file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
         },
     },
     'root': {

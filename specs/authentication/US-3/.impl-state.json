@@ -26,7 +26,7 @@
     },
     {
       "id": "TASK-3.4",
-      "status": "pending",
+      "status": "completed",
       "dependencies": ["TASK-3.1"],
       "category": "Backend"
     },
@@ -38,13 +38,13 @@
     },
     {
       "id": "TASK-3.6",
-      "status": "pending",
+      "status": "completed",
       "dependencies": ["TASK-3.1"],
       "category": "Backend"
     },
     {
       "id": "TASK-3.7",
-      "status": "pending",
+      "status": "completed",
       "dependencies": ["TASK-3.2"],
       "category": "Backend"
     },
@@ -140,7 +140,7 @@
     },
     {
       "id": "TASK-3.23",
-      "status": "pending",
+      "status": "completed",
       "dependencies": ["TASK-3.2"],
       "category": "Infrastructure"
     },
@@ -169,11 +169,11 @@
   ],
   "progress": {
     "totalTasks": 24,
-    "completed": 5,
+    "completed": 9,
     "inProgress": 0,
-    "pending": 19,
+    "pending": 15,
     "blocked": 0,
-    "percentComplete": 20.83
+    "percentComplete": 37.5
   },
   "currentWave": 2,
   "executionWaves": [
@@ -185,7 +185,7 @@
     {
       "wave": 2,
       "tasks": ["TASK-3.4", "TASK-3.6", "TASK-3.7", "TASK-3.14", "TASK-3.15", "TASK-3.18", "TASK-3.23"],
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "wave": 3,

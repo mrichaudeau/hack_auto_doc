@@ -3,6 +3,7 @@ Django base settings for veille_tech project.
 """
 
 import sys
+from datetime import timedelta
 from pathlib import Path
 from decouple import config, Csv
 import dj_database_url
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     # Third-party apps
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',  # For JWT token rotation and blacklisting
     'drf_spectacular',
     'corsheaders',
     'allauth',
@@ -414,9 +416,46 @@ FIRECRAWL_API_KEY = config('FIRECRAWL_API_KEY')
 
 # JWT Configuration
 JWT_SECRET_KEY = config('JWT_SECRET_KEY', default=SECRET_KEY)
-JWT_ACCESS_TOKEN_LIFETIME_MINUTES = config('JWT_ACCESS_TOKEN_LIFETIME_MINUTES', default=60, cast=int)
+JWT_ACCESS_TOKEN_LIFETIME_MINUTES = config('JWT_ACCESS_TOKEN_LIFETIME_MINUTES', default=15, cast=int)
 JWT_REFRESH_TOKEN_LIFETIME_DAYS = config('JWT_REFRESH_TOKEN_LIFETIME_DAYS', default=7, cast=int)
 JWT_ALGORITHM = config('JWT_ALGORITHM', default='HS256')
+
+# Django REST Framework Simple JWT Configuration
+# Used for token-based authentication in US-3 (Standard User Login)
+SIMPLE_JWT = {
+    # Token Lifetimes
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=JWT_ACCESS_TOKEN_LIFETIME_MINUTES),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=JWT_REFRESH_TOKEN_LIFETIME_DAYS),
+
+    # Token Rotation & Blacklisting
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': True,
+
+    # Algorithm & Signing
+    'ALGORITHM': JWT_ALGORITHM,
+    'SIGNING_KEY': JWT_SECRET_KEY,
+    'VERIFYING_KEY': None,  # Only for asymmetric algorithms
+
+    # Token Format
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+
+    # Token Classes
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+
+    # Sliding Tokens (not used, but configured)
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+
+    # Clock Skew Tolerance (60 seconds for time synchronization issues)
+    'LEEWAY': 60,
+}
 
 # Email Configuration
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')

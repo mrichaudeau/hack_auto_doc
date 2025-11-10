@@ -2,6 +2,9 @@
  * API Client Configuration
  *
  * Configures Axios instance with default settings for API communication.
+ *
+ * Updated for TASK-3.12: Removed basic interceptors in favor of advanced
+ * interceptors with automatic token refresh (see interceptors.js)
  */
 
 import axios from 'axios';
@@ -20,51 +23,22 @@ const apiClient = axios.create({
   },
 });
 
-// Request interceptor - add auth token if available
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+// Note: Interceptors are now configured via setupInterceptors() in interceptors.js
+// This allows proper integration with React Router's navigate function
+// Call initializeApiClient() from App.jsx to set up interceptors
 
-// Response interceptor - handle errors globally
-apiClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response) {
-      // Server responded with error status
-      const { status, data } = error.response;
-
-      // Handle specific status codes
-      if (status === 401) {
-        // Unauthorized - clear token and redirect to login
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        // Optionally redirect to login
-        // window.location.href = '/login';
-      } else if (status === 429) {
-        // Rate limit exceeded
-        error.message = data.error || 'Too many requests. Please try again later.';
-      }
-    } else if (error.request) {
-      // Request made but no response received
-      error.message = 'Network error. Please check your connection.';
-    } else {
-      // Something else happened
-      error.message = 'An unexpected error occurred.';
-    }
-
-    return Promise.reject(error);
-  }
-);
+/**
+ * Initialize API client with interceptors
+ * Must be called from App component with React Router's navigate function
+ *
+ * @param {Function} navigate - React Router navigate function
+ * @param {Function} onLogout - Optional callback for logout (e.g., clear auth context)
+ */
+export const initializeApiClient = (navigate, onLogout = null) => {
+  // Import dynamically to avoid circular dependencies
+  import('./interceptors').then(({ setupInterceptors }) => {
+    setupInterceptors(apiClient, navigate, onLogout);
+  });
+};
 
 export default apiClient;

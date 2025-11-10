@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from .models import CustomUser, EmailVerificationToken
+from .models import CustomUser, EmailVerificationToken, LoginAuditLog
 
 
 @admin.register(CustomUser)
@@ -53,4 +53,31 @@ class EmailVerificationTokenAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         """Disable manual token creation through admin."""
+        return False
+
+
+@admin.register(LoginAuditLog)
+class LoginAuditLogAdmin(admin.ModelAdmin):
+    """
+    Admin interface for LoginAuditLog model.
+
+    Provides read-only access to login audit logs for security monitoring.
+    """
+    list_display = ('email', 'success', 'ip_address', 'failure_reason', 'timestamp')
+    list_filter = ('success', 'failure_reason', 'timestamp')
+    search_fields = ('email', 'ip_address', 'user__email')
+    readonly_fields = ('user', 'email', 'ip_address', 'user_agent', 'success', 'failure_reason', 'timestamp')
+    ordering = ('-timestamp',)
+    date_hierarchy = 'timestamp'
+
+    def has_add_permission(self, request):
+        """Disable manual creation of audit logs."""
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        """Prevent deletion of audit logs for compliance."""
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        """Make all fields read-only."""
         return False

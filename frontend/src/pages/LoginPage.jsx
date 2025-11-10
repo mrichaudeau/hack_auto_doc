@@ -1,14 +1,42 @@
 /**
- * Login Page Component (Placeholder)
+ * Login Page Component (US-3: Standard User Login)
  *
- * This is a placeholder page for the login functionality.
- * Will be implemented in a future User Story.
+ * Provides user authentication via email/password login.
+ * Integrated with AuthContext for global authentication state.
+ * Supports post-login redirect to intended destination (TASK-3.13).
  */
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import LoginForm from '../components/auth/LoginForm';
+import Alert from '../components/common/Alert';
 import './LoginPage.css';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login, loading, error, clearError } = useAuth();
+
+  // Get the intended destination from location state (set by ProtectedRoute)
+  // Default to '/' if no intended destination
+  const from = location.state?.from?.pathname || '/';
+
+  /**
+   * Handle login form submission
+   */
+  const handleLogin = async (email, password) => {
+    try {
+      await login(email, password);
+
+      // On successful login, redirect to intended destination
+      console.info('[LoginPage] Login successful, redirecting to:', from);
+      navigate(from, { replace: true });
+    } catch (err) {
+      // Error is handled by AuthContext and displayed via error prop
+      console.error('[LoginPage] Login failed:', err.message);
+    }
+  };
+
   return (
     <div className="login-page">
       <div className="login-container">
@@ -17,29 +45,22 @@ const LoginPage = () => {
           <p className="login-subtitle">Access your Technology Watch account</p>
         </div>
 
-        <div className="placeholder-content">
-          <div className="placeholder-icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </div>
-          <h2 className="placeholder-title">Login Feature Coming Soon</h2>
-          <p className="placeholder-text">
-            The login functionality will be implemented in a future User Story.
-          </p>
-          <p className="placeholder-text">
-            For now, you can create a new account to get started.
-          </p>
-        </div>
+        {/* Show alert if redirected from protected route */}
+        {location.state?.from && (
+          <Alert type="info" onClose={clearError}>
+            Please sign in to access {location.state.from.pathname}
+          </Alert>
+        )}
+
+        {/* Show error alert if login failed */}
+        {error && (
+          <Alert type="error" onClose={clearError}>
+            {error}
+          </Alert>
+        )}
+
+        {/* Login Form */}
+        <LoginForm onSubmit={handleLogin} loading={loading} error={error} />
 
         <div className="login-footer">
           <p className="footer-text">

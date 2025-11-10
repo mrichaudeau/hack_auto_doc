@@ -3,9 +3,19 @@
  *
  * Handles all authentication-related API calls including registration,
  * login, email verification, and password reset.
+ *
+ * Updated for TASK-3.10: Now uses tokenStorage utilities for better
+ * error handling and token management.
  */
 
 import apiClient from './apiClient';
+import {
+  saveTokens,
+  getAccessToken,
+  getUserData,
+  clearTokens,
+  isAuthenticated as checkAuthenticated,
+} from '../utils/tokenStorage';
 
 const authService = {
   /**
@@ -77,63 +87,110 @@ const authService = {
   },
 
   /**
-   * Login with email and password
+   * Login with email and password (US-3: Standard User Login, TASK-3.9)
    *
    * @param {string} email - User email
    * @param {string} password - User password
-   * @returns {Promise<Object>} Login result with tokens
+   * @returns {Promise<Object>} Login result with tokens and user data
+   * @throws {Error} with user-friendly error message
    */
   async login(email, password) {
     try {
       const response = await apiClient.post('/api/auth/login/', { email, password });
 
-      // Store tokens in localStorage
-      if (response.data.access) {
-        localStorage.setItem('access_token', response.data.access);
-      }
-      if (response.data.refresh) {
-        localStorage.setItem('refresh_token', response.data.refresh);
+      // Store tokens using tokenStorage utilities (TASK-3.10)
+      // API returns: { access_token, refresh_token, user }
+      const { access_token, refresh_token, user } = response.data;
+
+      if (access_token && refresh_token) {
+        saveTokens(access_token, refresh_token, user);
       }
 
-      return {
-        success: true,
-        data: response.data,
-      };
+      return response.data;
     } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data || { message: error.message },
-      };
+      // Enhanced error handling for all login error scenarios
+      if (error.response) {
+        const status = error.response.status;
+        const data = error.response.data;
+
+        switch (status) {
+          case 400:
+            // Validation error (missing/invalid fields)
+            throw new Error(data.error || 'Please provide valid email and password');
+
+          case 401:
+            // Invalid credentials
+            throw new Error(data.error || 'Invalid email or password');
+
+          case 403:
+            // Email not verified
+            throw new Error(data.error || 'Please verify your email before logging in');
+
+          case 429:
+            // Rate limit exceeded
+            const retryAfter = error.response.headers['retry-after'];
+            if (retryAfter) {
+              const seconds = parseInt(retryAfter, 10);
+              const minutes = Math.ceil(seconds / 60);
+              throw new Error(`Too many login attempts. Please try again in ${minutes} minute${minutes > 1 ? 's' : ''}`);
+            }
+            throw new Error(data.message || 'Too many login attempts. Please try again later');
+
+          case 500:
+          case 502:
+          case 503:
+            // Server error
+            throw new Error('Server error. Please try again later');
+
+          default:
+            throw new Error(data.error || data.message || 'An unexpected error occurred');
+        }
+      } else if (error.request) {
+        // Network error (request made but no response received)
+        throw new Error('Connection error. Please check your internet connection');
+      } else {
+        // Other error (e.g., request setup error)
+        throw new Error(error.message || 'An unexpected error occurred');
+      }
     }
   },
 
   /**
    * Logout current user
-   * Clears tokens from localStorage
+   * Clears tokens using tokenStorage utilities (TASK-3.10)
    */
   logout() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
+    clearTokens();
   },
 
   /**
    * Check if user is authenticated
+   * Uses tokenStorage utilities with JWT expiration check (TASK-3.10)
    *
-   * @returns {boolean} True if user has valid token
+   * @returns {boolean} True if user has valid, non-expired token
    */
   isAuthenticated() {
-    return !!localStorage.getItem('access_token');
+    return checkAuthenticated();
   },
 
   /**
-   * Get current user data from localStorage
+   * Get current user data from storage
+   * Uses tokenStorage utilities (TASK-3.10)
    *
    * @returns {Object|null} User data or null
    */
   getCurrentUser() {
-    const userStr = localStorage.getItem('user');
-    return userStr ? JSON.parse(userStr) : null;
+    return getUserData();
+  },
+
+  /**
+   * Get access token
+   * Uses tokenStorage utilities (TASK-3.10)
+   *
+   * @returns {string|null} Access token or null
+   */
+  getAccessToken() {
+    return getAccessToken();
   },
 };
 

@@ -260,3 +260,131 @@ class EmailVerificationToken(models.Model):
         )
 
         return token
+
+
+class LoginAuditLog(models.Model):
+    """
+    Model to track all login attempts (successful and failed) for security auditing.
+
+    This model captures comprehensive information about each login attempt
+    including the user, IP address, user agent, and outcome. This data is
+    essential for:
+    - Security monitoring and incident response
+    - Detecting brute force attacks
+    - User login history
+    - Compliance and audit requirements
+
+    Attributes:
+        user (CustomUser): The user attempting to login (nullable for failed attempts)
+        email (str): Email address used in the login attempt
+        ip_address (str): IP address of the client
+        user_agent (str): Browser/client user agent string
+        success (bool): Whether the login attempt was successful
+        failure_reason (str): Reason for failure if unsuccessful
+        timestamp (datetime): When the login attempt occurred
+    """
+
+    # Failure reason choices
+    FAILURE_REASONS = [
+        ('invalid_credentials', _('Invalid email or password')),
+        ('email_not_verified', _('Email not verified')),
+        ('rate_limited', _('Rate limit exceeded')),
+        ('account_disabled', _('Account disabled')),
+    ]
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='login_attempts',
+        help_text=_("User attempting to login (null if user not found)")
+    )
+
+    email = models.EmailField(
+        _('email address'),
+        max_length=255,
+        db_index=True,
+        help_text=_("Email address used in login attempt")
+    )
+
+    ip_address = models.GenericIPAddressField(
+        _('IP address'),
+        help_text=_("IP address of the client (supports IPv4 and IPv6)")
+    )
+
+    user_agent = models.TextField(
+        _('user agent'),
+        help_text=_("Browser/client user agent string")
+    )
+
+    success = models.BooleanField(
+        _('success'),
+        default=False,
+        db_index=True,
+        help_text=_("Whether the login attempt was successful")
+    )
+
+    failure_reason = models.CharField(
+        _('failure reason'),
+        max_length=100,
+        choices=FAILURE_REASONS,
+        null=True,
+        blank=True,
+        help_text=_("Reason for failed login attempt")
+    )
+
+    timestamp = models.DateTimeField(
+        _('timestamp'),
+        auto_now_add=True,
+        db_index=True,
+        help_text=_("When the login attempt occurred")
+    )
+
+    class Meta:
+        db_table = 'login_audit_log'
+        verbose_name = _('login audit log')
+        verbose_name_plural = _('login audit logs')
+        ordering = ['-timestamp']
+        indexes = [
+            models.Index(fields=['email', 'timestamp'], name='idx_audit_email_time'),
+            models.Index(fields=['ip_address', 'timestamp'], name='idx_audit_ip_time'),
+            models.Index(fields=['user', 'timestamp'], name='idx_audit_user_time'),
+            models.Index(fields=['success'], name='idx_audit_success'),
+        ]
+
+    def __str__(self):
+        """String representation of the audit log entry."""
+        status = "Success" if self.success else f"Failed ({self.get_failure_reason_display()})"
+        return f"{self.email} - {status} - {self.timestamp.strftime('%Y-%m-%d %H:%M:%S')}"
+
+    @classmethod
+    def log_attempt(cls, email, ip_address, user_agent, success, user=None, failure_reason=None):
+        """
+        Create a new login audit log entry.
+
+        Args:
+            email (str): Email address used in the login attempt
+            ip_address (str): IP address of the client
+            user_agent (str): Browser/client user agent string
+            success (bool): Whether the login was successful
+            user (CustomUser, optional): The user object if found
+            failure_reason (str, optional): Reason for failure
+
+        Returns:
+            LoginAuditLog: The created audit log entry
+        """
+        return cls.objects.create(
+            user=user,
+            email=email.lower(),  # Normalize email
+            ip_address=ip_address,
+            user_agent=user_agent,
+            success=success,
+            failure_reason=failure_reason
+        )

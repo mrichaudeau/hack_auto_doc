@@ -1,0 +1,476 @@
+{
+  "userStory": "US-9",
+  "userStoryTitle": "User Profile Update",
+  "feature": "authentication",
+  "priority": "P2",
+  "generatedAt": "2025-11-09",
+  "nodes": [
+    {
+      "id": "TASK-9.1",
+      "title": "Verify User Model Schema",
+      "type": "backend",
+      "specialty": "database",
+      "priority": "P1",
+      "effort": "1h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.2",
+      "title": "Create Profile Update Serializer",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.3",
+      "title": "Implement PATCH /api/users/me/ Endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.4",
+      "title": "Add Field-Level Security Validation",
+      "type": "backend",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.5",
+      "title": "Optimize Profile Update Performance",
+      "type": "backend",
+      "specialty": "performance",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.6",
+      "title": "Create Profile Edit Form Component",
+      "type": "frontend",
+      "specialty": "component",
+      "priority": "P1",
+      "effort": "5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.7",
+      "title": "Implement Profile Update API Service",
+      "type": "frontend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.8",
+      "title": "Integrate Profile Edit Form with Profile Page",
+      "type": "frontend",
+      "specialty": "page",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.9",
+      "title": "Add Client-Side Form Validation",
+      "type": "frontend",
+      "specialty": "component",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.10",
+      "title": "Implement Success and Error Notifications",
+      "type": "frontend",
+      "specialty": "component",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.11",
+      "title": "Write Backend Unit Tests for Serializer",
+      "type": "testing",
+      "specialty": "unit",
+      "priority": "P1",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.12",
+      "title": "Write Backend Integration Tests for API Endpoint",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.13",
+      "title": "Write Frontend Unit Tests for Form Component",
+      "type": "testing",
+      "specialty": "unit",
+      "priority": "P1",
+      "effort": "4h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.14",
+      "title": "Write End-to-End Test for Profile Update Flow",
+      "type": "testing",
+      "specialty": "e2e",
+      "priority": "P2",
+      "effort": "5h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.15",
+      "title": "Write Security Tests",
+      "type": "testing",
+      "specialty": "security",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.16",
+      "title": "Update API Documentation",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P2",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.17",
+      "title": "Add Code Comments and Docstrings",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P3",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.18",
+      "title": "Create User Guide Documentation",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P3",
+      "effort": "2h",
+      "status": "todo"
+    },
+    {
+      "id": "TASK-9.19",
+      "title": "Performance Benchmarking and Monitoring",
+      "type": "infrastructure",
+      "specialty": "performance",
+      "priority": "P2",
+      "effort": "3h",
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-9.1",
+      "to": "TASK-9.2",
+      "type": "blocks",
+      "reason": "User model must be verified before creating serializer"
+    },
+    {
+      "from": "TASK-9.2",
+      "to": "TASK-9.3",
+      "type": "blocks",
+      "reason": "Serializer must exist before implementing API endpoint"
+    },
+    {
+      "from": "TASK-9.3",
+      "to": "TASK-9.4",
+      "type": "blocks",
+      "reason": "API endpoint must exist before adding security validation"
+    },
+    {
+      "from": "TASK-9.3",
+      "to": "TASK-9.5",
+      "type": "blocks",
+      "reason": "API endpoint must exist before optimizing performance"
+    },
+    {
+      "from": "TASK-9.6",
+      "to": "TASK-9.8",
+      "type": "blocks",
+      "reason": "Form component must exist before integrating with page"
+    },
+    {
+      "from": "TASK-9.7",
+      "to": "TASK-9.8",
+      "type": "blocks",
+      "reason": "API service must exist before integrating with page"
+    },
+    {
+      "from": "TASK-9.6",
+      "to": "TASK-9.9",
+      "type": "blocks",
+      "reason": "Form component must exist before adding validation"
+    },
+    {
+      "from": "TASK-9.8",
+      "to": "TASK-9.10",
+      "type": "blocks",
+      "reason": "Form integration must be complete before adding notifications"
+    },
+    {
+      "from": "TASK-9.2",
+      "to": "TASK-9.11",
+      "type": "blocks",
+      "reason": "Serializer must exist before writing unit tests"
+    },
+    {
+      "from": "TASK-9.3",
+      "to": "TASK-9.12",
+      "type": "blocks",
+      "reason": "API endpoint must exist before writing integration tests"
+    },
+    {
+      "from": "TASK-9.4",
+      "to": "TASK-9.12",
+      "type": "blocks",
+      "reason": "Security validation must be implemented to test"
+    },
+    {
+      "from": "TASK-9.6",
+      "to": "TASK-9.13",
+      "type": "blocks",
+      "reason": "Form component must exist before writing unit tests"
+    },
+    {
+      "from": "TASK-9.9",
+      "to": "TASK-9.13",
+      "type": "blocks",
+      "reason": "Client validation must exist before testing"
+    },
+    {
+      "from": "TASK-9.8",
+      "to": "TASK-9.14",
+      "type": "blocks",
+      "reason": "Form integration must be complete before E2E testing"
+    },
+    {
+      "from": "TASK-9.10",
+      "to": "TASK-9.14",
+      "type": "blocks",
+      "reason": "Notifications must exist before E2E testing"
+    },
+    {
+      "from": "TASK-9.4",
+      "to": "TASK-9.15",
+      "type": "blocks",
+      "reason": "Security validation must exist before security testing"
+    },
+    {
+      "from": "TASK-9.3",
+      "to": "TASK-9.16",
+      "type": "blocks",
+      "reason": "API endpoint must exist before documenting"
+    },
+    {
+      "from": "TASK-9.2",
+      "to": "TASK-9.17",
+      "type": "blocks",
+      "reason": "Code must exist before adding comments"
+    },
+    {
+      "from": "TASK-9.3",
+      "to": "TASK-9.17",
+      "type": "blocks",
+      "reason": "Code must exist before adding comments"
+    },
+    {
+      "from": "TASK-9.7",
+      "to": "TASK-9.17",
+      "type": "blocks",
+      "reason": "Code must exist before adding comments"
+    },
+    {
+      "from": "TASK-9.8",
+      "to": "TASK-9.18",
+      "type": "blocks",
+      "reason": "Feature must be complete before writing user guide"
+    },
+    {
+      "from": "TASK-9.10",
+      "to": "TASK-9.18",
+      "type": "blocks",
+      "reason": "Feature must be complete before writing user guide"
+    },
+    {
+      "from": "TASK-9.5",
+      "to": "TASK-9.19",
+      "type": "blocks",
+      "reason": "Performance optimization must be complete before benchmarking"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Foundation (Backend Sequential)",
+      "description": "Core backend implementation with serializer and API endpoint",
+      "tasks": ["TASK-9.1", "TASK-9.2", "TASK-9.3", "TASK-9.4"],
+      "estimatedEffort": "10h",
+      "estimatedDays": "1.25 days"
+    },
+    {
+      "phase": 2,
+      "name": "Core Features (Backend + Frontend Parallel)",
+      "description": "Backend performance optimization and complete frontend implementation",
+      "tasks": ["TASK-9.5", "TASK-9.6", "TASK-9.7", "TASK-9.8", "TASK-9.9", "TASK-9.10"],
+      "estimatedEffort": "21h (can run in parallel: backend 3h, frontend 18h)",
+      "estimatedDays": "2.6 days (sequential), 2.3 days (parallel)"
+    },
+    {
+      "phase": 3,
+      "name": "Testing",
+      "description": "Comprehensive testing across all layers",
+      "tasks": ["TASK-9.11", "TASK-9.12", "TASK-9.13", "TASK-9.14", "TASK-9.15"],
+      "estimatedEffort": "19h",
+      "estimatedDays": "2.4 days"
+    },
+    {
+      "phase": 4,
+      "name": "Documentation & Polish",
+      "description": "API documentation, code comments, user guide, and performance monitoring",
+      "tasks": ["TASK-9.16", "TASK-9.17", "TASK-9.18", "TASK-9.19"],
+      "estimatedEffort": "9h",
+      "estimatedDays": "1.1 days"
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Backend Development",
+      "description": "Sequential backend tasks from schema verification to security",
+      "tasks": ["TASK-9.1", "TASK-9.2", "TASK-9.3", "TASK-9.4", "TASK-9.5"],
+      "estimatedEffort": "13h",
+      "canStartAfter": []
+    },
+    {
+      "group": "Frontend Development",
+      "description": "Frontend form, API service, integration, and notifications",
+      "tasks": ["TASK-9.6", "TASK-9.7", "TASK-9.8", "TASK-9.9", "TASK-9.10"],
+      "estimatedEffort": "18h",
+      "canStartAfter": [],
+      "note": "Can run in parallel with backend development"
+    },
+    {
+      "group": "Backend Testing",
+      "description": "Backend unit, integration, and security tests",
+      "tasks": ["TASK-9.11", "TASK-9.12", "TASK-9.15"],
+      "estimatedEffort": "10h",
+      "canStartAfter": ["TASK-9.2", "TASK-9.3", "TASK-9.4"]
+    },
+    {
+      "group": "Frontend Testing",
+      "description": "Frontend unit tests",
+      "tasks": ["TASK-9.13"],
+      "estimatedEffort": "4h",
+      "canStartAfter": ["TASK-9.6", "TASK-9.9"]
+    },
+    {
+      "group": "Integration Testing",
+      "description": "End-to-end tests covering full user flow",
+      "tasks": ["TASK-9.14"],
+      "estimatedEffort": "5h",
+      "canStartAfter": ["TASK-9.8", "TASK-9.10"]
+    },
+    {
+      "group": "Documentation",
+      "description": "API docs, code comments, user guide, and monitoring",
+      "tasks": ["TASK-9.16", "TASK-9.17", "TASK-9.18", "TASK-9.19"],
+      "estimatedEffort": "9h",
+      "canStartAfter": ["TASK-9.3", "TASK-9.5", "TASK-9.8", "TASK-9.10"],
+      "note": "All documentation tasks can run in parallel"
+    }
+  ],
+  "criticalPath": {
+    "path": ["TASK-9.6", "TASK-9.8", "TASK-9.10", "TASK-9.14"],
+    "description": "Frontend development chain is the critical path",
+    "totalEffort": "17h",
+    "note": "This is the longest dependency chain and determines minimum project duration"
+  },
+  "externalDependencies": [
+    {
+      "userStory": "US-8",
+      "title": "User Profile Viewing",
+      "reason": "Profile viewing endpoint (GET /api/users/me/) must exist",
+      "status": "required"
+    },
+    {
+      "userStory": "US-3",
+      "title": "Standard User Login",
+      "reason": "JWT authentication must be fully functional",
+      "status": "required"
+    }
+  ],
+  "summary": {
+    "totalTasks": 19,
+    "byType": {
+      "backend": 5,
+      "frontend": 5,
+      "testing": 5,
+      "infrastructure": 4
+    },
+    "byPriority": {
+      "P1": 11,
+      "P2": 7,
+      "P3": 1
+    },
+    "bySpecialty": {
+      "database": 1,
+      "api": 3,
+      "security": 2,
+      "performance": 2,
+      "component": 3,
+      "page": 1,
+      "unit": 2,
+      "integration": 1,
+      "e2e": 1,
+      "documentation": 3
+    },
+    "totalEffortHours": 59,
+    "totalEffortDays": "7-8 days",
+    "minimumDurationWithParallelization": "5-6 days (2 developers)",
+    "criticalPathDuration": "17 hours"
+  },
+  "implementationStrategy": {
+    "recommended": "2 developers (backend + frontend) working in parallel",
+    "timeline": "Week 1: Backend + Frontend development (3 days), Week 2: Testing + Documentation (2-3 days)",
+    "keyMilestones": [
+      {
+        "milestone": "Backend API Ready",
+        "tasks": ["TASK-9.1", "TASK-9.2", "TASK-9.3", "TASK-9.4"],
+        "day": "Day 2"
+      },
+      {
+        "milestone": "Frontend UI Complete",
+        "tasks": ["TASK-9.6", "TASK-9.7", "TASK-9.8", "TASK-9.9", "TASK-9.10"],
+        "day": "Day 3"
+      },
+      {
+        "milestone": "All Tests Passing",
+        "tasks": ["TASK-9.11", "TASK-9.12", "TASK-9.13", "TASK-9.14", "TASK-9.15"],
+        "day": "Day 5"
+      },
+      {
+        "milestone": "Production Ready",
+        "tasks": ["TASK-9.16", "TASK-9.17", "TASK-9.18", "TASK-9.19"],
+        "day": "Day 6"
+      }
+    ]
+  }
+}

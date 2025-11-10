@@ -12,19 +12,24 @@ from django.db import transaction
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample, OpenApiParameter
 
-from .models import CustomUser, EmailVerificationToken
+from .models import CustomUser, EmailVerificationToken, LoginAuditLog
 from .serializers import (
     UserRegistrationSerializer,
     UserSerializer,
     EmailVerificationSerializer,
-    ResendVerificationEmailSerializer
+    ResendVerificationEmailSerializer,
+    LoginSerializer,
+    UserProfileSerializer
 )
 from .tasks import send_verification_email, send_welcome_email
 from .rate_limiting import (
     check_resend_rate_limit,
     increment_resend_counter,
-    get_remaining_resends
+    get_remaining_resends,
+    rate_limit
 )
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 @extend_schema(
@@ -491,4 +496,221 @@ class ResendVerificationEmailView(generics.GenericAPIView):
         return Response({
             'message': _('Verification email sent successfully. Please check your inbox.'),
             'attempts_remaining': attempts_remaining
+        }, status=status.HTTP_200_OK)
+
+
+@extend_schema(
+    tags=['Authentication'],
+    summary='Login with email and password',
+    description="""
+    Authenticate user with email and password credentials.
+
+    **Flow:**
+    1. Rate limit check (5 attempts per 5 minutes per IP)
+    2. Email and password validation
+    3. User authentication via EmailBackend
+    4. JWT token generation
+    5. User profile returned with tokens
+    6. Login attempt logged to LoginAuditLog
+
+    **Rate Limiting:**
+    - Maximum 5 login attempts per 5 minutes per IP address
+    - Returns 429 Too Many Requests when limit exceeded
+    - Uses Redis for distributed rate limiting
+    - IP addresses hashed for privacy
+
+    **Authentication:**
+    - Uses custom EmailBackend for email-based authentication
+    - Enforces email verification (is_email_verified=True)
+    - Checks account is active (is_active=True)
+    - All login attempts logged for security audit
+
+    **JWT Tokens:**
+    - Access token: 15 minutes lifetime (configurable)
+    - Refresh token: 7 days lifetime (configurable)
+    - Refresh tokens rotated on each use
+    - Old refresh tokens blacklisted after rotation
+
+    **Security:**
+    - Passwords hashed with Argon2
+    - Generic error messages prevent account enumeration
+    - Failed attempts logged with IP and user agent
+    - Specific error for unverified email (403)
+    """,
+    request=LoginSerializer,
+    responses={
+        200: OpenApiResponse(
+            description='Login successful',
+            examples=[
+                OpenApiExample(
+                    'Success Response',
+                    value={
+                        'access_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...',
+                        'refresh_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...',
+                        'user': {
+                            'id': '550e8400-e29b-41d4-a716-446655440000',
+                            'email': 'user@example.com',
+                            'first_name': 'John',
+                            'last_name': 'Doe',
+                            'is_sso_user': False
+                        }
+                    }
+                )
+            ]
+        ),
+        400: OpenApiResponse(
+            description='Validation error',
+            examples=[
+                OpenApiExample(
+                    'Missing Fields',
+                    value={
+                        'email': ['This field is required.'],
+                        'password': ['This field is required.']
+                    }
+                ),
+                OpenApiExample(
+                    'Invalid Email Format',
+                    value={
+                        'email': ['Enter a valid email address.']
+                    }
+                )
+            ]
+        ),
+        401: OpenApiResponse(
+            description='Invalid credentials',
+            examples=[
+                OpenApiExample(
+                    'Wrong Password',
+                    value={
+                        'error': 'Invalid email or password.'
+                    }
+                ),
+                OpenApiExample(
+                    'User Not Found',
+                    value={
+                        'error': 'Invalid email or password.'
+                    }
+                )
+            ]
+        ),
+        403: OpenApiResponse(
+            description='Email not verified',
+            examples=[
+                OpenApiExample(
+                    'Unverified Email',
+                    value={
+                        'error': 'Please verify your email before logging in.',
+                        'resend_url': '/api/auth/resend-verification/'
+                    }
+                )
+            ]
+        ),
+        429: OpenApiResponse(
+            description='Rate limit exceeded',
+            examples=[
+                OpenApiExample(
+                    'Too Many Attempts',
+                    value={
+                        'error': 'rate_limit_exceeded',
+                        'message': 'Too many login attempts. Please try again later.',
+                        'retry_after_seconds': 240
+                    }
+                )
+            ]
+        )
+    }
+)
+class LoginView(generics.GenericAPIView):
+    """
+    API endpoint for user login (US-3: Standard User Login, TASK-3.5).
+
+    POST /api/auth/login/
+    - Authenticates user with email and password
+    - Generates JWT access and refresh tokens
+    - Returns user profile with tokens
+    - Logs all login attempts for security audit
+
+    Rate Limiting: 5 attempts per 5 minutes per IP address
+    - Uses Redis-backed distributed rate limiting via decorator
+    - Returns 429 Too Many Requests with retry timing when limit exceeded
+
+    Authentication Flow:
+    1. Request validation (email format, required fields)
+    2. Rate limit check (via @rate_limit decorator)
+    3. User authentication via EmailBackend
+    4. Email verification check
+    5. Account status check
+    6. JWT token generation
+    7. Login attempt logging
+    """
+    serializer_class = LoginSerializer
+    authentication_classes = []  # Disable authentication for login endpoint
+    permission_classes = [AllowAny]
+
+    @rate_limit(limit=5, window=300)
+    def post(self, request):
+        """
+        Handle POST request for user login.
+
+        Request Body:
+            email (str): User's email address
+            password (str): User's password
+
+        Returns:
+            Response: JSON response with tokens and user profile
+
+        Raises:
+            400: If validation fails (missing/invalid fields)
+            401: If credentials are invalid
+            403: If email is not verified
+            429: If rate limit exceeded
+        """
+        # Validate request data
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['password']
+
+        # Authenticate user via EmailBackend
+        # EmailBackend handles:
+        # - User lookup by email (case-insensitive)
+        # - Password verification
+        # - Email verification check
+        # - Account status check
+        # - Login attempt logging via log_login_attempt
+        user = authenticate(request, email=email, password=password)
+
+        if user is None:
+            # Check failure reason from latest LoginAuditLog
+            # This allows us to provide specific error for unverified email
+            latest_log = LoginAuditLog.objects.filter(
+                email__iexact=email
+            ).order_by('-timestamp').first()
+
+            if latest_log and latest_log.failure_reason == 'email_not_verified':
+                return Response({
+                    'error': _('Please verify your email before logging in.'),
+                    'resend_url': '/api/auth/resend-verification/'
+                }, status=status.HTTP_403_FORBIDDEN)
+
+            # Generic error message prevents account enumeration
+            return Response({
+                'error': _('Invalid email or password.')
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Generate JWT tokens
+        refresh = RefreshToken.for_user(user)
+
+        # Serialize user profile
+        user_profile = UserProfileSerializer(user).data
+
+        return Response({
+            'access_token': str(refresh.access_token),
+            'refresh_token': str(refresh),
+            'user': user_profile
         }, status=status.HTTP_200_OK)

@@ -193,3 +193,35 @@ class ResendVerificationEmailSerializer(serializers.Serializer):
         self.context['user'] = user
 
         return value
+
+
+class LoginSerializer(serializers.Serializer):
+    """
+    Serializer for user login (US-3: Standard User Login, TASK-3.5).
+
+    Validates email and password for authentication.
+    Does not perform actual authentication - that's done in the view.
+    """
+    email = serializers.EmailField(
+        required=True,
+        help_text="Email address for login"
+    )
+    password = serializers.CharField(
+        required=True,
+        write_only=True,
+        style={'input_type': 'password'},
+        help_text="User password"
+    )
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    """
+    Serializer for user profile information (US-3: Standard User Login, TASK-3.5).
+
+    Used in login response to return basic user information.
+    Note: is_sso_user will be added in future User Story for Microsoft Entra ID SSO.
+    """
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'email', 'first_name', 'last_name']
+        read_only_fields = fields

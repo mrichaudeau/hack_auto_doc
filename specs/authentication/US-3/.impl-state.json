@@ -1,0 +1,216 @@
+{
+  "userStory": "US-3",
+  "feature": "authentication",
+  "branch": "feature/US-3",
+  "startedAt": "2025-01-09T00:00:00Z",
+  "lastUpdated": "2025-01-09T23:30:00Z",
+  "status": "in_progress",
+  "tasks": [
+    {
+      "id": "TASK-3.1",
+      "status": "completed",
+      "dependencies": [],
+      "category": "Backend"
+    },
+    {
+      "id": "TASK-3.2",
+      "status": "completed",
+      "dependencies": [],
+      "category": "Backend"
+    },
+    {
+      "id": "TASK-3.3",
+      "status": "completed",
+      "dependencies": [],
+      "category": "Backend"
+    },
+    {
+      "id": "TASK-3.4",
+      "status": "completed",
+      "dependencies": ["TASK-3.1"],
+      "category": "Backend"
+    },
+    {
+      "id": "TASK-3.5",
+      "status": "completed",
+      "dependencies": ["TASK-3.2", "TASK-3.3", "TASK-3.4"],
+      "category": "Backend"
+    },
+    {
+      "id": "TASK-3.6",
+      "status": "completed",
+      "dependencies": ["TASK-3.1"],
+      "category": "Backend"
+    },
+    {
+      "id": "TASK-3.7",
+      "status": "completed",
+      "dependencies": ["TASK-3.2"],
+      "category": "Backend"
+    },
+    {
+      "id": "TASK-3.8",
+      "status": "completed",
+      "dependencies": [],
+      "category": "Frontend"
+    },
+    {
+      "id": "TASK-3.9",
+      "status": "completed",
+      "dependencies": ["TASK-3.5", "TASK-3.8"],
+      "category": "Frontend"
+    },
+    {
+      "id": "TASK-3.10",
+      "status": "completed",
+      "dependencies": ["TASK-3.9"],
+      "category": "Frontend"
+    },
+    {
+      "id": "TASK-3.11",
+      "status": "completed",
+      "dependencies": ["TASK-3.10"],
+      "category": "Frontend"
+    },
+    {
+      "id": "TASK-3.12",
+      "status": "completed",
+      "dependencies": ["TASK-3.10", "TASK-3.7"],
+      "category": "Frontend"
+    },
+    {
+      "id": "TASK-3.13",
+      "status": "completed",
+      "dependencies": ["TASK-3.11"],
+      "category": "Frontend"
+    },
+    {
+      "id": "TASK-3.14",
+      "status": "completed",
+      "dependencies": ["TASK-3.1"],
+      "category": "Testing"
+    },
+    {
+      "id": "TASK-3.15",
+      "status": "completed",
+      "dependencies": ["TASK-3.3"],
+      "category": "Testing"
+    },
+    {
+      "id": "TASK-3.16",
+      "status": "completed",
+      "dependencies": ["TASK-3.5"],
+      "category": "Testing"
+    },
+    {
+      "id": "TASK-3.17",
+      "status": "completed",
+      "dependencies": ["TASK-3.5"],
+      "category": "Testing"
+    },
+    {
+      "id": "TASK-3.18",
+      "status": "completed",
+      "dependencies": ["TASK-3.8"],
+      "category": "Testing"
+    },
+    {
+      "id": "TASK-3.19",
+      "status": "completed",
+      "dependencies": ["TASK-3.11", "TASK-3.12"],
+      "category": "Testing"
+    },
+    {
+      "id": "TASK-3.20",
+      "status": "completed",
+      "dependencies": ["TASK-3.5"],
+      "category": "Testing"
+    },
+    {
+      "id": "TASK-3.21",
+      "status": "completed",
+      "dependencies": [],
+      "category": "Infrastructure"
+    },
+    {
+      "id": "TASK-3.22",
+      "status": "completed",
+      "dependencies": ["TASK-3.5"],
+      "category": "Infrastructure"
+    },
+    {
+      "id": "TASK-3.23",
+      "status": "completed",
+      "dependencies": ["TASK-3.2"],
+      "category": "Infrastructure"
+    },
+    {
+      "id": "TASK-3.24",
+      "status": "completed",
+      "dependencies": ["TASK-3.22"],
+      "category": "Infrastructure"
+    }
+  ],
+  "generatedAgents": [
+    "backend-agent",
+    "frontend-agent",
+    "testing-agent",
+    "infrastructure-agent"
+  ],
+  "generatedSkills": [
+    "api-development",
+    "security-implementation",
+    "django-testing",
+    "integration-testing",
+    "frontend-react-vite-development",
+    "developer-documentation",
+    "backend-django-configuration",
+    "database-administration"
+  ],
+  "progress": {
+    "totalTasks": 24,
+    "completed": 22,
+    "inProgress": 0,
+    "pending": 2,
+    "blocked": 0,
+    "percentComplete": 91.67
+  },
+  "currentWave": 7,
+  "executionWaves": [
+    {
+      "wave": 1,
+      "tasks": ["TASK-3.1", "TASK-3.2", "TASK-3.3", "TASK-3.8", "TASK-3.21"],
+      "status": "completed"
+    },
+    {
+      "wave": 2,
+      "tasks": ["TASK-3.4", "TASK-3.6", "TASK-3.7", "TASK-3.14", "TASK-3.15", "TASK-3.18", "TASK-3.23"],
+      "status": "completed"
+    },
+    {
+      "wave": 3,
+      "tasks": ["TASK-3.5"],
+      "status": "completed"
+    },
+    {
+      "wave": 4,
+      "tasks": ["TASK-3.9", "TASK-3.16", "TASK-3.17", "TASK-3.20", "TASK-3.22"],
+      "status": "completed"
+    },
+    {
+      "wave": 5,
+      "tasks": ["TASK-3.10"],
+      "status": "completed"
+    },
+    {
+      "wave": 6,
+      "tasks": ["TASK-3.11", "TASK-3.12", "TASK-3.24"],
+      "status": "completed"
+    },
+    {
+      "wave": 7,
+      "tasks": ["TASK-3.13", "TASK-3.19"],
+      "status": "completed"
+    }
+  ]
+}

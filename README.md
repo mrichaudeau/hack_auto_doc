@@ -81,7 +81,8 @@ Complete user registration system with email-based authentication:
 - [User Workflow Guide](docs/workflows/user_registration_workflow.md)
 - [Security Considerations](docs/security/registration_security.md)
 - [Testing Guide](docs/testing/registration_testing_guide.md)
-- [Troubleshooting Guide](docs/troubleshooting/registration_troubleshooting.md)
+- [Registration Troubleshooting](docs/troubleshooting/registration_troubleshooting.md)
+- [Authentication Troubleshooting](docs/troubleshooting/authentication.md) ← **NEW**
 
 **Try it:** Navigate to http://localhost:3000/register after starting services
 

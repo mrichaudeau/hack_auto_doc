@@ -129,7 +129,7 @@ const LoginForm = ({ onSubmit, loading, error }) => {
 
     // If no errors, submit form
     if (Object.keys(errors).length === 0) {
-      onSubmit(formData);
+      onSubmit(formData.email, formData.password);
     }
   };
 

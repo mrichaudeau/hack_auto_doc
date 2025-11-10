@@ -1,0 +1,383 @@
+{
+  "userStory": "US-8",
+  "userStoryTitle": "User Profile Viewing",
+  "feature": "authentication",
+  "priority": "P1",
+  "generatedAt": "2025-01-09",
+  "nodes": [
+    {
+      "id": "TASK-8.1",
+      "title": "Create UserProfile serializer",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "2-3h",
+      "effortHours": 2.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.2",
+      "title": "Implement GET /api/users/me/ endpoint",
+      "type": "backend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "3-4h",
+      "effortHours": 3.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.3",
+      "title": "Add database indexes for user lookups",
+      "type": "backend",
+      "specialty": "database",
+      "priority": "P1",
+      "effort": "1-2h",
+      "effortHours": 1.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.4",
+      "title": "Configure URL routing for profile endpoint",
+      "type": "backend",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "1h",
+      "effortHours": 1,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.5",
+      "title": "Create API client function for profile fetching",
+      "type": "frontend",
+      "specialty": "api",
+      "priority": "P1",
+      "effort": "2-3h",
+      "effortHours": 2.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.6",
+      "title": "Create ProfilePage component",
+      "type": "frontend",
+      "specialty": "page",
+      "priority": "P1",
+      "effort": "4-6h",
+      "effortHours": 5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.7",
+      "title": "Add route for profile page",
+      "type": "frontend",
+      "specialty": "page",
+      "priority": "P1",
+      "effort": "1-2h",
+      "effortHours": 1.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.8",
+      "title": "Implement accessibility features",
+      "type": "frontend",
+      "specialty": "component",
+      "priority": "P1",
+      "effort": "2-3h",
+      "effortHours": 2.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.9",
+      "title": "Write unit tests for UserProfile serializer",
+      "type": "testing",
+      "specialty": "unit",
+      "priority": "P1",
+      "effort": "2-3h",
+      "effortHours": 2.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.10",
+      "title": "Write integration tests for endpoint",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "3-4h",
+      "effortHours": 3.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.11",
+      "title": "Write E2E tests for profile viewing flow",
+      "type": "testing",
+      "specialty": "e2e",
+      "priority": "P1",
+      "effort": "4-5h",
+      "effortHours": 4.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.12",
+      "title": "Write security tests",
+      "type": "testing",
+      "specialty": "security",
+      "priority": "P1",
+      "effort": "2-3h",
+      "effortHours": 2.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.13",
+      "title": "Perform performance testing",
+      "type": "testing",
+      "specialty": "integration",
+      "priority": "P1",
+      "effort": "3-4h",
+      "effortHours": 3.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.14",
+      "title": "Update API documentation (OpenAPI/Swagger)",
+      "type": "infrastructure",
+      "specialty": "documentation",
+      "priority": "P1",
+      "effort": "2-3h",
+      "effortHours": 2.5,
+      "status": "todo"
+    },
+    {
+      "id": "TASK-8.15",
+      "title": "Add audit logging for profile views",
+      "type": "infrastructure",
+      "specialty": "config",
+      "priority": "P1",
+      "effort": "2-3h",
+      "effortHours": 2.5,
+      "status": "todo"
+    }
+  ],
+  "edges": [
+    {
+      "from": "TASK-8.1",
+      "to": "TASK-8.2",
+      "type": "blocks",
+      "reason": "Endpoint requires serializer to format response data"
+    },
+    {
+      "from": "TASK-8.2",
+      "to": "TASK-8.4",
+      "type": "blocks",
+      "reason": "URL routing requires endpoint implementation"
+    },
+    {
+      "from": "TASK-8.2",
+      "to": "TASK-8.5",
+      "type": "blocks",
+      "reason": "Frontend API client requires functional backend endpoint"
+    },
+    {
+      "from": "TASK-8.5",
+      "to": "TASK-8.6",
+      "type": "blocks",
+      "reason": "ProfilePage component requires API client function"
+    },
+    {
+      "from": "TASK-8.6",
+      "to": "TASK-8.7",
+      "type": "blocks",
+      "reason": "Route configuration requires page component"
+    },
+    {
+      "from": "TASK-8.6",
+      "to": "TASK-8.8",
+      "type": "blocks",
+      "reason": "Accessibility features enhance existing component"
+    },
+    {
+      "from": "TASK-8.1",
+      "to": "TASK-8.9",
+      "type": "blocks",
+      "reason": "Unit tests require serializer implementation"
+    },
+    {
+      "from": "TASK-8.2",
+      "to": "TASK-8.10",
+      "type": "blocks",
+      "reason": "Integration tests require endpoint implementation"
+    },
+    {
+      "from": "TASK-8.7",
+      "to": "TASK-8.11",
+      "type": "blocks",
+      "reason": "E2E tests require complete frontend flow"
+    },
+    {
+      "from": "TASK-8.2",
+      "to": "TASK-8.12",
+      "type": "blocks",
+      "reason": "Security tests require endpoint implementation"
+    },
+    {
+      "from": "TASK-8.2",
+      "to": "TASK-8.13",
+      "type": "blocks",
+      "reason": "Performance tests require endpoint implementation"
+    },
+    {
+      "from": "TASK-8.2",
+      "to": "TASK-8.14",
+      "type": "blocks",
+      "reason": "Documentation requires endpoint to be implemented"
+    },
+    {
+      "from": "TASK-8.2",
+      "to": "TASK-8.15",
+      "type": "blocks",
+      "reason": "Audit logging requires endpoint implementation"
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Backend Foundation",
+      "description": "Core backend implementation for profile endpoint",
+      "tasks": ["TASK-8.1", "TASK-8.2", "TASK-8.3", "TASK-8.4"],
+      "estimatedEffort": "7-10h",
+      "estimatedEffortHours": 8.5
+    },
+    {
+      "phase": 2,
+      "name": "Frontend Integration",
+      "description": "User interface for profile viewing",
+      "tasks": ["TASK-8.5", "TASK-8.6", "TASK-8.7", "TASK-8.8"],
+      "estimatedEffort": "9-14h",
+      "estimatedEffortHours": 11.5
+    },
+    {
+      "phase": 3,
+      "name": "Testing & Validation",
+      "description": "Comprehensive testing across all layers",
+      "tasks": ["TASK-8.9", "TASK-8.10", "TASK-8.11", "TASK-8.12", "TASK-8.13"],
+      "estimatedEffort": "14-19h",
+      "estimatedEffortHours": 16.5
+    },
+    {
+      "phase": 4,
+      "name": "Infrastructure & Documentation",
+      "description": "Documentation and operational setup",
+      "tasks": ["TASK-8.14", "TASK-8.15"],
+      "estimatedEffort": "4-6h",
+      "estimatedEffortHours": 5
+    }
+  ],
+  "parallelGroups": [
+    {
+      "group": "Database Optimization",
+      "description": "Can run independently at any time",
+      "tasks": ["TASK-8.3"],
+      "canStartAfter": [],
+      "estimatedEffort": "1-2h"
+    },
+    {
+      "group": "Backend Testing",
+      "description": "Can run in parallel after backend implementation",
+      "tasks": ["TASK-8.9", "TASK-8.10", "TASK-8.12", "TASK-8.13"],
+      "canStartAfter": ["TASK-8.1", "TASK-8.2"],
+      "estimatedEffort": "10-14h"
+    },
+    {
+      "group": "Infrastructure Setup",
+      "description": "Can run in parallel with frontend and testing",
+      "tasks": ["TASK-8.14", "TASK-8.15"],
+      "canStartAfter": ["TASK-8.2"],
+      "estimatedEffort": "4-6h"
+    },
+    {
+      "group": "Frontend Development",
+      "description": "Can proceed once backend endpoint is functional",
+      "tasks": ["TASK-8.5", "TASK-8.6", "TASK-8.7", "TASK-8.8"],
+      "canStartAfter": ["TASK-8.2"],
+      "estimatedEffort": "9-14h"
+    }
+  ],
+  "externalDependencies": [
+    {
+      "userStory": "US-3",
+      "title": "Standard User Login",
+      "reason": "JWT token generation must be working for authentication"
+    },
+    {
+      "userStory": "US-7",
+      "title": "Microsoft Entra ID SSO Login",
+      "reason": "is_sso_user field must be set correctly for authentication method display"
+    }
+  ],
+  "blocks": [
+    {
+      "userStory": "US-9",
+      "title": "User Profile Update",
+      "reason": "Profile viewing required before editing functionality"
+    },
+    {
+      "userStory": "US-10",
+      "title": "Password Change",
+      "reason": "Profile page provides access to password change feature"
+    },
+    {
+      "userStory": "US-12",
+      "title": "Logout from Current Session",
+      "reason": "Profile page provides access to logout functionality"
+    },
+    {
+      "userStory": "US-13",
+      "title": "Logout from All Devices",
+      "reason": "Profile page provides access to session management"
+    }
+  ],
+  "summary": {
+    "totalTasks": 15,
+    "byType": {
+      "backend": 4,
+      "frontend": 4,
+      "testing": 5,
+      "infrastructure": 2
+    },
+    "bySpecialty": {
+      "api": 3,
+      "database": 1,
+      "config": 2,
+      "page": 2,
+      "component": 1,
+      "unit": 1,
+      "integration": 2,
+      "e2e": 1,
+      "security": 1,
+      "documentation": 1
+    },
+    "byPriority": {
+      "P1": 15,
+      "P2": 0,
+      "P3": 0
+    },
+    "totalEffortHours": 41.5,
+    "totalEffortRange": "36-51 hours",
+    "totalEffortDays": "5-7 days (1 full-stack developer)",
+    "parallelEffortDays": "3-4 days (2 developers: backend + frontend)",
+    "teamEffortDays": "2-3 days (full team with specialized roles)"
+  },
+  "criticalPath": [
+    "TASK-8.1",
+    "TASK-8.2",
+    "TASK-8.5",
+    "TASK-8.6",
+    "TASK-8.7",
+    "TASK-8.11"
+  ],
+  "criticalPathEffort": "19-24h",
+  "metadata": {
+    "generatedBy": "functional-spec-planner",
+    "version": "1.0",
+    "format": "dependencies-graph-v1",
+    "sourceFile": "specs/authentication/US-8/user-story.md"
+  }
+}

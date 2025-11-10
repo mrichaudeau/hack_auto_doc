@@ -1,5 +1,8 @@
 # AI-Powered Technology Watch Platform
 
+[![CI Pipeline](https://github.com/mrichaudeau/hack_auto_doc/actions/workflows/ci.yml/badge.svg)](https://github.com/mrichaudeau/hack_auto_doc/actions/workflows/ci.yml)
+[![Release Pipeline](https://github.com/mrichaudeau/hack_auto_doc/actions/workflows/release.yml/badge.svg)](https://github.com/mrichaudeau/hack_auto_doc/actions/workflows/release.yml)
+
 An intelligent platform for automating technology monitoring and generating personalized reports using AI agents (Langgraph) and semantic search.
 
 ## Overview
@@ -504,6 +507,7 @@ See `.env.backend.example` and `.env.frontend.example` for complete variable lis
 ## Documentation
 
 - **Setup Guide:** [docs/setup/00_setup_local_docker.md](docs/setup/00_setup_local_docker.md)
+- **CI/CD Pipeline:** [docs/cicd/README.md](docs/cicd/README.md) - Comprehensive guide to automated builds, testing, and releases
 - **Functional Specifications:** `docs/*.md` (French)
 - **Structured Specifications:** `specs/` (English)
 - **API Documentation:** http://localhost:8000/api/docs/ (when running)

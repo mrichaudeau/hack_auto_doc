@@ -1,0 +1,338 @@
+name: Release Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      version_bump:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+# Prevent concurrent releases
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  # ====================================
+  # Determine Version
+  # ====================================
+  versioning:
+    name: Determine Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      version_tag: ${{ steps.version.outputs.version_tag }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for version calculation
+      
+      - name: Calculate Version
+        id: version
+        run: |
+          # Get the latest tag, default to v0.0.0 if no tags exist
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "Latest tag: $LATEST_TAG"
+          
+          # Remove 'v' prefix for version manipulation
+          LATEST_VERSION="${LATEST_TAG#v}"
+          
+          # Split version into components
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$LATEST_VERSION"
+          
+          # Determine bump type
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            BUMP_TYPE="${{ github.event.inputs.version_bump }}"
+          else
+            # Auto-detect from commit messages
+            COMMIT_MSG=$(git log -1 --pretty=%B)
+            if echo "$COMMIT_MSG" | grep -qiE "^(BREAKING CHANGE|feat!|fix!):"; then
+              BUMP_TYPE="major"
+            elif echo "$COMMIT_MSG" | grep -qiE "^feat:"; then
+              BUMP_TYPE="minor"
+            else
+              BUMP_TYPE="patch"
+            fi
+          fi
+          
+          echo "Bump type: $BUMP_TYPE"
+          
+          # Increment version based on bump type
+          case $BUMP_TYPE in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+          esac
+          
+          NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          NEW_TAG="v${NEW_VERSION}"
+          
+          echo "New version: $NEW_VERSION"
+          echo "New tag: $NEW_TAG"
+          
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "version_tag=$NEW_TAG" >> $GITHUB_OUTPUT
+
+  # ====================================
+  # Run Full CI Suite
+  # ====================================
+  run-ci:
+    name: Run CI Pipeline
+    uses: ./.github/workflows/ci.yml
+
+  # ====================================
+  # Build Release Artifacts
+  # ====================================
+  build-artifacts:
+    name: Build Release Artifacts
+    runs-on: ubuntu-latest
+    needs: [versioning, run-ci]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 - --version 2.2.1
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      
+      - name: Build Backend Artifacts
+        working-directory: backend
+        run: |
+          poetry install --no-root
+          poetry export -f requirements.txt --output requirements.txt --without-hashes
+      
+      - name: Build Frontend Production Bundle
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+      
+      - name: Build Backend Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: false
+          tags: |
+            veille-tech-backend:${{ needs.versioning.outputs.version }}
+            veille-tech-backend:latest
+          outputs: type=docker,dest=/tmp/backend-image.tar
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      - name: Build Frontend Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: false
+          tags: |
+            veille-tech-frontend:${{ needs.versioning.outputs.version }}
+            veille-tech-frontend:latest
+          outputs: type=docker,dest=/tmp/frontend-image.tar
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      - name: Create Release Archive
+        run: |
+          mkdir -p release-artifacts
+          
+          # Copy backend requirements
+          cp backend/requirements.txt release-artifacts/backend-requirements.txt
+          
+          # Copy frontend build (if exists)
+          if [ -d "frontend/dist" ]; then
+            tar -czf release-artifacts/frontend-dist.tar.gz -C frontend dist
+          fi
+          
+          # Copy Docker images
+          cp /tmp/backend-image.tar release-artifacts/backend-docker-image.tar
+          cp /tmp/frontend-image.tar release-artifacts/frontend-docker-image.tar
+          
+          # Create deployment files archive
+          tar -czf release-artifacts/deployment-files.tar.gz \
+            docker-compose.yml \
+            .env.backend.example \
+            .env.frontend.example \
+            README.md
+          
+          # Create checksums
+          cd release-artifacts
+          sha256sum * > checksums.txt
+      
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts-${{ needs.versioning.outputs.version }}
+          path: release-artifacts/
+          retention-days: 90
+
+  # ====================================
+  # Create GitHub Release
+  # ====================================
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [versioning, build-artifacts]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-artifacts-${{ needs.versioning.outputs.version }}
+          path: release-artifacts/
+      
+      - name: Generate Release Notes
+        id: release_notes
+        run: |
+          # Get the previous tag
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          
+          if [ -z "$PREV_TAG" ]; then
+            # First release - create release notes file
+            {
+              echo "## Initial Release"
+              echo ""
+              echo "This is the first release of the AI-Powered Technology Watch Platform."
+              echo ""
+              echo "### Features"
+              echo "- User registration with email verification"
+              echo "- JWT-based authentication"
+              echo "- Docker-based deployment"
+              echo "- Automated CI/CD pipeline"
+              echo ""
+              echo "### Commits"
+              git log --pretty=format:"- %s (%h)" --no-merges
+            } > release-notes.md
+          else
+            # Generate changelog from commits since last tag
+            {
+              echo "## What's Changed"
+              echo ""
+              echo "### Features"
+              git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h)" --grep="^feat" --no-merges || echo "- No new features"
+              echo ""
+              echo "### Bug Fixes"
+              git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h)" --grep="^fix" --no-merges || echo "- No bug fixes"
+              echo ""
+              echo "### Documentation"
+              git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h)" --grep="^docs" --no-merges || echo "- No documentation updates"
+              echo ""
+              echo "### Maintenance"
+              git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h)" --grep="^chore\|^refactor\|^style\|^test" --no-merges || echo "- No maintenance updates"
+              echo ""
+              echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${PREV_TAG}...${{ needs.versioning.outputs.version_tag }}"
+            } > release-notes.md
+          fi
+      
+      - name: Create Git Tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a ${{ needs.versioning.outputs.version_tag }} -m "Release ${{ needs.versioning.outputs.version_tag }}"
+          git push origin ${{ needs.versioning.outputs.version_tag }}
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.versioning.outputs.version_tag }}
+          name: Release ${{ needs.versioning.outputs.version_tag }}
+          body_path: release-notes.md
+          draft: false
+          prerelease: false
+          files: |
+            release-artifacts/backend-requirements.txt
+            release-artifacts/frontend-dist.tar.gz
+            release-artifacts/backend-docker-image.tar
+            release-artifacts/frontend-docker-image.tar
+            release-artifacts/deployment-files.tar.gz
+            release-artifacts/checksums.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ====================================
+  # Post-Release Notifications
+  # ====================================
+  notify:
+    name: Send Notifications
+    runs-on: ubuntu-latest
+    needs: [versioning, create-release]
+    if: always()
+    
+    steps:
+      - name: Release Success Summary
+        if: needs.create-release.result == 'success'
+        run: |
+          echo "✅ Release ${{ needs.versioning.outputs.version_tag }} created successfully!"
+          echo ""
+          echo "📦 Release includes:"
+          echo "  - Backend Docker image"
+          echo "  - Frontend Docker image"
+          echo "  - Frontend production build"
+          echo "  - Deployment configuration files"
+          echo "  - Requirements and dependencies"
+          echo ""
+          echo "🔗 View release: https://github.com/${{ github.repository }}/releases/tag/${{ needs.versioning.outputs.version_tag }}"
+      
+      - name: Release Failure Summary
+        if: needs.create-release.result == 'failure'
+        run: |
+          echo "❌ Release failed!"
+          echo "Please check the workflow logs for details."
+          exit 1
+      
+      # Optional: Add Slack/Email/Discord notifications here
+      # - name: Notify Slack
+      #   if: needs.create-release.result == 'success'
+      #   uses: slackapi/slack-github-action@v1
+      #   with:
+      #     payload: |
+      #       {
+      #         "text": "🚀 New release ${{ needs.versioning.outputs.version_tag }} deployed!"
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

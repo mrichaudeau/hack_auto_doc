@@ -31,17 +31,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-          cache: 'pip'
+          check-latest: true
       
       - name: Install Poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 - --version 2.2.1
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          python -m pip install --upgrade pip
+          pip install poetry==2.2.1
       
       - name: Cache Poetry dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.cache/pypoetry
+          path: |
+            ~/.cache/pypoetry
+            backend/.venv
           key: ${{ runner.os }}-poetry-${{ hashFiles('backend/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-poetry-
@@ -77,17 +79,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-          cache: 'pip'
+          check-latest: true
       
       - name: Install Poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 - --version 2.2.1
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          python -m pip install --upgrade pip
+          pip install poetry==2.2.1
       
       - name: Cache Poetry dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.cache/pypoetry
+          path: |
+            ~/.cache/pypoetry
+            backend/.venv
           key: ${{ runner.os }}-poetry-${{ hashFiles('backend/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-poetry-
@@ -154,17 +158,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-          cache: 'pip'
+          check-latest: true
       
       - name: Install Poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 - --version 2.2.1
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          python -m pip install --upgrade pip
+          pip install poetry==2.2.1
       
       - name: Cache Poetry dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.cache/pypoetry
+          path: |
+            ~/.cache/pypoetry
+            backend/.venv
           key: ${{ runner.os }}-poetry-${{ hashFiles('backend/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-poetry-
@@ -233,17 +239,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-          cache: 'pip'
+          check-latest: true
       
       - name: Install Poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 - --version 2.2.1
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          python -m pip install --upgrade pip
+          pip install poetry==2.2.1
       
       - name: Cache Poetry dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.cache/pypoetry
+          path: |
+            ~/.cache/pypoetry
+            backend/.venv
           key: ${{ runner.os }}-poetry-${{ hashFiles('backend/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-poetry-
@@ -252,11 +260,6 @@ jobs:
         working-directory: backend
         run: |
           poetry install --no-root
-      
-      - name: Install coverage plugin
-        working-directory: backend
-        run: |
-          poetry add --group dev pytest-cov
       
       - name: Run Tests with Coverage
         working-directory: backend

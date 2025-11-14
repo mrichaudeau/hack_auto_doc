@@ -5,6 +5,7 @@
  *
  * Updated for TASK-3.11: Wrapped with AuthProvider for global authentication state
  * Updated for TASK-3.12: Initialize API interceptors with navigate and logout
+ * Updated for US-2: Added SubjectCatalog route for browsing active subjects
  */
 
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
@@ -19,6 +20,7 @@ import VerifyEmailPage from './pages/VerifyEmailPage';
 import ResendVerificationPage from './pages/ResendVerificationPage';
 import HomePage from './pages/HomePage';
 import DashboardPage from './pages/DashboardPage';
+import SubjectCatalogPage from './pages/SubjectCatalogPage';
 import './App.css';
 
 /**
@@ -41,6 +43,9 @@ function AppRoutes() {
     <Routes>
       {/* Home Page */}
       <Route path="/" element={<HomePage />} />
+
+      {/* Public Routes */}
+      <Route path="/subjects" element={<SubjectCatalogPage />} />
 
       {/* Authentication Routes */}
       <Route path="/register" element={<RegisterPage />} />

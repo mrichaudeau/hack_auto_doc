@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     # Project apps - core must be first for infrastructure migrations (pgvector)
     'apps.core',  # Core infrastructure app (pgvector extension, cross-cutting concerns)
     'apps.accounts.apps.AccountsConfig',  # User accounts and authentication
+    'apps.subscriptions.apps.SubscriptionsConfig',  # Subject and subscription management
 
     # Main application
     'veille_tech.apps.VeilleTechConfig',  # Main app with config validation
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',  # For JWT token rotation and blacklisting
     'drf_spectacular',
     'corsheaders',
+    'simple_history',  # Django audit trail for subject management
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -53,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',  # Tracks user for audit trail
     # 'allauth.account.middleware.AccountMiddleware',  # TODO: Re-enable for SSO (Bloc 1 - Microsoft Entra ID)
 ]
 

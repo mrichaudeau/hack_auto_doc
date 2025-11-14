@@ -83,10 +83,11 @@ export class EmailVerificationError extends Error {
 
 /**
  * Configured axios instance for email verification API calls
- * Uses environment variable for base URL with fallback to localhost
+ * Uses environment variable for base URL with fallback to empty string (uses Vite proxy)
+ * When VITE_API_URL is empty, requests are relative and go through Vite dev server proxy
  */
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+  baseURL: import.meta.env.VITE_API_URL || '',
   timeout: 10000, // 10 seconds
   headers: {
     'Content-Type': 'application/json',

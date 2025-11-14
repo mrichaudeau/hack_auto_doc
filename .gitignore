@@ -56,3 +56,10 @@ frontend/cypress/downloads/
 # Functional Spec Planner
 # Keep generated specs in git, but ignore GitHub issue mappings
 specs/**/github-issues.json
+
+backend/__pycache__/
+backend/migrations/__pycache__/
+backend/migrations/*.pyc
+backend/tests/__pycache__/
+backend/tests/*.pyc
+backend/logs/

@@ -10,8 +10,9 @@
 import axios from 'axios';
 
 // Get API base URL from environment or config
-// Note: Do NOT include /api in the base URL - it's added in authService
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Note: When empty, requests are relative and go through Vite dev server proxy
+// The proxy forwards /api/* requests to the backend service
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 // Create axios instance with default configuration
 const apiClient = axios.create({

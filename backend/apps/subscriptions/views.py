@@ -157,7 +157,7 @@ class SubjectViewSet(viewsets.ModelViewSet):
         instance.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    # OpenAPI/Swagger Documentation
+    # OpenAPI/Swagger Documentation Below
     @extend_schema(
         summary="List all subjects",
         description=(
@@ -314,16 +314,3 @@ class SubjectViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         return super().update(request, *args, **kwargs)
 
-    @extend_schema(
-        summary="Archive subject (soft delete)",
-        description=(
-            "Archive a subject by changing status to 'archived'. Subject data is preserved "
-            "for audit trail. Subject will be hidden from user-facing APIs."
-        ),
-        responses={
-            204: None,
-            404: OpenApiTypes.OBJECT,
-        }
-    )
-    def destroy(self, request, *args, **kwargs):
-        return super().destroy(request, *args, **kwargs)

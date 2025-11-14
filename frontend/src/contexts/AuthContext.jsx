@@ -198,11 +198,4 @@ export function AuthProvider({ children }) {
   );
 }
 
-/**
- * PropTypes for AuthProvider
- */
-AuthProvider.propTypes = {
-  children: React.ReactNode,
-};
-
 export default AuthContext;

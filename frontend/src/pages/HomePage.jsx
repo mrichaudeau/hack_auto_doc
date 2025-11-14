@@ -2,12 +2,40 @@
  * Home Page Component
  *
  * Landing page for the Technology Watch Platform
+ * Redirects authenticated users to dashboard
  */
 
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 import './HomePage.css';
 
 const HomePage = () => {
+  const { isAuthenticated, loading } = useAuth();
+
+  console.log('[HomePage] Rendering - isAuthenticated:', isAuthenticated, 'loading:', loading);
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="home-page">
+        <div className="home-container" style={{ textAlign: 'center' }}>
+          <div className="loading-spinner">
+            <div className="spinner"></div>
+          </div>
+          <p style={{ color: '#667eea', marginTop: '1rem', fontSize: '1.1rem' }}>
+            Loading...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect authenticated users to dashboard
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // Show landing page for unauthenticated users
   return (
     <div className="home-page">
       <div className="home-container">

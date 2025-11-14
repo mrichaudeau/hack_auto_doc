@@ -18,8 +18,8 @@ const LoginPage = () => {
   const { login, loading, error, clearError } = useAuth();
 
   // Get the intended destination from location state (set by ProtectedRoute)
-  // Default to '/' if no intended destination
-  const from = location.state?.from?.pathname || '/';
+  // Default to '/dashboard' if no intended destination
+  const from = location.state?.from?.pathname || '/dashboard';
 
   /**
    * Handle login form submission

@@ -12,11 +12,13 @@ import { useEffect } from 'react';
 import { AuthProvider } from './contexts/AuthContext';
 import { initializeApiClient } from './services/apiClient';
 import { useAuth } from './hooks/useAuth';
+import ProtectedRoute from './components/ProtectedRoute';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import VerifyEmailPage from './pages/VerifyEmailPage';
 import ResendVerificationPage from './pages/ResendVerificationPage';
 import HomePage from './pages/HomePage';
+import DashboardPage from './pages/DashboardPage';
 import './App.css';
 
 /**
@@ -26,6 +28,8 @@ import './App.css';
 function AppRoutes() {
   const navigate = useNavigate();
   const { logout } = useAuth();
+
+  console.log('[AppRoutes] Component rendering');
 
   // Initialize API interceptors on mount
   useEffect(() => {
@@ -44,6 +48,16 @@ function AppRoutes() {
       <Route path="/verify-email" element={<VerifyEmailPage />} />
       <Route path="/resend-verification" element={<ResendVerificationPage />} />
 
+      {/* Protected Routes */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+
       {/* Redirect unknown routes to home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
@@ -51,6 +65,8 @@ function AppRoutes() {
 }
 
 function App() {
+  console.log('[App] Main App component rendering');
+
   return (
     <Router>
       {/* AuthProvider must be inside Router because it uses useNavigate */}

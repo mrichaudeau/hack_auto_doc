@@ -107,10 +107,3 @@ export default function ProtectedRoute({ children }) {
   console.info('[ProtectedRoute] User authenticated, rendering protected content');
   return children;
 }
-
-/**
- * PropTypes for ProtectedRoute
- */
-ProtectedRoute.propTypes = {
-  children: React.ReactNode.isRequired,
-};

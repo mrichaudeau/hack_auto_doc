@@ -1,7 +1,9 @@
 """
 Django REST Framework views for Subject catalog API.
 
-This module provides RESTful API endpoints for admin-only subject management:
+This module provides RESTful API endpoints for subject management:
+
+**Admin Endpoints (IsAdminUser required):**
 - GET /api/admin/subjects/ - List subjects with pagination, filtering, sorting
 - POST /api/admin/subjects/ - Create new subject with web sources
 - GET /api/admin/subjects/{id}/ - Retrieve specific subject
@@ -9,11 +11,12 @@ This module provides RESTful API endpoints for admin-only subject management:
 - PUT /api/admin/subjects/{id}/ - Full update subject
 - DELETE /api/admin/subjects/{id}/ - Archive subject (soft delete)
 
-All endpoints require admin authentication (IsAdminUser permission).
+**Public Endpoints (no authentication required):**
+- GET /api/subjects/ - Browse active subjects (public catalog for discovery)
 """
 
 from rest_framework import viewsets, filters, status
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -22,7 +25,7 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExampl
 from drf_spectacular.types import OpenApiTypes
 
 from .models import Subject
-from .serializers import SubjectSerializer, SubjectListSerializer
+from .serializers import SubjectSerializer, SubjectListSerializer, PublicSubjectSerializer
 
 
 class SubjectPagination(PageNumberPagination):
@@ -314,3 +317,121 @@ class SubjectViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         return super().update(request, *args, **kwargs)
 
+
+# ============================================================================
+# PUBLIC ENDPOINTS (US-2)
+# ============================================================================
+
+
+class PublicSubjectViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Public subject catalog API for browsing active technology topics (US-2).
+
+    **List View (GET /api/subjects/):**
+    - Returns paginated list of ACTIVE subjects only (50 per page by default)
+    - Sorted alphabetically by name for consistency
+    - Public endpoint - no authentication required for discovery
+    - Performance optimized with query optimization (< 100ms target)
+
+    **Query Parameters:**
+    - `page` (integer, optional): Page number (default=1)
+    - `page_size` (integer, optional): Items per page (default=50, max=100)
+
+    **Response Format:**
+    ```json
+    {
+      "count": 42,
+      "next": "http://api.example.com/api/subjects/?page=2",
+      "previous": null,
+      "results": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440000",
+          "name": "AI and Machine Learning",
+          "description": "Latest developments...",
+          "status": "active"
+        }
+      ]
+    }
+    ```
+
+    **Permissions:**
+    - AllowAny: Public access for browsing catalog before subscription
+
+    **Performance:**
+    - < 100ms response time (P95) for 1000+ subjects
+    - Single database query with index on status field
+    - Query optimization with .only() for required fields
+    """
+
+    serializer_class = PublicSubjectSerializer
+    permission_classes = [AllowAny]
+    pagination_class = SubjectPagination
+
+    def get_queryset(self):
+        """
+        Return only active subjects, sorted alphabetically.
+
+        Query optimization:
+        - Filters for status='active' using indexed status field
+        - Orders by name alphabetically for consistency
+        - Uses .only() to fetch only required fields for performance
+
+        Returns:
+            QuerySet of active Subject instances ordered by name
+        """
+        return Subject.objects.filter(
+            status=Subject.Status.ACTIVE
+        ).only(
+            'id', 'name', 'description', 'status'
+        ).order_by('name')
+
+    @extend_schema(
+        summary="List active subjects for browsing",
+        description=(
+            "Returns paginated list of active technology monitoring subjects "
+            "sorted alphabetically. Public endpoint for subject discovery before subscription. "
+            "Archived subjects are excluded. Response time < 100ms (P95) for 1000+ subjects."
+        ),
+        parameters=[
+            OpenApiParameter(
+                name='page',
+                description='Page number',
+                type=OpenApiTypes.INT,
+                default=1,
+            ),
+            OpenApiParameter(
+                name='page_size',
+                description='Items per page (max 100)',
+                type=OpenApiTypes.INT,
+                default=50,
+            ),
+        ],
+        responses={200: PublicSubjectSerializer(many=True)},
+        examples=[
+            OpenApiExample(
+                'List Active Subjects Response',
+                value={
+                    "count": 42,
+                    "next": "http://localhost:8000/api/subjects/?page=2",
+                    "previous": None,
+                    "results": [
+                        {
+                            "id": "550e8400-e29b-41d4-a716-446655440000",
+                            "name": "AI and Machine Learning",
+                            "description": "Latest developments in artificial intelligence and machine learning frameworks",
+                            "status": "active"
+                        },
+                        {
+                            "id": "550e8400-e29b-41d4-a716-446655440001",
+                            "name": "Blockchain",
+                            "description": "Blockchain technology, cryptocurrency, and distributed ledgers",
+                            "status": "active"
+                        }
+                    ]
+                }
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """List active subjects (public endpoint)."""
+        return super().list(request, *args, **kwargs)

@@ -3,6 +3,11 @@ Django REST Framework serializers for Subject and WebSource models.
 
 This module provides JSON serialization/deserialization for Subject catalog API,
 including nested web source handling, validation, and subscriber count display.
+
+Serializers:
+    - WebSourceSerializer: For web scraping source URLs (admin use)
+    - SubjectSerializer: Full subject serializer with web_sources (admin use)
+    - SubjectListSerializer: Read-only public catalog serializer (public use)
 """
 
 from rest_framework import serializers
@@ -264,3 +269,24 @@ class SubjectListSerializer(serializers.ModelSerializer):
         """
         # Check for annotation from viewset queryset optimization
         return getattr(obj, '_subscriber_count', 0)
+
+
+class PublicSubjectSerializer(serializers.ModelSerializer):
+    """
+    Public-facing read-only serializer for subject catalog browsing (US-2).
+
+    Minimal field set for public discovery without sensitive information.
+    No web sources, subscriber count, or admin metadata exposed.
+    Used for public GET /api/subjects/ endpoint.
+
+    Fields:
+        id: UUID primary key
+        name: Subject name
+        description: Technology topic description
+        status: Active status (only 'active' subjects returned by view)
+    """
+
+    class Meta:
+        model = Subject
+        fields = ['id', 'name', 'description', 'status']
+        read_only_fields = ['id', 'name', 'description', 'status']

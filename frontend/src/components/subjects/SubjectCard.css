@@ -1,0 +1,133 @@
+/**
+ * Subject Card Component Styles
+ */
+
+.subject-card {
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.subject-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Header */
+
+.subject-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  gap: 0.75rem;
+}
+
+.subject-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  flex: 1;
+  line-height: 1.4;
+}
+
+/* Status Badge */
+
+.subject-card-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.375rem;
+  white-space: nowrap;
+}
+
+.subject-card-status.status-active {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.subject-card-status.status-archived {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Description */
+
+.subject-card-description {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+  flex: 1;
+}
+
+/* Footer */
+
+.subject-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.subject-card-button {
+  padding: 0.625rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.subject-card-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.subject-card-button:active {
+  transform: translateY(0);
+}
+
+.subject-card-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.subject-card-button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive Design */
+
+@media (max-width: 640px) {
+  .subject-card {
+    padding: 1.25rem;
+  }
+
+  .subject-card-title {
+    font-size: 1.125rem;
+  }
+
+  .subject-card-description {
+    font-size: 0.875rem;
+  }
+
+  .subject-card-button {
+    width: 100%;
+  }
+}

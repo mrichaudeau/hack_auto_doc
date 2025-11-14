@@ -67,7 +67,10 @@ const HomePage = () => {
           </div>
 
           <div className="cta-section">
-            <Link to="/register" className="cta-button primary">
+            <Link to="/subjects" className="cta-button primary">
+              Browse Subjects
+            </Link>
+            <Link to="/register" className="cta-button secondary">
               Get Started
             </Link>
             <Link to="/login" className="cta-button secondary">

@@ -32,6 +32,8 @@ urlpatterns = [
     path('api/health/', health_check, name='health_check'),
     path('api/', include('rest_framework.urls')),
     path('api/auth/', include('apps.accounts.urls')),  # Authentication endpoints
+    path('api/', include('apps.subscriptions.urls_public')),  # Public subject catalog (US-2, no auth)
+    path('api/admin/', include('apps.subscriptions.urls')),  # Subject catalog management (admin-only)
 
     # API Documentation
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),

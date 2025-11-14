@@ -246,37 +246,106 @@ The recommended implementation sequence:
 
 ## Generated Agents and Skills
 
-This project uses dynamically generated agents and skills for implementation tasks.
+This project uses **role-based agents and capability skills** for implementation tasks. Agents are organized by technical role (Backend, Frontend, Testing, etc.) rather than by User Story, making them highly reusable across all features.
 
-### Active Agents
+### Active Agents (7 Role-Based Agents)
 
-**infrastructure-agent**
-- **Purpose**: Docker orchestration, configuration, local environment setup
-- **Location**: `.claude/spec-implementer-generated/agents/infrastructure-agent.md`
-- **Assigned Tasks**: All 23 tasks in US-1 (Docker Compose Service Orchestration)
-- **Technologies**: Docker, Docker Compose, Python 3.13, Django, Node 20, React, Vite, PostgreSQL 15, Redis, Poetry 2.2.1
+#### 1. **backend-agent**
+- **Purpose**: Django/Python backend development, REST APIs, Celery tasks, database operations, authentication
+- **Location**: `.claude/spec-implementer-generated/agents/backend-agent.md`
+- **Responsibilities**: Django models/views/serializers, REST API endpoints, Celery configuration, database migrations, Django Admin, security implementation
+- **Primary Skills**: backend-django-configuration, celery-worker-configuration, django-migrations-development, database-administration, django-admin-operations, api-development, security-implementation
+- **Reusability**: High - works for any backend feature or User Story
+
+#### 2. **frontend-agent**
+- **Purpose**: React/Vite frontend development, UI/UX, state management, API integration, frontend infrastructure
+- **Location**: `.claude/spec-implementer-generated/agents/frontend-agent.md`
+- **Responsibilities**: React components, Vite configuration, state management (Context/Redux), routing, API client, HMR setup, frontend Docker configuration
+- **Primary Skills**: frontend-react-vite-development, docker-compose-orchestration, environment-configuration
+- **Reusability**: High - works for any frontend feature or User Story
+
+#### 3. **iac-agent** (NEW)
+- **Purpose**: Infrastructure as Code (Terraform, CloudFormation), cloud infrastructure provisioning
+- **Location**: `.claude/spec-implementer-generated/agents/iac-agent.md`
+- **Responsibilities**: Terraform configurations, AWS/Azure/GCP resource provisioning, state management, VPC/RDS/S3 setup
+- **Primary Skills**: terraform-configuration, cloudformation-templates
+- **Reusability**: High - works for any cloud infrastructure need
+- **Note**: This is a NEW capability - project previously had no IaC support
+
+#### 4. **unit-tester-agent**
+- **Purpose**: Unit testing with mocks, isolated component testing, test coverage
+- **Location**: `.claude/spec-implementer-generated/agents/unit-tester-agent.md`
+- **Responsibilities**: pytest unit tests (backend), Vitest/Jest tests (frontend), mocking external dependencies, test fixtures, coverage analysis
+- **Primary Skills**: django-testing, frontend-unit-testing
+- **Reusability**: High - works for any module or component
+- **Boundary**: Unit Tester = isolated tests with mocks, Integration Tester = multi-service tests
+
+#### 5. **integration-tester-agent**
+- **Purpose**: End-to-end workflows, multi-service integration testing, Docker Compose testing
+- **Location**: `.claude/spec-implementer-generated/agents/integration-tester-agent.md`
+- **Responsibilities**: E2E workflow tests, Docker stack testing, API integration tests, database integration tests, Celery task integration tests
+- **Primary Skills**: integration-testing, django-testing, service-integration-testing
+- **Reusability**: High - works for any workflow or integration scenario
+- **Boundary**: Integration Tester = tests with real services (DB, Redis, Docker), Unit Tester = isolated tests
+
+#### 6. **dockerizer-agent**
+- **Purpose**: Docker and container orchestration, Dockerfiles, Docker Compose, container infrastructure
+- **Location**: `.claude/spec-implementer-generated/agents/dockerizer-agent.md`
+- **Responsibilities**: docker-compose.yml configuration, Dockerfile creation/optimization, container networking, volume management, health checks, environment configuration
+- **Primary Skills**: docker-compose-orchestration, dockerfile-development, environment-configuration, service-integration-testing
+- **Reusability**: High - works for any Docker/container infrastructure need
+- **Boundary**: Dockerizer = containers/orchestration, Backend Agent = Django/Celery app config, IAC Agent = cloud infrastructure
+
+#### 7. **documentation-agent**
+- **Purpose**: Technical documentation, setup guides, API docs, troubleshooting guides
+- **Location**: `.claude/spec-implementer-generated/agents/documentation-agent-new.md`
+- **Responsibilities**: Developer documentation, setup guides, API documentation, troubleshooting guides, README updates, CLAUDE.md maintenance
+- **Primary Skills**: developer-documentation, environment-configuration
+- **Reusability**: High - works for any feature or project area
+
+### Agent Selection Guide
+
+**Use this guide to choose the right agent:**
+
+| Task Type | Agent to Use | Why |
+|-----------|-------------|-----|
+| Django models/views/APIs | Backend Agent | Backend application logic |
+| React components/UI | Frontend Agent | Frontend application logic |
+| Terraform/CloudFormation | IAC Agent | Cloud infrastructure provisioning |
+| Unit tests (isolated) | Unit Tester Agent | Isolated tests with mocks |
+| Integration tests (E2E) | Integration Tester Agent | Multi-service workflows |
+| Dockerfiles/docker-compose.yml | Dockerizer Agent | Container infrastructure |
+| Documentation/guides | Documentation Agent | Technical writing |
 
 ### Active Skills
 
-**docker-compose-orchestration**
-- **Capability**: Multi-service orchestration with networking, dependencies, health checks, resource management
-- **Location**: `.claude/spec-implementer-generated/skills/docker-compose-orchestration/SKILL.md`
-- **Applicable Tasks**: TASK-1.1 through TASK-1.8, TASK-1.14 through TASK-1.16
+**Infrastructure & Container Skills:**
+- **docker-compose-orchestration**: Multi-service orchestration, networking, health checks
+- **dockerfile-development**: Dockerfile creation, multi-stage builds, optimization
+- **environment-configuration**: .env files, .dockerignore, .gitignore, config docs
+- **service-integration-testing**: Docker stack testing, health check validation
 
-**dockerfile-development**
-- **Capability**: Creating optimized Dockerfiles for Python/Django and Node.js/React with multi-stage builds
-- **Location**: `.claude/spec-implementer-generated/skills/dockerfile-development/SKILL.md`
-- **Applicable Tasks**: TASK-1.9 through TASK-1.13
+**Backend Skills:**
+- **backend-django-configuration**: Django settings, Poetry, cache, Redis integration
+- **celery-worker-configuration**: Celery app, broker/result backend, retry policies
+- **django-migrations-development**: Django apps, migrations, management commands
+- **database-administration**: PostgreSQL, pgvector, privileges, query execution
+- **django-admin-operations**: Django Admin setup, superuser creation, ModelAdmin
+- **api-development**: REST API endpoints, serializers, authentication
+- **security-implementation**: Rate limiting, JWT, password hashing, security logging
 
-**environment-configuration**
-- **Capability**: Managing .env files, .dockerignore, .gitignore, documentation, security practices
-- **Location**: `.claude/spec-implementer-generated/skills/environment-configuration/SKILL.md`
-- **Applicable Tasks**: TASK-1.17 through TASK-1.20, TASK-1.23
+**Frontend Skills:**
+- **frontend-react-vite-development**: React components, Vite config, HMR, API proxy
 
-**service-integration-testing**
-- **Capability**: Testing Docker Compose stack, health checks, cross-platform compatibility validation
-- **Location**: `.claude/spec-implementer-generated/skills/service-integration-testing/SKILL.md`
-- **Applicable Tasks**: TASK-1.21, TASK-1.22
+**Infrastructure as Code Skills:**
+- **terraform-configuration**: Terraform HCL, providers, resources, state management
+
+**Testing Skills:**
+- **django-testing**: Django test patterns, pytest-django, fixtures, assertions
+- **integration-testing**: E2E workflows, multi-service testing, Docker integration
+
+**Documentation Skills:**
+- **developer-documentation**: Setup guides, API docs, troubleshooting guides
 
 ## Key Architectural Patterns
 
